@@ -9,6 +9,8 @@
 status](https://travis-ci.org/skoermer/BayesMassBal.svg?branch=master)](https://travis-ci.org/skoermer/BayesMassBal)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/skoermer/BayesMassBal?branch=master&svg=true)](https://ci.appveyor.com/project/skoermer/BayesMassBal)
+[![Codecov test
+coverage](https://codecov.io/gh/skoermer/BayesMassBal/branch/master/graph/badge.svg)](https://codecov.io/gh/skoermer/BayesMassBal?branch=master)
 <!-- badges: end -->
 
 The goal of BayesMassBal is to allow users to do Bayesian data

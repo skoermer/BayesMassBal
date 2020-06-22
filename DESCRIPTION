@@ -20,7 +20,8 @@ Imports:
 RdMacros: Rdpack
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    covr
 VignetteBuilder: knitr
 URL: https://github.com/skoermer/BayesMassBal
 BugReports: https://github.com/skoermer/BayesMassBal/issues
