@@ -22,3 +22,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/skoermer/BayesMassBal
+BugReports: https://github.com/skoermer/BayesMassBal/issues
