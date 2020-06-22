@@ -1,6 +1,6 @@
 Package: BayesMassBal
 Type: Package
-Title: Bayesian Data Reconsciliation of Chemical and Particulate Processes
+Title: Bayesian Data Reconciliation of Chemical and Particulate Processes
 Version: 0.1.0
 Author: Scott Koermer <skoermer@vt.edu>
 Maintainer: Scott Koermer <skoermer@vt.edu>
