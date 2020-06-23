@@ -1,5 +1,7 @@
 ---
-output: github_document
+output: 
+  github_document:
+    pandoc_args: --webtex
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -20,7 +22,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/skoermer/BayesMassBal/branch/master/graph/badge.svg)](https://codecov.io/gh/skoermer/BayesMassBal?branch=master)
 <!-- badges: end -->
 
-The goal of BayesMassBal is to allow users to do Bayesian data reconsciliation for a linearly constrained chemical or particulate process at steady state.
+The goal of BayesMassBal is to allow users to do Bayesian data reconciliation for a linearly constrained chemical or particulate process at steady state.
 
 ## Installation
 
@@ -36,21 +38,204 @@ This is a basic example which shows you how to solve a common problem:
 
 ```{r example}
 library(BayesMassBal)
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+Seven data sets are simulated for the following two node, two component, process.
 
-```{r cars}
-summary(cars)
+```{r multiprocess, echo = FALSE, fig.cap = "Example two node circuit"}
+
+yshift <- 1
+
+rekt <- data.frame(matrix(NA, ncol = 4, nrow = 2))
+names(rekt) <- c("xleft", "ybottom", "xright", "ytop")
+rekt$xleft <- c(3,7)
+rekt$ybottom <- 4
+rekt$xright <- c(5,9)
+rekt$ytop <- 6
+
+aros <- data.frame(matrix(NA, ncol = 4, nrow = 5))
+names(aros) <-c("x0","y0","x1","y1")
+aros[1,] <- c(1,5,rekt$xleft[1],5)
+aros[2,] <- c(rekt$xright[1],5,rekt$xleft[2],5)
+aros[3,] <- c(rekt$xright[2],5,11,5)
+aros[4,] <- c(rekt$xright[1] - 1, rekt$ybottom[1],rekt$xright[1] - 1, rekt$ybottom[1] - 2)
+aros[5,] <- c(rekt$xright[2] - 1, rekt$ybottom[2], rekt$xright[2] - 1 , rekt$ybottom[2] - 2)
+
+aros$y0 <- aros$y0
+aros$y1 <- aros$y1
+
+b.loc <- data.frame(matrix(NA, ncol = 2, nrow = 5))
+names(b.loc) <- c("x","y")
+b.loc[1,] <- c(0.5,aros$y0[1])
+b.loc[2,] <- c(mean(c(aros$x0[2],aros$x1[2])),aros$y0[2] + 0.6)
+b.loc[3,] <- c(aros$x1[3] + 0.5, aros$y1[3])
+b.loc[4,] <- c(aros$x1[4], aros$y1[4] - 0.6)
+b.loc[5,] <- c(aros$x1[5], aros$y1[5] - 0.6)
+
+p.loc <- data.frame(matrix(NA, ncol = 2, nrow = 2))
+names(p.loc) <- c("x","y")
+
+p.loc$x <- rekt$xleft + 1
+p.loc$y <- rekt$ybottom + 1
+
+par(mar = c(0.1,0.1,0.1,0.1))
+plot(1, type="n", xlab="", ylab="", xlim=c(0, 12), ylim=c(1, 6), axes = FALSE)
+rect(xleft = rekt$xleft, ybottom = rekt$ybottom, xright = rekt$xright, ytop =rekt$ytop, col = "skyblue")
+arrows(aros$x0,aros$y0, x1= aros$x1,y1 = aros$y1, code = 2, length = 0.1)
+for(i in 1:5){
+  text(b.loc$x[i], b.loc$y[i],labels = bquote(y[.(i)]), adj = c(0.5,0.5), cex = 1.2)
+}
+for(i in 1:2){
+  text(p.loc$x[i], p.loc$y[i], labels = bquote(P[.(i)]), adj = c(0.5,0.5), cex = 1.2)
+}
+text(1.5,4.6,labels=  "F", adj = c(0.5,0.5), cex = 0.7)
+text(c(5.5,9.5),c(4.6,4.6), labels = "C", adj= c(0.5,0.5), cex = 0.7)
+text(c(4.4,8.4),c(3.5,3.5), labels = "T", adj= c(0.5,0.5), cex = 0.7)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date.
+The constraints around these process nodes are:
 
-You can also embed plots, for example:
+$$
+y_1 = y_2 +y_4
+$$
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+and
+
+$$
+y_2 = y_3 +y_5
+$$
+
+Therefore the matrix of constraints, `C` is:
+
+```{r cdef}
+C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), nrow = 2, ncol = 5, byrow = TRUE)
+C
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
+The `constrain.process` function in the `BayesMassBal` package is used to generate an `X` matrix based on `C` that will later be used with the `bayes.massbal` function.
+
+```{r Xdef}
+X <- constrain.process(C = C)
+X
+```
+
+Code for the data simulation creates a normally distributed feed rate, process variability at each node drawn from independent beta distributions, and *assay noise* on top of each observed mass.
+
+```{r datasim}
+f.rate <- 100
+recCu <- c(98,95)/100
+recG <- c(7,4)/100
+g.cu <- 1.2/100
+g.gangue <- 1-g.cu
+tests <- 7
+
+sd.feed <- 5
+feed.mass <- rnorm(tests,mean = f.rate, sd = sd.feed)
+true.cu <- true.gangue <- data.frame(matrix(NA, ncol = 5, nrow = tests))
+names(true.cu) <- names(true.gangue) <- paste("B",1:5, sep = "")
+
+v.cu <- c(0.00005,0.00008)
+v.g <- c(0.00005,0.000025)
+
+rec.cu.params <- list()
+rec.cu.params[["r1"]]$alpha <- -(recCu[1]*(v.cu[1] + recCu[1]^2 - recCu[1])/v.cu[1])
+rec.cu.params[["r1"]]$beta <- (v.cu[1]^2 + recCu[1]^2 - recCu[1])*(recCu[1]-1)/v.cu[1]
+rec.cu.params[["r2"]]$alpha <- -(recCu[2]*(v.cu[2] + recCu[2]^2 - recCu[2])/v.cu[2])
+rec.cu.params[["r2"]]$beta <- (v.cu[2]^2 + recCu[2]^2 - recCu[2])*(recCu[2]-1)/v.cu[2]
+
+rec.g.params <- list()
+rec.g.params[["r1"]]$alpha <- -(recG[1]*(v.g[1] + recG[1]^2 - recG[1])/v.g[1])
+rec.g.params[["r1"]]$beta <- (v.g[1]^2 + recG[1]^2 - recG[1])*(recG[1]-1)/v.g[1]
+rec.g.params[["r2"]]$alpha <- -(recG[2]*(v.g[2] + recG[2]^2 - recG[2])/v.g[2])
+rec.g.params[["r2"]]$beta <- (v.g[2]^2 + recG[2]^2 - recG[2])*(recG[2]-1)/v.g[2]
+
+r1.cu <- rbeta(n = tests, shape1 = rec.cu.params$r1$alpha, shape2 = rec.cu.params$r1$beta)
+r2.cu <- rbeta(n = tests, shape1 = rec.cu.params$r2$alpha, shape2 = rec.cu.params$r2$beta)
+
+r1.g <- rbeta(n = tests, shape1 = rec.g.params$r1$alpha, shape2 = rec.g.params$r1$beta)
+r2.g <- rbeta(n = tests, shape1 = rec.g.params$r2$alpha, shape2 = rec.g.params$r2$beta)
+
+true.cu$B1 <- feed.mass*g.cu
+true.gangue$B1 <- feed.mass - true.cu$B1
+true.cu$B2 <- true.cu$B1 * r1.cu
+true.cu$B3 <- true.cu$B2 * r2.cu
+true.cu$B4 <- true.cu$B1 * (1-r1.cu)
+true.cu$B5 <- true.cu$B2 * (1-r2.cu)
+
+true.gangue$B2 <- true.gangue$B1 * r1.g
+true.gangue$B3 <- true.gangue$B2 * r2.g
+true.gangue$B4 <- true.gangue$B1 * (1-r1.g)
+true.gangue$B5 <- true.gangue$B2 * (1-r2.g)
+
+true.total <- true.cu + true.gangue
+
+noise <- function(X,s){
+  out <- rnorm(n = length(X),mean = X, sd = s)
+  return(out)
+}
+
+s <- c(0.15,0.2,0.05,0.00005,0.005)
+
+obs.cu <- t(apply(true.cu,1,noise, s = s))
+
+s <- c(5,1, 0.03, 2, 0.5)
+obs.gangue<- t(apply(true.gangue,1,noise, s = s))
+
+```
+
+The observed masses are organized into a named list.  Naming the sample components can be helpful for inspecting the function output.:
+
+```{r datorg}
+y <- list(CuFeS2 = t(obs.cu), gangue = t(obs.gangue))
+y
+```
+
+More typically, the `massbal.data()` function can be used to import data collected in the field and collated into a .csv.  `massbal.data()` also organizes user collected data for use with the `bayes.massbal()` function.
+
+Then, the `bayes.massbal` function is used to generate the distribution of constrained masses from the data with `cov.structure = "indep"`.
+
+```{r indepsamp}
+indep.samples <- bayes.massbal(X = X, y = y, cov.structure = "indep", BIT = c(100,3000,1), lml = TRUE)
+```
+
+To obtain draws from the distribution of mass at each sample location, in the same format as is seen in `y`, the draws of `beta` are simply multiplied by `X`.
+
+```{r indepmassbal}
+X.g <- X
+y.bal <- lapply(indep.samples$beta,function(X,C = X.g){C %*% X})
+```
+
+There are many uses for these samples, including plotting the probability distribution of the feed rate:
+
+```{r feedplot}
+feed.rate <- y.bal$CuFeS2[1,] + y.bal$gangue[1,]
+expected.feed <- mean(feed.rate)
+
+d.feed <- density(feed.rate)
+plot(d.feed, main = "Distribution of Feed Rate", xlab = "TPH", yaxt = "n", ylab = "")
+abline(v = expected.feed, col ="red")
+```
+
+However, this may not be the best fitting model. Models specifying covariance between sample locations for a single component, and covariance between components at a single location are fit.
+
+```{r compdraw}
+component.samples <- bayes.massbal(X = X, y = y, cov.structure = "component", BIT = c(100,3000,1), lml = TRUE)
+
+```
+```{r locdraw}
+location.samples <- bayes.massbal(X = X, y = y, cov.structure = "location", BIT = c(100,3000,1), lml = TRUE)
+```
+
+Computing $\log(\mathrm{Bayes Factor})$  for  $BF = p(y|\texttt{indep})/p(y|\texttt{component})$:
+
+```{r compvsindep}
+indep.samples$lml - component.samples$lml
+```
+
+Then comparing $p(y|\texttt{component})$ to $p(y|\texttt{location})$
+
+```{r compvsloc}
+component.samples$lml - location.samples$lml
+```
+
+

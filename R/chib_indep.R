@@ -90,7 +90,7 @@ chib.indep <- function(s.l,X,y){
     xB <- x.unit %*% B.use
 
     for(j in 1:N){
-      rate[j] <- 0.5*(t(xB[j] - y[[i]][j,]) %*% (xB[j] - y[[i]][j,]) )+ Sprior[[i]]$b
+      rate[j] <- 0.5*(t(xB[j] - y[[i]][j,]) %*% (xB[j] - y[[i]][j,]) )+ Sprior[[i]]$b[j]
     }
 
     shape <- N/2 + Sprior[[i]]$a
