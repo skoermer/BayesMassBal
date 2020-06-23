@@ -96,7 +96,7 @@ X
 
 Code for the data simulation creates a normally distributed feed rate, process variability at each node drawn from independent beta distributions, and *assay noise* ontop of each observed mass.
 
-```{r datasim, cache = TRUE}
+```{r datasim}
 f.rate <- 100
 recCu <- c(98,95)/100
 recG <- c(7,4)/100
@@ -167,7 +167,7 @@ y
 
 Then, the `bayes.massbal` function is used to generate the distribution of constrained masses from the data with `cov.structure = "indep"`.
 
-```{r indepsamp, cache = TRUE}
+```{r indepsamp}
 indep.samples <- bayes.massbal(X = X, y = y, cov.structure = "indep", BIT = c(100,3000,1), lml = TRUE)
 ```
 
