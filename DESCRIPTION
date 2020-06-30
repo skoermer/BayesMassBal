@@ -1,11 +1,11 @@
 Package: BayesMassBal
 Type: Package
-Title: Bayesian Data Reconciliation of Chemical and Particulate Processes
+Title: Bayesian Data Reconciliation of Separation Processes
 Version: 0.1.0
 Author: Scott Koermer <skoermer@vt.edu>
 Maintainer: Scott Koermer <skoermer@vt.edu>
-Description: This package gives Bayesian tools that can be used to reconscile, or mass balance, data collected from chemical or physical separation processes at steady state.
-    Functions included in the package aid the user in organizing data, the user to fit Bayesian linearly constrained models, and compute Bayes Factors for model selection.
+Description: Bayesian tools that can be used to reconcile, or mass balance, mass flow rate data collected from chemical or particulate separation processes aided by constraints governed by the conservation of mass.
+    Functions included in the package aid the user in organizing and constraining data, using MCMC methods to obtain samples from Bayesian models, and in computation of the marginal likelihood of the data, given a particular model, for model selection.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -16,12 +16,16 @@ Imports:
     MASS,
     pracma,
     tmvtnorm,
-    LaplacesDemon
+    LaplacesDemon,
+    HDInterval,
+    tgp
 RdMacros: Rdpack
 Suggests: 
     knitr,
     rmarkdown,
-    covr
+    covr,
+    spelling
 VignetteBuilder: knitr
 URL: https://github.com/skoermer/BayesMassBal
 BugReports: https://github.com/skoermer/BayesMassBal/issues
+Language: en-US

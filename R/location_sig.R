@@ -1,4 +1,4 @@
-location.sig <- function(X,y,priors,BIT = c(3000,100000,1)){
+location.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
 
   ## Tests
   K <- ncol(y[[1]])
@@ -7,9 +7,9 @@ location.sig <- function(X,y,priors,BIT = c(3000,100000,1)){
   ## Components
   M <- length(y)
 
-  burn <- BIT[1]
-  iters <-BIT[2]
-  thin <- BIT[3]
+  burn <- BTE[1]
+  iters <-BTE[2]
+  thin <- BTE[3]
 
   x.unit <- X
 

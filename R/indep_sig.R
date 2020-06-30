@@ -1,5 +1,5 @@
 
-indep.sig <- function(X,y,priors,BIT = c(3000,100000,1)){
+indep.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
 
   gamdraw <- function(x, shape = alpha){
     rgamma(1,shape = shape, rate = x)
@@ -12,9 +12,9 @@ indep.sig <- function(X,y,priors,BIT = c(3000,100000,1)){
   ## Components
   M <- length(y)
 
-  burn <- BIT[1]
-  iters <- BIT[2]
-  thin <- BIT[3]
+  burn <- BTE[1]
+  iters <- BTE[2]
+  thin <- BTE[3]
 
   no.betas <- ncol(X)
 

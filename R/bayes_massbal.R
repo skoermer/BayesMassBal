@@ -4,9 +4,10 @@
 #' @param X A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrain.process}}, see documentation for details.
 #' @param y A list of matricies of observed mass flow rates. Each matrix is a seperate sample component.  The rows of each matrix index sampling location, and the columns index sample set number.
 #' @param cov.structure Character string. \code{"indep"} allows for independent error.  \code{"component"} indicates error for a sample component is correlated, and error between components is independent.  \code{"location"} indicates correlated error between all sample components at a given location, with independent error between location.  Not specifying \code{cov.structure} defaults to the \code{"indep"} structure.
-#' @param priors Optional list of user specified hyperparameters for conjugate priors.  To see the required list structure run \code{bayes.massbal} with \code{BIT = c(1,2,1)} and inspect the output.  When not specified, the function defaults to the priors: \eqn{p(\beta) = } Truncated Normal \eqn{(0,10000000)}, for indpendent error \eqn{p(\phi_{i,j}) = } Gamma \eqn{(1,50000000)}, for location and component error \eqn{p(\Sigma_i)} Inverse Wishart\eqn{(\nu_0,\nu_0 \times S_0)} where \eqn{S_0} is a diagonal matrix containing the emperical variance of the observations for each location and component, and \eqn{\nu_0} is equal to the dimension of \eqn{\Sigma_i}.
-#' @param BIT Numeric vector giving \code{c(Burn-in, total-Iterations, and Thinning)} for MCMC approximation of target distributions. The function \code{bayes.massbal} produces a total number of samples of \eqn{(I - B)/T}.  Thinning reduces autocorrelation between consecutive samples at the expense of computation time.
+#' @param priors Optional list of user specified hyperparameters for conjugate priors.  To see the required list structure run \code{BMB} with \code{BTE = c(1,2,1)} and inspect the output.  When not specified, the function defaults to the priors: \eqn{p(\beta) = } Truncated Normal \eqn{(0,10000000)}, for indpendent error \eqn{p(\phi_{i,j}) = } Gamma \eqn{(1,50000000)}, for location and component error \eqn{p(\Sigma_i)} Inverse Wishart\eqn{(\nu_0,\nu_0 \times S_0)} where \eqn{S_0} is a diagonal matrix containing the emperical variance of the observations for each location and component, and \eqn{\nu_0} is equal to the dimension of \eqn{\Sigma_i}.
+#' @param BTE Numeric vector giving \code{c(Burn-in, Total-iterations, and Every)} for MCMC approximation of target distributions. The function \code{BMB} produces a total number of samples of \eqn{(T - B)/E}.  \eqn{E} specifies only one of Every \eqn{E} draws are saved, reduces autocorrelation between consecutive samples at the expense of computation time.
 #' @param lml Logical indicating if the log marginal likelihood should be approximated.  Default is \code{FALSE}, which reduces computation time.  Log-marginal likekihood is approximated using methods in \insertCite{chib}{BayesMassBal}.
+#' @param ybal Logical indicating if the mass balanced samples for each \eqn{y} should be returned.  Default is \code{TRUE}, setting \code{ybal=FALSE} results in a savings in RAM and computation time.
 #' @return Returns a list of outputs
 #' @return \item{\code{beta}}{List of matricies of samples from the distribution of reconsciled data.  Each matrix in the list is a seperate sample component.}
 #' @return \item{\code{Sig}}{List of matricies containing draws from the distribution of each covariance matrix.  If \code{cov.structure = "indep"} the elements of each matrix are the diagonal elements of the covariance between sample locations for a given component.  For \code{cov.structure = "component"} or \code{"location"}, if \code{S.t} is a draw from the distribution of covariance matrix \code{S}, the \eqn{t^th} column in a listed matrix is equal to \code{S.t[upper.tri(W, diag = TRUE)]}}
@@ -26,23 +27,32 @@
 #' \insertRef{chib}{BayesMassBal}
 #' \insertRef{gibbsexpl}{BayesMassBal}
 
-bayes.massbal <- function(X,y,cov.structure = c("indep","component","location"),
-                          priors = NA,BIT = c(500,20000,1), lml = FALSE){
+BMB <- function(X,y,cov.structure = c("indep","component","location"),
+                          priors = NA,BTE = c(500,20000,1), lml = FALSE, ybal = TRUE){
 
   if(cov.structure == "indep" | all(cov.structure == c("indep","component","location"))){
-    samps <- indep.sig(X = X,y = y,priors = priors,BIT = BIT)
+    samps <- indep.sig(X = X,y = y,priors = priors,BTE = BTE)
     chib.out <- NA
     if(lml == TRUE){chib.out <- chib.indep(s.l = samps, X = X, y = y)$lml}
   }else if(cov.structure == "component"){
-    samps <- component.sig(X =X,y = y,priors = priors,BIT = BIT)
+    samps <- component.sig(X =X,y = y,priors = priors,BTE = BTE)
     chib.out <- NA
     if(lml == TRUE){chib.out <- chib.component(s.l = samps,X = X, y = y)$lml}
   }else if(cov.structure == "location"){
-    samps <- location.sig(X = X, y = y, priors = priors, BIT = BIT)
+    samps <- location.sig(X = X, y = y, priors = priors, BTE = BTE)
     chib.out <- NA
     if(lml == TRUE){chib.out <- chib.location(s.l = samps, X = X, y = y)$lml}
   }else{warning("Please select a valid covariance structure.  See variable cov.structure in documentation.", immediate. = TRUE)}
+
   samps$lml <- chib.out
+
+  if(ybal == TRUE){
+    samps$ybal <- lapply(samps$beta,function(X,x){X <- x %*% X;
+    row.names(X) <- paste(rep("y", times = nrow(X)), 1:nrow(X), sep ="_");
+    return(X)}, x = X)
+  }
+  samps$X <- X
+  class(samps) <- "BayesMassBal"
   return(samps)
 }
 

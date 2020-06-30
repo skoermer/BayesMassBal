@@ -2,23 +2,25 @@
 % Please edit documentation in R/massbal_data.R
 \name{massbal.data}
 \alias{massbal.data}
-\title{Mass Balance Data}
+\title{Import Mass Balance Data}
 \usage{
-massbal.data(file, header = FALSE)
+massbal.data(file, header = FALSE, csv.params = NULL)
 }
 \arguments{
 \item{file}{Character string containing the name of \code{*.csv} from file which data will be read.  See Details below for valid file structures.}
 
 \item{header}{Logical indicating if the first row of \code{file} file contains header information.  Current implementation of \code{massbal.data} discards this information.}
+
+\item{csv.params}{List of arguments to be passed to \code{\link{read.csv}}}
 }
 \value{
-Returns a list of data frames.  Each data frame is named according to the unique sample components specified in the second column of \code{file}.  This list object is intended to be used with the \code{\link{bayes.massbal}} function.
+Returns a list of data frames.  Each data frame is named according to the unique sample components specified in the second column of \code{file}.  This list object is intended to be used with the \code{\link{BMB}} function.
 }
 \description{
-Imports observed mass flow rates stored in a \code{*.csv} file and then organizes the data for use with the \code{\link{bayes.massbal}} function.
+Imports observed mass flow rates stored in a \code{*.csv} file and then organizes the data for use with the \code{\link{BMB}} function.
 }
 \details{
-The purpose of this function is to make it easy to import and structure loosly organized data contained in a \code{*.csv} into a list for use with \code{\link{bayes.massbal}}.
+The purpose of this function is to make it easy to import and structure loosly organized data contained in a \code{*.csv} into a list for use with \code{\link{BMB}}.
 The entries in file must be organized as such:
 
 \itemize{
@@ -32,45 +34,13 @@ The entries in file must be organized as such:
 }
 \examples{
 
-# Data is simulated for a single node,
-# one input, two output, two component process,
-# with three sets of observations.
+ y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
+                                      package = "BayesMassBal"),
+                   header = TRUE, csv.params = list(sep = ";"))
 
-y.save <- data.frame(matrix(NA, ncol = 5, nrow=  6))
+# The linear constraints for this example data set are:
+# C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
 
-# Specify the sampling location
-y.save[,1] <- rep(1:3, times = 2)
-
-# Specify the sample component
-
-y.save[,2] <- rep(c("CuFeS2","gangue"), each = 3)
-
-# Then the data is simulated, shuffled, and saved to be used as if it is real user collected data
-
-f.rate <- 100
-f.rate.cu <- 1.2/100 * f.rate
-f.rate.gangue <- (100-1.2)/100 *f.rate
-cu.rec <- rbeta(3,shape1 = 5, shape2 = 2)
-gangue.rec <- rbeta(3, shape1 = 2, shape2 =5)
-
-y.save[1,3:5] <- f.rate.cu
-y.save[2,3:5] <- cu.rec * f.rate.cu
-y.save[3,3:5] <- (1-cu.rec) * f.rate.cu
-
-y.save[4, 3:5] <- f.rate.gangue
-y.save[5,3:5] <- f.rate.gangue * gangue.rec
-y.save[6, 3:5] <- f.rate.gangue * (1-gangue.rec)
-
-# shuffeling the generated data
-
-y.save <- y.save[sample(1:nrow(y.save), size = nrow(y.save)),]
-
-# writing the .csv file
-
-write.csv(y.save, file = "example_file.csv", col.names = FALSE, row.names = FALSE)
-
-# Using the massbal.data function to read the data and
-# organize it into the list required for bayes.massbal
-
-y <- massbal.data(file = "example_file.csv")
+# The X matrix for this data set can be found using:
+# X <- constrain.process(C = C)
 }
