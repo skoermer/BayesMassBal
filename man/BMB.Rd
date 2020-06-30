@@ -5,7 +5,8 @@
 \title{Bayesian Mass Balance}
 \usage{
 BMB(X, y, cov.structure = c("indep", "component", "location"),
-  priors = NA, BTE = c(500, 20000, 1), lml = FALSE, ybal = TRUE)
+  priors = NA, BTE = c(500, 20000, 1), lml = FALSE, ybal = TRUE,
+  verb = 1)
 }
 \arguments{
 \item{X}{A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrain.process}}, see documentation for details.}
@@ -21,6 +22,8 @@ BMB(X, y, cov.structure = c("indep", "component", "location"),
 \item{lml}{Logical indicating if the log marginal likelihood should be approximated.  Default is \code{FALSE}, which reduces computation time.  Log-marginal likekihood is approximated using methods in \insertCite{chib}{BayesMassBal}.}
 
 \item{ybal}{Logical indicating if the mass balanced samples for each \eqn{y} should be returned.  Default is \code{TRUE}, setting \code{ybal=FALSE} results in a savings in RAM and computation time.}
+
+\item{verb}{Numeric indicating verbosity of progress printed to R-console.  1 prints messages and a progress bar for all iterative methods, 0 indicates no verbosity.}
 }
 \value{
 Returns a list of outputs

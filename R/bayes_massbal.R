@@ -8,6 +8,7 @@
 #' @param BTE Numeric vector giving \code{c(Burn-in, Total-iterations, and Every)} for MCMC approximation of target distributions. The function \code{BMB} produces a total number of samples of \eqn{(T - B)/E}.  \eqn{E} specifies only one of Every \eqn{E} draws are saved, reduces autocorrelation between consecutive samples at the expense of computation time.
 #' @param lml Logical indicating if the log marginal likelihood should be approximated.  Default is \code{FALSE}, which reduces computation time.  Log-marginal likekihood is approximated using methods in \insertCite{chib}{BayesMassBal}.
 #' @param ybal Logical indicating if the mass balanced samples for each \eqn{y} should be returned.  Default is \code{TRUE}, setting \code{ybal=FALSE} results in a savings in RAM and computation time.
+#' @param verb Numeric indicating verbosity of progress printed to R-console.  1 prints messages and a progress bar for all iterative methods, 0 indicates no verbosity.
 #' @return Returns a list of outputs
 #' @return \item{\code{beta}}{List of matricies of samples from the distribution of reconsciled data.  Each matrix in the list is a seperate sample component.}
 #' @return \item{\code{Sig}}{List of matricies containing draws from the distribution of each covariance matrix.  If \code{cov.structure = "indep"} the elements of each matrix are the diagonal elements of the covariance between sample locations for a given component.  For \code{cov.structure = "component"} or \code{"location"}, if \code{S.t} is a draw from the distribution of covariance matrix \code{S}, the \eqn{t^th} column in a listed matrix is equal to \code{S.t[upper.tri(W, diag = TRUE)]}}
@@ -21,6 +22,7 @@
 #' @importFrom tmvtnorm rtmvnorm dtmvnorm
 #' @importFrom LaplacesDemon rinvwishart dinvwishart
 #' @importFrom stats dgamma rgamma sd
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @export
 #'
 #' @references
@@ -28,20 +30,20 @@
 #' \insertRef{gibbsexpl}{BayesMassBal}
 
 BMB <- function(X,y,cov.structure = c("indep","component","location"),
-                          priors = NA,BTE = c(500,20000,1), lml = FALSE, ybal = TRUE){
+                          priors = NA,BTE = c(500,20000,1), lml = FALSE, ybal = TRUE, verb = 1){
 
   if(cov.structure == "indep" | all(cov.structure == c("indep","component","location"))){
-    samps <- indep.sig(X = X,y = y,priors = priors,BTE = BTE)
+    samps <- indep.sig(X = X,y = y,priors = priors,BTE = BTE, verb = verb)
     chib.out <- NA
-    if(lml == TRUE){chib.out <- chib.indep(s.l = samps, X = X, y = y)$lml}
+    if(lml == TRUE){chib.out <- chib.indep(s.l = samps, X = X, y = y, verb = verb)$lml}
   }else if(cov.structure == "component"){
-    samps <- component.sig(X =X,y = y,priors = priors,BTE = BTE)
+    samps <- component.sig(X =X,y = y,priors = priors,BTE = BTE, verb = verb)
     chib.out <- NA
-    if(lml == TRUE){chib.out <- chib.component(s.l = samps,X = X, y = y)$lml}
+    if(lml == TRUE){chib.out <- chib.component(s.l = samps,X = X, y = y, verb = verb)$lml}
   }else if(cov.structure == "location"){
-    samps <- location.sig(X = X, y = y, priors = priors, BTE = BTE)
+    samps <- location.sig(X = X, y = y, priors = priors, BTE = BTE, verb = verb)
     chib.out <- NA
-    if(lml == TRUE){chib.out <- chib.location(s.l = samps, X = X, y = y)$lml}
+    if(lml == TRUE){chib.out <- chib.location(s.l = samps, X = X, y = y,verb = verb)$lml}
   }else{warning("Please select a valid covariance structure.  See variable cov.structure in documentation.", immediate. = TRUE)}
 
   samps$lml <- chib.out
@@ -53,6 +55,7 @@ BMB <- function(X,y,cov.structure = c("indep","component","location"),
   }
   samps$X <- X
   class(samps) <- "BayesMassBal"
+  if(verb != 0){message("Done!")}
   return(samps)
 }
 

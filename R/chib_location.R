@@ -1,4 +1,4 @@
-chib.location <- function(s.l,X,y){
+chib.location <- function(s.l,X,y, verb){
 
   beta <- do.call(rbind,s.l$beta)
   Sig <- s.l$Sig
@@ -81,7 +81,19 @@ chib.location <- function(s.l,X,y){
   lprior.Sig <- rep(NA, times = M)
   Si <- list()
 
+  if(verb != 0){
+    message("Approximating integral for log-marignal likelihood")
+    pb <- txtProgressBar(min = 0, max = T/100, initial = 0, style = 3)
+    step <- 0
+  }
+
   for(t in 1:T){
+
+    if(verb != 0 & (t/100) %% 1 == 0){
+      step <- step + 1
+      setTxtProgressBar(pb,value = step)
+    }
+
     for(i in 1:N){
       s <- Sig[[i]][,t]
       S[upper.tri(S, diag = TRUE)] <- s
@@ -98,7 +110,7 @@ chib.location <- function(s.l,X,y){
     postB[t] <- dtmvnorm(B.bar, mean = bhat[,1], sigma = cov.use, lower = rep(0, times= P))
 
   }
-
+  if(verb != 0){close(pb)}
   lpostB <- log(mean(postB))
 
 

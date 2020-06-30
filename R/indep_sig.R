@@ -1,5 +1,5 @@
 
-indep.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
+indep.sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1){
 
   gamdraw <- function(x, shape = alpha){
     rgamma(1,shape = shape, rate = x)
@@ -72,9 +72,17 @@ indep.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
   rate <- matrix(NA, ncol= M, nrow =N)
 
   beta.temp <- rep(NA, times = no.betas*M)
+  if(verb != 0){
+    message("Sampling from posterior distributions")
+    pb <- txtProgressBar(min = 0, max = iters/100, initial = 0, style = 3)
+    step <- 0
+  }
 
   for(t in 2:iters){
-
+    if(verb != 0 & (t/100) %% 1 == 0){
+      step <- step + 1
+      setTxtProgressBar(pb,value = step)
+    }
     for(i in 1:M){
       xB <- as.vector(X.M[[i]] %*% b.use)
       for(j in 1:N){
@@ -91,6 +99,8 @@ indep.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
       }
     b.use <- beta.temp
   }
+
+  if(verb != 0){close(pb)}
 
   Sig <- lapply(Sig,function(X, b){X[,-(1:b)]}, b = burn)
   Sig <- lapply(Sig, function(X,t){X[,seq(from = 1, to = ncol(X), by = t)]}, t = thin)

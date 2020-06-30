@@ -1,4 +1,4 @@
-chib.indep <- function(s.l,X,y){
+chib.indep <- function(s.l,X,y, verb){
 
   beta <- do.call(rbind,s.l$beta)
   Sig <- s.l$Sig
@@ -61,7 +61,18 @@ chib.indep <- function(s.l,X,y){
   lprior.Sig <- rep(NA, times = M)
   rate <- rep(NA, times = N)
 
+  if(verb != 0){
+    message("Approximating integral for log-marignal likelihood")
+    pb <- txtProgressBar(min = 0, max = T/100, initial = 0, style = 3)
+    step <- 0
+  }
+
   for(t in 1:T){
+
+    if(verb != 0 & (t/100) %% 1 == 0){
+      step <- step + 1
+      setTxtProgressBar(pb,value = step)
+    }
     for(i in 1:M){
       Si <- diag(Sig[[i]][,t])
       xtSix <-  t(x.unit) %*% Si %*% x.unit * K
@@ -79,7 +90,7 @@ chib.indep <- function(s.l,X,y){
     postB[t] <- sum(p.int)
 
   }
-
+  if(verb != 0){close(pb)}
   lpostB <- log(mean(exp(postB)))
 
 

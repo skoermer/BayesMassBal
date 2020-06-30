@@ -132,32 +132,32 @@ y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
 Then, the `BMB` function is used to generate the distribution of constrained masses from the data with `cov.structure = "indep"`.
 
 ```{r indepsamp}
-indep.samples <- BMB(X = X, y = y, cov.structure = "indep", BTE = c(100,3000,1), lml = TRUE)
+indep.samples <- BMB(X = X, y = y, cov.structure = "indep", BTE = c(100,3000,1), lml = TRUE, verb = 0)
 ```
 
-To obtain draws from the distribution of mass at each sample location, in the same format as is seen in `y`, the draws of `beta` are simply multiplied by `X`.
 
-```{r indepmassbal}
-X.g <- X
-y.bal <- lapply(indep.samples$beta,function(X,C = X.g){C %*% X})
-```
-
-The density of the $\beta_1$ samples for CuFeS2 can be plotted with the 95% HPDI
+The output of `BMB` is a `BayesMassBal` object.  Special instructions are designated when feeding a `BayesMassBal` object to the `plot()` function.  Adding the argument `layout = "dens"` and indicating the mass balanced flow rate for CuFeS2 at $y_3$ should be plotted, by using a list supplied to `sample.params`, the desired distribution can be plotted with the 95% HPDI.
 
 ```{r feedplot}
 
-plot(indep.samples,sample.params = list(beta = list(CuFeS2 = 1)),
+plot(indep.samples,sample.params = list(ybal = list(CuFeS2 = 3)),
     layout = "dens",hdi.params = c(1,0.95))
 ```
 
-However, this may not be the best fitting model. Models specifying covariance between sample locations for a single component, and covariance between components at a single location are fit.
+It is also possible to generate trace plots to inspect convergence of the Gibbs sampler.  Here are trace plots for $\beta$
+
+```{r traceplot}
+plot(indep.samples,sample.params = list(beta = list(CuFeS2 = 1:3, gangue = 1:3)),layout = "trace",hdi.params = c(1,0.95))
+```
+
+The model with independent variances may not be the best fitting model. Models specifying covariance between sample locations for a single component, and covariance between components at a single location are fit.
 
 ```{r compdraw}
-component.samples <- BMB(X = X, y = y, cov.structure = "component", BTE = c(100,3000,1), lml = TRUE)
+component.samples <- BMB(X = X, y = y, cov.structure = "component", BTE = c(100,3000,1), lml = TRUE, verb = 0)
 
 ```
 ```{r locdraw}
-location.samples <- BMB(X = X, y = y, cov.structure = "location", BTE = c(100,3000,1), lml = TRUE)
+location.samples <- BMB(X = X, y = y, cov.structure = "location", BTE = c(100,3000,1), lml = TRUE, verb = 0)
 ```
 
 Computing $\log(\mathrm{Bayes Factor})$  for  $BF = p(y|\texttt{indep})/p(y|\texttt{component})$:
@@ -172,13 +172,8 @@ Then comparing $p(y|\texttt{component})$ to $p(y|\texttt{location})$
 component.samples$lml - location.samples$lml
 ```
 
-Creating a trace plot for the values of $\beta$
 
-```{r traceplot}
-plot(indep.samples,sample.params = list(beta = list(CuFeS2 = 1:3, gangue = 1:3)),layout = "trace",hdi.params = c(1,0.95))
-```
-
-Supplying a function, `fn` that takes the arguments of mass balanced flow rates `ybal`, and random independent and uniformly distributed variables `x`, information can be gained on the main effect of a particular element of `x`, `xj`, on `fn` using the `mainEff` function.  Output from `mainEff` inlcudes information on the distribution of $E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack$.
+The main effect of a variable independent of the process can be calculated by supplying a function, `fn` that takes the arguments of mass balanced flow rates `ybal`, and therandom independent and uniformly distributed variables `x`. Information can be gained on the main effect of a particular element of `x`, `xj`, on `fn` using the `mainEff` function.  Output from `mainEff` inlcudes information on the distribution of $E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack$.
 
 ```{r maineff}
 fn_example <- function(X,ybal){
@@ -199,7 +194,7 @@ mE_example <- mainEff(indep.samples, fn = "fn_example",rangex =  rangex,xj = 3, 
 ```
 
 
-For example, a plot of the output can be made.  To get lines that are better connected, change increase `N` in the `mainEff` function.
+A plot of the output can be made.  To get lines that are better connected, change increase `N` in the `mainEff` function.
 
 ```{r maineffplot}
 m.sens<- mE_example$fn.out[2,]

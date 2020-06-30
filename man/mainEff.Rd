@@ -55,7 +55,8 @@ y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
 C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
 X <- constrain.process(C = C)
 
-BMB_example <- BMB(X = X, y = y, cov.structure = "indep", BTE = c(100,3000,1), lml = FALSE)
+BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
+                   BTE = c(100,3000,1), lml = FALSE, verb=0)
 
 fn_example <- function(X,ybal){
     cu.frac <- 63.546/183.5

@@ -95,40 +95,46 @@ Then, the `BMB` function is used to generate the distribution of
 constrained masses from the data with `cov.structure = "indep"`.
 
 ``` r
-indep.samples <- BMB(X = X, y = y, cov.structure = "indep", BTE = c(100,3000,1), lml = TRUE)
+indep.samples <- BMB(X = X, y = y, cov.structure = "indep", BTE = c(100,3000,1), lml = TRUE, verb = 0)
 ```
 
-To obtain draws from the distribution of mass at each sample location,
-in the same format as is seen in `y`, the draws of `beta` are simply
-multiplied by `X`.
-
-``` r
-X.g <- X
-y.bal <- lapply(indep.samples$beta,function(X,C = X.g){C %*% X})
-```
-
-The density of the
-![\\beta\_1](https://latex.codecogs.com/png.latex?%5Cbeta_1 "\\beta_1")
-samples for CuFeS2 can be plotted with the 95% HPDI
+The output of `BMB` is a `BayesMassBal` object. Special instructions are
+designated when feeding a `BayesMassBal` object to the `plot()`
+function. Adding the argument `layout = "dens"` and indicating the mass
+balanced flow rate for CuFeS2 at
+![y\_3](https://latex.codecogs.com/png.latex?y_3 "y_3") should be
+plotted, by using a list supplied to `sample.params`, the desired
+distribution can be plotted with the 95% HPDI.
 
 ``` r
 
-plot(indep.samples,sample.params = list(beta = list(CuFeS2 = 1)),
+plot(indep.samples,sample.params = list(ybal = list(CuFeS2 = 3)),
     layout = "dens",hdi.params = c(1,0.95))
 ```
 
 <img src="man/figures/README-feedplot-1.png" width="100%" />
 
-However, this may not be the best fitting model. Models specifying
-covariance between sample locations for a single component, and
-covariance between components at a single location are fit.
+It is also possible to generate trace plots to inspect convergence of
+the Gibbs sampler. Here are trace plots for
+![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\\beta")
 
 ``` r
-component.samples <- BMB(X = X, y = y, cov.structure = "component", BTE = c(100,3000,1), lml = TRUE)
+plot(indep.samples,sample.params = list(beta = list(CuFeS2 = 1:3, gangue = 1:3)),layout = "trace",hdi.params = c(1,0.95))
+```
+
+<img src="man/figures/README-traceplot-1.png" width="100%" />
+
+The model with independent variances may not be the best fitting model.
+Models specifying covariance between sample locations for a single
+component, and covariance between components at a single location are
+fit.
+
+``` r
+component.samples <- BMB(X = X, y = y, cov.structure = "component", BTE = c(100,3000,1), lml = TRUE, verb = 0)
 ```
 
 ``` r
-location.samples <- BMB(X = X, y = y, cov.structure = "location", BTE = c(100,3000,1), lml = TRUE)
+location.samples <- BMB(X = X, y = y, cov.structure = "location", BTE = c(100,3000,1), lml = TRUE, verb = 0)
 ```
 
 Computing ![\\log(\\mathrm{Bayes
@@ -139,7 +145,7 @@ p(y|\\texttt{indep})/p(y|\\texttt{component})](https://latex.codecogs.com/png.la
 
 ``` r
 indep.samples$lml - component.samples$lml
-#> [1] -138.7364
+#> [1] -138.6937
 ```
 
 Then comparing
@@ -150,24 +156,16 @@ Then comparing
 
 ``` r
 component.samples$lml - location.samples$lml
-#> [1] 0.8505669
+#> [1] 0.8201977
 ```
 
-Creating a trace plot for the values of
-![\\beta](https://latex.codecogs.com/png.latex?%5Cbeta "\\beta")
-
-``` r
-plot(indep.samples,sample.params = list(beta = list(CuFeS2 = 1:3, gangue = 1:3)),layout = "trace",hdi.params = c(1,0.95))
-```
-
-<img src="man/figures/README-traceplot-1.png" width="100%" />
-
-Supplying a function, `fn` that takes the arguments of mass balanced
-flow rates `ybal`, and random independent and uniformly distributed
-variables `x`, information can be gained on the main effect of a
-particular element of `x`, `xj`, on `fn` using the `mainEff` function.
-Output from `mainEff` inlcudes information on the distribution of
-![E\_x\\lbrack f(x,y\_{\\mathrm{bal}})|x\_j
+The main effect of a variable independent of the process can be
+calculated by supplying a function, `fn` that takes the arguments of
+mass balanced flow rates `ybal`, and therandom independent and uniformly
+distributed variables `x`. Information can be gained on the main effect
+of a particular element of `x`, `xj`, on `fn` using the `mainEff`
+function. Output from `mainEff` inlcudes information on the distribution
+of ![E\_x\\lbrack f(x,y\_{\\mathrm{bal}})|x\_j
 \\rbrack](https://latex.codecogs.com/png.latex?E_x%5Clbrack%20f%28x%2Cy_%7B%5Cmathrm%7Bbal%7D%7D%29%7Cx_j%20%5Crbrack
 "E_x\\lbrack f(x,y_{\\mathrm{bal}})|x_j \\rbrack").
 
@@ -189,8 +187,8 @@ rangex <- matrix(c(4.00 ,6.25,1125,1875,3880,9080,20,60,96,208,20.0,62.5),
 mE_example <- mainEff(indep.samples, fn = "fn_example",rangex =  rangex,xj = 3, N = 25, res = 25)
 ```
 
-For example, a plot of the output can be made. To get lines that are
-better connected, change increase `N` in the `mainEff` function.
+A plot of the output can be made. To get lines that are better
+connected, change increase `N` in the `mainEff` function.
 
 ``` r
 m.sens<- mE_example$fn.out[2,]

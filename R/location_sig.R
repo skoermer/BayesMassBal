@@ -1,4 +1,4 @@
-location.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
+location.sig <- function(X,y,priors,BTE = c(3000,100000,1), verb =1){
 
   ## Tests
   K <- ncol(y[[1]])
@@ -79,7 +79,19 @@ location.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
 
   beta.temp <- rep(NA, times = no.betas*N)
   Wi.temp <- list()
+
+  if(verb != 0){
+    message("Sampling from posterior distributions")
+    pb <- txtProgressBar(min = 0, max = iters/100, initial = 0, style = 3)
+    step <- 0
+  }
+
   for(t in 2:iters){
+    if(verb != 0 & (t/100) %% 1 == 0){
+      step <- step + 1
+      setTxtProgressBar(pb,value = step)
+    }
+
     b.use <- as.vector(beta[,t-1])
     for(i in 1:N){
       xB <- as.vector(X.N[[i]] %*% b.use)
@@ -98,7 +110,10 @@ location.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
     cov.use <- solve(precis)
     bhat <- cov.use %*% (V0imu0 + t(X.unit)%*%Oi %*% ybar * K)
     beta[,t] <- as.vector(rtmvnorm(n = 1, mean = bhat[,1], sigma = cov.use, lower = rep(0, length = no.betas*M)))
-    }
+  }
+
+  if(verb != 0){close(pb)}
+
   Sig <- lapply(Sig,function(X, b){X[,-(1:b)]}, b = burn)
   Sig <- lapply(Sig, function(X,t){X[,seq(from = 1, to = ncol(X), by = t)]}, t = thin)
 

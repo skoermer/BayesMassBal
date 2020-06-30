@@ -1,4 +1,4 @@
-component.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
+component.sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1){
 
   ## Tests
   K <- ncol(y[[1]])
@@ -55,10 +55,18 @@ component.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
 
   V0imu0 <- V0i %*% mu0
 
-
-
   beta.temp <- rep(NA, times = no.betas*M)
+  if(verb != 0){
+  message("Sampling from posterior distributions")
+  pb <- txtProgressBar(min = 0, max = iters/100, initial = 0, style = 3)
+  step <- 0
+  }
+
   for(t in 2:iters){
+    if(verb != 0 & (t/100) %% 1 == 0){
+      step <- step + 1
+      setTxtProgressBar(pb,value = step)
+    }
     for(i in 1:M){
       xB <- as.vector(X.M[[i]] %*% b.use)
       psi <- matrix(0, ncol = N, nrow = N)
@@ -77,7 +85,9 @@ component.sig <- function(X,y,priors,BTE = c(3000,100000,1)){
                                          rtmvnorm(n = 1, mean = bhat[,1], sigma = cov.use, lower = rep(0, length = no.betas)))
     }
     b.use <- beta.temp
-    }
+  }
+  if(verb != 0){close(pb)}
+
   Sig <- lapply(Sig,function(X, b){X[,-(1:b)]}, b = burn)
   Sig <- lapply(Sig, function(X,t){X[,seq(from = 1, to = ncol(X), by = t)]}, t = thin)
 
