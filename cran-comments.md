@@ -17,4 +17,3 @@ There are currently no downstream dependencies for this package.
 
 * This is a new release.
 
-Some added text to test uploading to github

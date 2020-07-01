@@ -17,6 +17,18 @@
 #' @return \item{\code{y.cov}}{List of character matricies indicating details for the structure of each covariance matrix.  Only returned when \code{cov.structure = "location"}}
 #' @return \item{\code{lml}}{Numeric of the log marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
 #'
+#' @examples
+#' ## Importing Data
+#' y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
+#'                                     package = "BayesMassBal"),
+#'                    header = TRUE, csv.params = list(sep = ";"))
+#'
+#' C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
+#' X <- constrain.process(C = C)
+#'
+#' BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
+#'                    BTE = c(100,3000,1), lml = FALSE, verb=0)
+#'
 #' @importFrom Rdpack reprompt
 #' @importFrom Matrix bdiag
 #' @importFrom tmvtnorm rtmvnorm dtmvnorm

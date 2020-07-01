@@ -43,6 +43,19 @@ Returns a list of outputs
 \description{
 One function that allows the user to specify covariance structure for a Bayesian mass balance, simulates draws from reconsciled masses and relevant covariance matrix, and approximates the log(marginal likelihood).
 }
+\examples{
+## Importing Data
+y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
+                                    package = "BayesMassBal"),
+                   header = TRUE, csv.params = list(sep = ";"))
+
+C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
+X <- constrain.process(C = C)
+
+BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
+                   BTE = c(100,3000,1), lml = FALSE, verb=0)
+
+}
 \references{
 \insertRef{chib}{BayesMassBal}
 \insertRef{gibbsexpl}{BayesMassBal}
