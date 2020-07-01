@@ -12,10 +12,12 @@
 #' @return Returns a list of outputs
 #' @return \item{\code{beta}}{List of matricies of samples from the distribution of reconsciled data.  Each matrix in the list is a seperate sample component.}
 #' @return \item{\code{Sig}}{List of matricies containing draws from the distribution of each covariance matrix.  If \code{cov.structure = "indep"} the elements of each matrix are the diagonal elements of the covariance between sample locations for a given component.  For \code{cov.structure = "component"} or \code{"location"}, if \code{S.t} is a draw from the distribution of covariance matrix \code{S}, the \eqn{t^th} column in a listed matrix is equal to \code{S.t[upper.tri(W, diag = TRUE)]}}
-#' @return \item{\code{priors}}{List of prior hyperparameters used in generating conditional posterior distributions and approximating log marginal likelihood.  The structure of the input variable \code{priors} is required to be the same as the structure of the returned prior hyperparameters.}
+#' @return \item{\code{priors}}{List of prior hyperparameters used in generating conditional posterior distributions and approximating log marginal likelihood.  The structure of the input variable \code{priors} is required to be the same as the structure of the returned prior hyperparameters.  See Details.}
 #' @return \item{\code{cov.structure}}{Character string containing the covariance structure used.}
 #' @return \item{\code{y.cov}}{List of character matricies indicating details for the structure of each covariance matrix.  Only returned when \code{cov.structure = "location"}}
 #' @return \item{\code{lml}}{Numeric of the log marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
+#' @return \item{\code{ybal}}{List of samples from the distribution of reconsciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}. Equavelent to \code{lapply(BMB$beta,function(X,x){x %*% X}, x = X)}.  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
+#' @return \item{\code{X}}{The function argument \code{X} is passed to the output so that it can be used with other functions.}
 #'
 #' @examples
 #' ## Importing Data

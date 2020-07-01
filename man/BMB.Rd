@@ -32,13 +32,15 @@ Returns a list of outputs
 
 \item{\code{Sig}}{List of matricies containing draws from the distribution of each covariance matrix.  If \code{cov.structure = "indep"} the elements of each matrix are the diagonal elements of the covariance between sample locations for a given component.  For \code{cov.structure = "component"} or \code{"location"}, if \code{S.t} is a draw from the distribution of covariance matrix \code{S}, the \eqn{t^th} column in a listed matrix is equal to \code{S.t[upper.tri(W, diag = TRUE)]}}
 
-\item{\code{priors}}{List of prior hyperparameters used in generating conditional posterior distributions and approximating log marginal likelihood.  The structure of the input variable \code{priors} is required to be the same as the structure of the returned prior hyperparameters.}
+\item{\code{priors}}{List of prior hyperparameters used in generating conditional posterior distributions and approximating log marginal likelihood.  The structure of the input variable \code{priors} is required to be the same as the structure of the returned prior hyperparameters.  See Details.}
 
 \item{\code{cov.structure}}{Character string containing the covariance structure used.}
 
 \item{\code{y.cov}}{List of character matricies indicating details for the structure of each covariance matrix.  Only returned when \code{cov.structure = "location"}}
 
 \item{\code{lml}}{Numeric of the log marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
+
+\item{\code{X}}{The function argument \code{X} is passed to the output so that it can be used with other functions.}
 }
 \description{
 One function that allows the user to specify covariance structure for a Bayesian mass balance, simulates draws from reconsciled masses and relevant covariance matrix, and approximates the log(marginal likelihood).
