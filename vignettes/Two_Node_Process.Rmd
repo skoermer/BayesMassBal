@@ -147,7 +147,7 @@ component.samples$lml - location.samples$lml
 ```
 
 
-The main effect of a variable independent of the process can be calculated by supplying a function, `fn` that takes the arguments of mass balanced flow rates `ybal`, and therandom independent and uniformly distributed variables `x`. Information can be gained on the main effect of a particular element of `x`, `xj`, on `fn` using the `mainEff` function.  Output from `mainEff` inlcudes information on the distribution of $E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack$.
+The main effect of a variable independent of the process can be calculated by supplying a function, `fn` that takes the arguments of mass balanced flow rates `ybal`, and the random independent and uniformly distributed variables `x`. Information can be gained on the main effect of a particular element of `x`, `xj`, on `fn` using the `mainEff` function.  Output from `mainEff` includes information on the distribution of $E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack$.
 
 ```{r maineff}
 fn_example <- function(X,ybal){

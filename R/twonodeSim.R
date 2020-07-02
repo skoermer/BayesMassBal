@@ -1,12 +1,12 @@
 #' Two Node Process Data Simulation
 #'
-#' Simulates data for a stochastic two node, two component process at steady state.  Location indicies are the same as what is shown in \code{vignette("Two_Node_Process", package = "BayesMassBal")}.  Default parameters are used in an upcomming publication.
+#' Simulates data for a stochastic two node, two component process at steady state.  Location indices are the same as what is shown in \code{vignette("Two_Node_Process", package = "BayesMassBal")}.  Default parameters are used in an upcoming publication.
 #'
 #' @param k Numeric specifying the number of sample sets to be simulated.
 #' @param feed List specifying qualities for the process grade.  See default for required structure.  \code{rate} is the mean feed rate.  \code{sd} is the standard deviation of the feed rate, see details.  \code{CuFeS2grade} is the mass percent CuFeS2 present in the feed.  Grade is not stochastic.
 #' @param rec List specifying mean and variance in process performance.  See default for required structure. \code{rec$*component*$mean} is a vector giving mean fractional recovery of the given component for \code{c(node1,node2)}.  \code{rec$*component*$var} gives the variance in the process in a similar manner.  See details.
 #' @param assayNoise List specifying standard deviations of random noise added to simulated process outputs.  See default for required structure.  The index of a vector within the list is equivalent to the index of the sampling location.  See Details section.
-#' @param truncation Logical indicating if the simulation should be rerun, and previous results discgarded, until no observed values are less than 0. Default is TRUE.  See details for more information.
+#' @param truncation Logical indicating if the simulation should be rerun, and previous results discarded, until no observed values are less than 0. Default is TRUE.  See details for more information.
 #'
 #' @details
 #'
@@ -14,15 +14,15 @@
 #'
 #' The feed rate to the process is normally distributed with a mean of \code{feed$rate}, and a standard deviation of \code{feed$sd}.  If the feed rate is sufficiently small, and the standard deviation is sufficiently large, negative feed rates can be generated.
 #'
-#' Process recovery at each node is simulated from a \href{https://en.wikipedia.org/wiki/Beta_distribution}{beta distribution}, reparameterized as shown in \href{https://stats.stackexchange.com/a/12239}{this post} to make parameter specification more intiutive.  This reparameterization is only valid when \eqn{\sigma^2 \leq \mu(1-\mu)}, and the list argument \code{rec} must be specified as such.
+#' Process recovery at each node is simulated from a \href{https://en.wikipedia.org/wiki/Beta_distribution}{beta distribution}, reparameterized as shown in \href{https://stats.stackexchange.com/a/12239}{this post} to make parameter specification more intuitive.  This reparameterization is only valid when \eqn{\sigma^2 \leq \mu(1-\mu)}, and the list argument \code{rec} must be specified as such.
 #'
 #' The simulation draws a random feed rate, draws random values for recovery, then performs process engineering calculations with these values to find mass flow rates at each sampling location for both sample components.  To these flow rates, random normally distributed noise is added, with a mean of zero and standard deviations specified in \code{assayNoise}.  If the standard deviations supplied are sufficiently large, the simulation can return negative mass flow rates.
 #'
-#' The argument \code{truncation = TRUE} discgards negative mass flow rates, and reruns the simulation untill all values are non-negative.  For some combinations of a large \code{k} and specifications in \code{feed} and \code{assayNoise}, this can happen frequently.  If if the simulation is run three or more times a warning will be printed that the returned expectations are unreliable.  If this is the case, expectations should be calculated using analytical or monte-carlo methods outside of the abilities of this function.  For the default parameters, can occur, but is rare.  The default parameters were chosen in a way that makes a tuncation warning highly unlikely.
+#' The argument \code{truncation = TRUE} discards negative mass flow rates, and reruns the simulation until all values are non-negative.  For some combinations of a large \code{k} and specifications in \code{feed} and \code{assayNoise}, this can happen frequently.  If if the simulation is run three or more times a warning will be printed that the returned expectations are unreliable.  If this is the case, expectations should be calculated using analytical or Monte-Carlo methods outside of the abilities of this function.  For the default parameters, can occur, but is rare.  The default parameters were chosen in a way that makes a truncation warning highly unlikely.
 #'
 #' @return Returns a list of simulated data and expected values.  List members are as follows:
-#' @return \item{\code{simulation}}{List of matricies giving simulated data.  \code{twonodeSim()$simulation} is structured so that it can directly be passed to the \code{\link{BMB}} function as the \code{y} argument.}
-#' @return \item{\code{expectations}}{List of matricies giving expected values of the mass flow rate for each component at every location.  See the Details section for information about instances that may create reliability issues with this output.}
+#' @return \item{\code{simulation}}{List of matrices giving simulated data.  \code{twonodeSim()$simulation} is structured so that it can directly be passed to the \code{\link{BMB}} function as the \code{y} argument.}
+#' @return \item{\code{expectations}}{List of matrices giving expected values of the mass flow rate for each component at every location.  See the Details section for information about instances that may create reliability issues with this output.}
 #'
 #' @importFrom stats rnorm rbeta
 #'

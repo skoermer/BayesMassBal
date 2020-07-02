@@ -88,9 +88,9 @@
 <!-- badges: start -->
 
 <p>The goal of BayesMassBal is to allow users to easily conduct Bayesian data reconciliation for a linearly constrained chemical or particulate process at steady state.</p>
-<p>Samples taken from a chemical process are always observed with noise. Using data reconsciliation, or mass balance methods, to filter the noise aided by a conscervation of mass constraint is common in chemical engineering and minining engineering applications.</p>
-<p>Typically, a mass balance produces point estimates of true mass flow rates. However, using Bayesian methods one can get a better understanding of process uncertainty to aid in decision making. The <code>BayesMassBal</code> package provides functions allowing the user to easily specify conscervation of mass constraints, organize collected data, conduct a Bayesian mass balance using various error structures, and select the best model for their data using Bayes Factors.</p>
-<p>The Bayeisn mass balance uses MCMC methods to obtain samples of the constrained masses. A publication detailing these methods is forthcoming.</p>
+<p>Samples taken from a chemical process are always observed with noise. Using data reconciliation, or mass balance methods, to filter the noise aided by a conservation of mass constraint is common in chemical engineering and mining engineering applications.</p>
+<p>Typically, a mass balance produces point estimates of true mass flow rates. However, using Bayesian methods one can get a better understanding of process uncertainty to aid in decision making. The <code>BayesMassBal</code> package provides functions allowing the user to easily specify conservation of mass constraints, organize collected data, conduct a Bayesian mass balance using various error structures, and select the best model for their data using Bayes Factors.</p>
+<p>The Bayesian mass balance uses MCMC methods to obtain random samples from the distributions of constrained mass flow rates. A publication detailing these methods is forthcoming…</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -103,10 +103,10 @@
 </h2>
 <p>After loading the package</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(BayesMassBal)</span></code></pre></div>
-<p>Functions are availiable to aid in Bayesian data reconsciliation.</p>
+<p>Functions are available to aid in Bayesian data reconciliation.</p>
 <ul>
 <li>The <code><a href="reference/importObservations.html">importObservations()</a></code> function can be used to import mass flow rate data from a <code>*.csv</code> file into <code>R</code> and organize it for use with the <code>BayesMassBal</code> package.</li>
-<li>Toy data sets can be simulated using the <code><a href="reference/twonodeSim.html">twonodeSim()</a></code> function for educational purposes, or for comparing the performance of Bayesian data reconsciliation methods to other methods.</li>
+<li>Toy data sets can be simulated using the <code><a href="reference/twonodeSim.html">twonodeSim()</a></code> function for educational purposes, or for comparing the performance of Bayesian data reconciliation methods to other methods.</li>
 <li>Using the <code><a href="reference/constrainProcess.html">constrainProcess()</a></code> function, one can specify linear constraints in <code>R</code> or import them from a <code>*.csv</code> file.</li>
 <li>The <strong>B</strong>ayesian <strong>M</strong>ass <strong>B</strong>alance function, <code><a href="reference/BMB.html">BMB()</a></code>, then can be used to generate samples from target distributions and approximate the log marginal likelihood for a specified model.<br>
 </li>

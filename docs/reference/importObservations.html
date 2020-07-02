@@ -112,7 +112,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Import Mass Balance Data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/skoermer/BayesMassBal/blob/master/R/massbal_data.R'><code>R/massbal_data.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/skoermer/BayesMassBal/blob/master/R/importObservations.R'><code>R/importObservations.R</code></a></small>
     <div class="hidden name"><code>importObservations.Rd</code></div>
     </div>
 
@@ -147,11 +147,11 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The purpose of this function is to make it easy to import and structure loosly organized data contained in a <code>*.csv</code> into a list for use with <code><a href='BMB.html'>BMB</a></code>.
+    <p>The purpose of this function is to make it easy to import and structure loosely organized data contained in a <code>*.csv</code> into a list for use with <code><a href='BMB.html'>BMB</a></code>.
 The entries in file must be organized as such:</p>
 <ul>
 <li><p>The first column of <code>file</code> must contain an integer sample location which corresponds to the column number used for linear constraints.  For example, data for a given component collected at sampling location \(y_2\) should be indicated with a <code>2</code> in the first column of <code>file</code> used with <code>importObservations</code>.  In the <code>file</code> used with <code><a href='constrainProcess.html'>constrainProcess</a></code>, the linear constraint on \(y_2\) is indicated in the second column.</p></li>
-<li><p>The second column of <code>file</code> must contain sample component names.  <strong>This field is case sensitive</strong>.  Ensure a given sample component is named consistently, including capitilazation and spacing.</p></li>
+<li><p>The second column of <code>file</code> must contain sample component names.  <strong>This field is case sensitive</strong>.  Ensure a given sample component is named consistently, including capitalization and spacing.</p></li>
 <li><p>Columns 3 to \(K+2\) of <code>file</code> must contain observed mass flow rates for the \(K\) mass flow rate observations.  All observations located in the same column should be collected at the same time.</p></li>
 <li><p>Sample components of interest must be specified for each location.  If a sample component is not detected at some locations, but is detected at others, this component should be included in <code>file</code> with a specified mass flow rate of 0, or a very small number.</p></li>
 </ul>

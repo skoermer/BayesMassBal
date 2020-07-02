@@ -18,21 +18,21 @@ data reconciliation for a linearly constrained chemical or particulate
 process at steady state.
 
 Samples taken from a chemical process are always observed with noise.
-Using data reconsciliation, or mass balance methods, to filter the noise
-aided by a conscervation of mass constraint is common in chemical
-engineering and minining engineering applications.
+Using data reconciliation, or mass balance methods, to filter the noise
+aided by a conservation of mass constraint is common in chemical
+engineering and mining engineering applications.
 
 Typically, a mass balance produces point estimates of true mass flow
 rates. However, using Bayesian methods one can get a better
 understanding of process uncertainty to aid in decision making. The
 `BayesMassBal` package provides functions allowing the user to easily
-specify conscervation of mass constraints, organize collected data,
+specify conservation of mass constraints, organize collected data,
 conduct a Bayesian mass balance using various error structures, and
 select the best model for their data using Bayes Factors.
 
-The Bayeisn mass balance uses MCMC methods to obtain samples of the
-constrained masses. A publication detailing these methods is
-forthcoming.
+The Bayesian mass balance uses MCMC methods to obtain random samples
+from the distributions of constrained mass flow rates. A publication
+detailing these methods is forthcoming…
 
 ## Installation
 
@@ -51,14 +51,14 @@ After loading the package
 library(BayesMassBal)
 ```
 
-Functions are availiable to aid in Bayesian data reconsciliation.
+Functions are available to aid in Bayesian data reconciliation.
 
   - The `importObservations()` function can be used to import mass flow
     rate data from a `*.csv` file into `R` and organize it for use with
     the `BayesMassBal` package.
   - Toy data sets can be simulated using the `twonodeSim()` function for
     educational purposes, or for comparing the performance of Bayesian
-    data reconsciliation methods to other methods.
+    data reconciliation methods to other methods.
   - Using the `constrainProcess()` function, one can specify linear
     constraints in `R` or import them from a `*.csv` file.
   - The **B**ayesian **M**ass **B**alance function, `BMB()`, then can be

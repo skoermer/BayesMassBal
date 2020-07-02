@@ -5,12 +5,12 @@
 #' @param header Logical indicating if the first row of \code{file} file contains header information.  Current implementation of \code{importObservations} discards this information.
 #' @param csv.params List of arguments to be passed to \code{\link{read.csv}}
 #'
-#' @details The purpose of this function is to make it easy to import and structure loosly organized data contained in a \code{*.csv} into a list for use with \code{\link{BMB}}.
+#' @details The purpose of this function is to make it easy to import and structure loosely organized data contained in a \code{*.csv} into a list for use with \code{\link{BMB}}.
 #' The entries in file must be organized as such:
 #'
 #' \itemize{
 #' \item The first column of \code{file} must contain an integer sample location which corresponds to the column number used for linear constraints.  For example, data for a given component collected at sampling location \eqn{y_2} should be indicated with a \code{2} in the first column of \code{file} used with \code{importObservations}.  In the \code{file} used with \code{\link{constrainProcess}}, the linear constraint on \eqn{y_2} is indicated in the second column.
-#' \item The second column of \code{file} must contain sample component names.  \strong{This field is case sensitive}.  Ensure a given sample component is named consistently, including capitilazation and spacing.
+#' \item The second column of \code{file} must contain sample component names.  \strong{This field is case sensitive}.  Ensure a given sample component is named consistently, including capitalization and spacing.
 #' \item Columns 3 to \eqn{K+2} of \code{file} must contain observed mass flow rates for the \eqn{K} mass flow rate observations.  All observations located in the same column should be collected at the same time.
 #' \item Sample components of interest must be specified for each location.  If a sample component is not detected at some locations, but is detected at others, this component should be included in \code{file} with a specified mass flow rate of 0, or a very small number.
 #' }
