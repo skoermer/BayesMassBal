@@ -1,5 +1,5 @@
 ---
-title: "Two Node Process Example"
+title: "Two_Node_Process"
 author: "Scott Koermer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
