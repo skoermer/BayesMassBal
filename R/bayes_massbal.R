@@ -1,7 +1,7 @@
 #' Bayesian Mass Balance
 #'
 #' One function that allows the user to specify covariance structure for a Bayesian mass balance, simulates draws from reconsciled masses and relevant covariance matrix, and approximates the log(marginal likelihood).
-#' @param X A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrain.process}}, see documentation for details.
+#' @param X A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrainProcess}}, see documentation for details.
 #' @param y A list of matricies of observed mass flow rates. Each matrix is a seperate sample component.  The rows of each matrix index sampling location, and the columns index sample set number.
 #' @param cov.structure Character string. \code{"indep"} allows for independent error.  \code{"component"} indicates error for a sample component is correlated, and error between components is independent.  \code{"location"} indicates correlated error between all sample components at a given location, with independent error between location.  Not specifying \code{cov.structure} defaults to the \code{"indep"} structure.
 #' @param priors Optional list of user specified hyperparameters for conjugate priors.  To see the required list structure run \code{BMB} with \code{BTE = c(1,2,1)} and inspect the output.  When not specified, the function defaults to the priors: \eqn{p(\beta) = } Truncated Normal \eqn{(0,10000000)}, for indpendent error \eqn{p(\phi_{i,j}) = } Gamma \eqn{(1,50000000)}, for location and component error \eqn{p(\Sigma_i)} Inverse Wishart\eqn{(\nu_0,\nu_0 \times S_0)} where \eqn{S_0} is a diagonal matrix containing the emperical variance of the observations for each location and component, and \eqn{\nu_0} is equal to the dimension of \eqn{\Sigma_i}.
@@ -16,17 +16,17 @@
 #' @return \item{\code{cov.structure}}{Character string containing the covariance structure used.}
 #' @return \item{\code{y.cov}}{List of character matricies indicating details for the structure of each covariance matrix.  Only returned when \code{cov.structure = "location"}}
 #' @return \item{\code{lml}}{Numeric of the log marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
-#' @return \item{\code{ybal}}{List of samples from the distribution of reconsciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}. Equavelent to \code{lapply(BMB$beta,function(X,x){x %*% X}, x = X)}.  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
+#' @return \item{\code{ybal}}{List of samples from the distribution of reconsciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}.  Equavalent to \code{lapply(BMB$beta,function(X,x){x \%*\% X} , x = X)} .  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
 #' @return \item{\code{X}}{The function argument \code{X} is passed to the output so that it can be used with other functions.}
 #'
 #' @examples
 #' ## Importing Data
-#' y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
+#' y <- importObservations(file = system.file("extdata", "twonode_example.csv",
 #'                                     package = "BayesMassBal"),
 #'                    header = TRUE, csv.params = list(sep = ";"))
 #'
 #' C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
-#' X <- constrain.process(C = C)
+#' X <- constrainProcess(C = C)
 #'
 #' BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
 #'                    BTE = c(100,3000,1), lml = FALSE, verb=0)
@@ -45,19 +45,19 @@
 
 BMB <- function(X,y,cov.structure = c("indep","component","location"),
                           priors = NA,BTE = c(500,20000,1), lml = FALSE, ybal = TRUE, verb = 1){
-
+#\code{lapply(BMB$beta,function(X,x)\{x %*% X\}, x = X)}
   if(cov.structure == "indep" | all(cov.structure == c("indep","component","location"))){
-    samps <- indep.sig(X = X,y = y,priors = priors,BTE = BTE, verb = verb)
+    samps <- indep_sig(X = X,y = y,priors = priors,BTE = BTE, verb = verb)
     chib.out <- NA
-    if(lml == TRUE){chib.out <- chib.indep(s.l = samps, X = X, y = y, verb = verb)$lml}
+    if(lml == TRUE){chib.out <- chib_indep(s.l = samps, X = X, y = y, verb = verb)$lml}
   }else if(cov.structure == "component"){
-    samps <- component.sig(X =X,y = y,priors = priors,BTE = BTE, verb = verb)
+    samps <- component_sig(X =X,y = y,priors = priors,BTE = BTE, verb = verb)
     chib.out <- NA
-    if(lml == TRUE){chib.out <- chib.component(s.l = samps,X = X, y = y, verb = verb)$lml}
+    if(lml == TRUE){chib.out <- chib_component(s.l = samps,X = X, y = y, verb = verb)$lml}
   }else if(cov.structure == "location"){
-    samps <- location.sig(X = X, y = y, priors = priors, BTE = BTE, verb = verb)
+    samps <- location_sig(X = X, y = y, priors = priors, BTE = BTE, verb = verb)
     chib.out <- NA
-    if(lml == TRUE){chib.out <- chib.location(s.l = samps, X = X, y = y,verb = verb)$lml}
+    if(lml == TRUE){chib.out <- chib_location(s.l = samps, X = X, y = y,verb = verb)$lml}
   }else{warning("Please select a valid covariance structure.  See variable cov.structure in documentation.", immediate. = TRUE)}
 
   samps$lml <- chib.out

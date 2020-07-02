@@ -9,7 +9,7 @@ BMB(X, y, cov.structure = c("indep", "component", "location"),
   verb = 1)
 }
 \arguments{
-\item{X}{A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrain.process}}, see documentation for details.}
+\item{X}{A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrainProcess}}, see documentation for details.}
 
 \item{y}{A list of matricies of observed mass flow rates. Each matrix is a seperate sample component.  The rows of each matrix index sampling location, and the columns index sample set number.}
 
@@ -40,6 +40,8 @@ Returns a list of outputs
 
 \item{\code{lml}}{Numeric of the log marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
 
+\item{\code{ybal}}{List of samples from the distribution of reconsciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}.  Equavalent to \code{lapply(BMB$beta,function(X,x){x \%*\% X} , x = X)} .  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
+
 \item{\code{X}}{The function argument \code{X} is passed to the output so that it can be used with other functions.}
 }
 \description{
@@ -47,12 +49,12 @@ One function that allows the user to specify covariance structure for a Bayesian
 }
 \examples{
 ## Importing Data
-y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
+y <- importObservations(file = system.file("extdata", "twonode_example.csv",
                                     package = "BayesMassBal"),
                    header = TRUE, csv.params = list(sep = ";"))
 
 C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
-X <- constrain.process(C = C)
+X <- constrainProcess(C = C)
 
 BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
                    BTE = c(100,3000,1), lml = FALSE, verb=0)

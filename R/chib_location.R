@@ -1,4 +1,4 @@
-chib.location <- function(s.l,X,y, verb){
+chib_location <- function(s.l,X,y, verb){
 
   beta <- do.call(rbind,s.l$beta)
   Sig <- s.l$Sig

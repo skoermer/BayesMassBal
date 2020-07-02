@@ -1,5 +1,4 @@
-
-indep.sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1){
+indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1){
 
   gamdraw <- function(x, shape = alpha){
     rgamma(1,shape = shape, rate = x)

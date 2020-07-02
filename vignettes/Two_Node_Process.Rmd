@@ -87,17 +87,17 @@ C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), nrow = 2, ncol = 5, byrow = TRUE)
 C
 ```
 
-The `constrain.process` function in the `BayesMassBal` package is used to generate an `X` matrix based on `C` that will later be used with the `BMB` function.
+The `constrainProcess` function in the `BayesMassBal` package is used to generate an `X` matrix based on `C` that will later be used with the `BMB` function.
 
 ```{r Xdef}
-X <- constrain.process(C = C)
+X <- constrainProcess(C = C)
 X
 ```
 
-The previously simulated data is loaded from a `.csv` file using the `massbal.data()` function.
+The previously simulated data is loaded from a `.csv` file using the `importObservations()` function.  The local location of the the file imported below can be found by typing `system.file("extdata", "twonode_example.csv",package = "BayesMassBal")` into the console.  View the document in Excel to see how your data should be formatted for import.  ***Note:*** it is not required that the entries into the `*.csv` file are separated by `";"`.
 
 ```{r datasim}
-y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
+y <- importObservations(file = system.file("extdata", "twonode_example.csv",
                                   package = "BayesMassBal"),
                   header = TRUE, csv.params = list(sep = ";"))
 ```

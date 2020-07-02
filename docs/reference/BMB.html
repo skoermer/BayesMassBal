@@ -131,7 +131,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>X</th>
-      <td><p>A matrix that maps constrained masses to observed masses.  Can be built from the function <code><a href='constrain.process.html'>constrain.process</a></code>, see documentation for details.</p></td>
+      <td><p>A matrix that maps constrained masses to observed masses.  Can be built from the function <code><a href='constrainProcess.html'>constrainProcess</a></code>, see documentation for details.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -169,7 +169,7 @@
     <p>Returns a list of outputs</p>
 <dt><code>beta</code></dt><dd><p>List of matricies of samples from the distribution of reconsciled data.  Each matrix in the list is a seperate sample component.</p></dd>
 
-<dt><code>Sig</code></dt><dd><p>List of matricies containing draws from the distribution of each covariance matrix.  If <code>cov.structure = "indep"</code> the elements of each matrix are the diagonal elements of the covariance between sample locations for a given component.  For <code>cov.structure = "component"</code> or <code>"location"</code>, if <code>S.t</code> is a draw from the distribution of covariance matrix <code>S</code>, the \(t^th\) column in a listed matrix is equal to <code>S.t[upper.tri(W, diag = TRUE)]</code></p></dd>
+<dt><code>Sig</code></dt><dd><p>List of matricies containing draws from the distribution of each covariance matrix.  If <code>cov.structure = "indep"</code> the elements of each matrix are the diagonal elements of the covariance between sample locations for a given component.  For <code>cov.structure = "component"</code> or <code>"location"</code>, if <code>S.t</code> is a draw from the distribution of covariance matrix <code>S</code>, the \(t^{th}\) column in a listed matrix is equal to <code>S.t[upper.tri(W, diag = TRUE)]</code></p></dd>
 
 <dt><code>priors</code></dt><dd><p>List of prior hyperparameters used in generating conditional posterior distributions and approximating log marginal likelihood.  The structure of the input variable <code>priors</code> is required to be the same as the structure of the returned prior hyperparameters.  See Details.</p></dd>
 
@@ -178,6 +178,8 @@
 <dt><code>y.cov</code></dt><dd><p>List of character matricies indicating details for the structure of each covariance matrix.  Only returned when <code>cov.structure = "location"</code></p></dd>
 
 <dt><code>lml</code></dt><dd><p>Numeric of the log marginal likelihood approximation. Returns <code>NA</code> when <code>lml = FALSE</code></p></dd>
+
+<dt><code>ybal</code></dt><dd><p>List of samples from the distribution of reconsciled mass flow rates, in the same format as the function argument <code>y</code>.  Produced with argument <code>ybal = TRUE</code>.  Equavalent to <code><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply(BMB$beta,function(X,x){x %*% X} , x = X)</a></code> .  Viewing this output is more intuitive than viewing samples of <code>beta</code>, at the expense of RAM and some computation time.</p></dd>
 
 <dt><code>X</code></dt><dd><p>The function argument <code>X</code> is passed to the output so that it can be used with other functions.</p></dd>
 
@@ -194,12 +196,12 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Importing Data</span>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='massbal.data.html'>massbal.data</a></span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"twonode_example.csv"</span>,
+<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='importObservations.html'>importObservations</a></span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"twonode_example.csv"</span>,
                                     <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"BayesMassBal"</span>),
                    <span class='kw'>header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>csv.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>))
 
 <span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>), <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='constrain.process.html'>constrain.process</a></span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='constrainProcess.html'>constrainProcess</a></span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)
 
 <span class='no'>BMB_example</span> <span class='kw'>&lt;-</span> <span class='fu'>BMB</span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>y</span>, <span class='kw'>cov.structure</span> <span class='kw'>=</span> <span class='st'>"indep"</span>,
                    <span class='kw'>BTE</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>3000</span>,<span class='fl'>1</span>), <span class='kw'>lml</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verb</span><span class='kw'>=</span><span class='fl'>0</span>)</div></pre>

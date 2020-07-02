@@ -1,4 +1,4 @@
-chib.component <- function(s.l,X,y, verb){
+chib_component <- function(s.l,X,y, verb){
 
   beta <- do.call(rbind,s.l$beta)
   Sig <- s.l$Sig

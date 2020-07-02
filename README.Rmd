@@ -38,198 +38,21 @@ You can install the released version of BayesMassBal from [CRAN](https://CRAN.R-
 install.packages("BayesMassBal")
 ```
 
-## Example
+## Using `BayesMassBal`
 
-This is a basic example which shows you how to solve a common problem:
+After loading the package
 
 ```{r example}
 library(BayesMassBal)
 ```
 
-The function `BMB` is used with a two node process and simulated data.
+Functions are availiable to aid in Bayesian data reconsciliation.
 
-```{r multiprocess, echo = FALSE, fig.cap = "Example two node circuit", fig.height= 1.5, fig.width = 3}
+* The `importObservations()` function can be used to import mass flow rate data from a `*.csv` file into `R` and organize it for use with the `BayesMassBal` package.
+* Toy data sets can be simulated using the `twonodeSim()` function for educational purposes, or for comparing the performance of Bayesian data reconsciliation methods to other methods.
+* Using the `constrainProcess()` function, one can specify linear constraints in `R` or import them from a `*.csv` file.
+* The **B**ayesian **M**ass **B**alance function, `BMB()`, then can be used to generate samples from target distributions and approximate the log marginal likelihood for a specified model.  
+* The output from `BMB()` is a `"BayesMassBal"` object, which can be fed to `plot.BayesMassBal()` to easily plot the results.
+*  A `"BayesMassBal"` object can also be used with the `BayesMassBal` function `mainEff()` to inspect how the main effect of a random variable and uncertainty in process performance are related.
 
-yshift <- 1
-
-rekt <- data.frame(matrix(NA, ncol = 4, nrow = 2))
-names(rekt) <- c("xleft", "ybottom", "xright", "ytop")
-rekt$xleft <- c(3,7)
-rekt$ybottom <- 4
-rekt$xright <- c(5,9)
-rekt$ytop <- 6
-
-aros <- data.frame(matrix(NA, ncol = 4, nrow = 5))
-names(aros) <-c("x0","y0","x1","y1")
-aros[1,] <- c(1,5,rekt$xleft[1],5)
-aros[2,] <- c(rekt$xright[1],5,rekt$xleft[2],5)
-aros[3,] <- c(rekt$xright[2],5,11,5)
-aros[4,] <- c(rekt$xright[1] - 1, rekt$ybottom[1],rekt$xright[1] - 1, rekt$ybottom[1] - 2)
-aros[5,] <- c(rekt$xright[2] - 1, rekt$ybottom[2], rekt$xright[2] - 1 , rekt$ybottom[2] - 2)
-
-aros$y0 <- aros$y0
-aros$y1 <- aros$y1
-
-b.loc <- data.frame(matrix(NA, ncol = 2, nrow = 5))
-names(b.loc) <- c("x","y")
-b.loc[1,] <- c(0.5,aros$y0[1])
-b.loc[2,] <- c(mean(c(aros$x0[2],aros$x1[2])),aros$y0[2] + 0.6)
-b.loc[3,] <- c(aros$x1[3] + 0.5, aros$y1[3])
-b.loc[4,] <- c(aros$x1[4], aros$y1[4] - 0.6)
-b.loc[5,] <- c(aros$x1[5], aros$y1[5] - 0.6)
-
-p.loc <- data.frame(matrix(NA, ncol = 2, nrow = 2))
-names(p.loc) <- c("x","y")
-
-p.loc$x <- rekt$xleft + 1
-p.loc$y <- rekt$ybottom + 1
-
-par(mar = c(0.1,0.1,0.1,0.1))
-plot(1, type="n", xlab="", ylab="", xlim=c(0, 12), ylim=c(1, 6), axes = FALSE)
-rect(xleft = rekt$xleft, ybottom = rekt$ybottom, xright = rekt$xright, ytop =rekt$ytop, col = "skyblue")
-arrows(aros$x0,aros$y0, x1= aros$x1,y1 = aros$y1, code = 2, length = 0.1)
-for(i in 1:5){
-  text(b.loc$x[i], b.loc$y[i],labels = bquote(y[.(i)]), adj = c(0.5,0.5), cex = 1.2)
-}
-for(i in 1:2){
-  text(p.loc$x[i], p.loc$y[i], labels = bquote(P[.(i)]), adj = c(0.5,0.5), cex = 1.2)
-}
-text(1.5,4.6,labels=  "F", adj = c(0.5,0.5), cex = 0.7)
-text(c(5.5,9.5),c(4.6,4.6), labels = "C", adj= c(0.5,0.5), cex = 0.7)
-text(c(4.4,8.4),c(3.5,3.5), labels = "T", adj= c(0.5,0.5), cex = 0.7)
-```
-
-The constraints around these process nodes are:
-
-\begin{align}
-y_1 &= y_2 +y_4\\
-y_2 &= y_3 +y_5
-\end{align}
-
-Therefore the matrix of constraints, `C` is:
-
-```{r cdef}
-C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), nrow = 2, ncol = 5, byrow = TRUE)
-C
-```
-
-The `constrain.process` function in the `BayesMassBal` package is used to generate an `X` matrix based on `C` that will later be used with the `BMB` function.
-
-```{r Xdef}
-X <- constrain.process(C = C)
-X
-```
-
-The previously simulated data is loaded from a `.csv` file using the `massbal.data()` function.
-
-```{r datasim}
-y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
-                                  package = "BayesMassBal"),
-                  header = TRUE, csv.params = list(sep = ";"))
-```
-
-
-Then, the `BMB` function is used to generate the distribution of constrained masses from the data with `cov.structure = "indep"`.
-
-```{r indepsamp}
-indep.samples <- BMB(X = X, y = y, cov.structure = "indep", BTE = c(100,3000,1), lml = TRUE, verb = 0)
-```
-
-
-The output of `BMB` is a `BayesMassBal` object.  Special instructions are designated when feeding a `BayesMassBal` object to the `plot()` function.  Adding the argument `layout = "dens"` and indicating the mass balanced flow rate for CuFeS2 at $y_3$ should be plotted, by using a list supplied to `sample.params`, the desired distribution can be plotted with the 95% HPDI.
-
-```{r feedplot}
-
-plot(indep.samples,sample.params = list(ybal = list(CuFeS2 = 3)),
-    layout = "dens",hdi.params = c(1,0.95))
-```
-
-It is also possible to generate trace plots to inspect convergence of the Gibbs sampler.  Here are trace plots for $\beta$
-
-```{r traceplot}
-plot(indep.samples,sample.params = list(beta = list(CuFeS2 = 1:3, gangue = 1:3)),layout = "trace",hdi.params = c(1,0.95))
-```
-
-The model with independent variances may not be the best fitting model. Models specifying covariance between sample locations for a single component, and covariance between components at a single location are fit.
-
-```{r compdraw}
-component.samples <- BMB(X = X, y = y, cov.structure = "component", BTE = c(100,3000,1), lml = TRUE, verb = 0)
-
-```
-```{r locdraw}
-location.samples <- BMB(X = X, y = y, cov.structure = "location", BTE = c(100,3000,1), lml = TRUE, verb = 0)
-```
-
-Computing $\log(\mathrm{Bayes Factor})$  for  $BF = p(y|\texttt{indep})/p(y|\texttt{component})$:
-
-```{r compvsindep}
-indep.samples$lml - component.samples$lml
-```
-
-Then comparing $p(y|\texttt{component})$ to $p(y|\texttt{location})$
-
-```{r compvsloc}
-component.samples$lml - location.samples$lml
-```
-
-
-The main effect of a variable independent of the process can be calculated by supplying a function, `fn` that takes the arguments of mass balanced flow rates `ybal`, and therandom independent and uniformly distributed variables `x`. Information can be gained on the main effect of a particular element of `x`, `xj`, on `fn` using the `mainEff` function.  Output from `mainEff` inlcudes information on the distribution of $E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack$.
-
-```{r maineff}
-fn_example <- function(X,ybal){
-      cu.frac <- 63.546/183.5
-      feed.mass <- ybal$CuFeS2[1] + ybal$gangue[1]
-      # Concentrate mass per ton feed
-      con.mass <- (ybal$CuFeS2[3] + ybal$gangue[3])/feed.mass
-      # Copper mass per ton feed
-      cu.mass <- (ybal$CuFeS2[3]*cu.frac)/feed.mass
-      gam <- c(-1,-1/feed.mass,cu.mass,-con.mass,-cu.mass,-con.mass)
-      f <- X %*% gam
-      return(f)
-      }
-
-rangex <- matrix(c(4.00 ,6.25,1125,1875,3880,9080,20,60,96,208,20.0,62.5),
-                   ncol = 6, nrow = 2)
-mE_example <- mainEff(indep.samples, fn = "fn_example",rangex =  rangex,xj = 3, N = 25, res = 25)
-```
-
-
-A plot of the output can be made.  To get lines that are better connected, change increase `N` in the `mainEff` function.
-
-```{r maineffplot}
-m.sens<- mE_example$fn.out[2,]
-hpd.sens <- mE_example$fn.out[c(1,3),]
-row.names(hpd.sens) <- c("upper", "lower")
-g.plot <- mE_example$g/2000
-
-y.lim <- range(hpd.sens)
-
-lzero.bound <- apply(hpd.sens,1,function(X){which(X <= 0)})
-lzero.mean <- which(m.sens <= 0)
-
-main.grid <- pretty(g.plot)
-minor.grid <- pretty(g.plot,25)
-minor.grid <- minor.grid[-which(minor.grid %in% main.grid)]
-
-y.main <- pretty(hpd.sens)
-
-par(mar = c(4.2,4,1,1))
-plot(g.plot,m.sens, type = "n", xlim = range(g.plot), ylim = y.lim, ylab = "Net Revenue ($/ton Feed)", xlab=  "Cu Price ($/lb)")
-
-abline(v = main.grid, lty = 6, col = "grey", lwd = 1)
-abline(v = minor.grid, lty =3, col = "grey", lwd = 0.75)
-
-abline(h = 0, col = "red", lwd = 1, lty = 6)
-
-lines(g.plot[lzero.mean],m.sens[lzero.mean],col = "red", lwd =2)
-lines(g.plot[-lzero.mean[-length(lzero.mean)]],m.sens[-lzero.mean[-length(lzero.mean)]],col = "darkgreen", lwd =2)
-
-lines(g.plot[lzero.bound$lower],hpd.sens[2,][lzero.bound$lower], lty = 5, lwd = 2, col = "red")
-lines(g.plot[-lzero.bound$lower],hpd.sens[2,][-lzero.bound$lower], lty = 5, lwd = 2, col = "darkgreen")
-
-lines(g.plot[lzero.bound$upper],hpd.sens[1,][lzero.bound$upper], lty = 5, lwd = 2, col = "red")
-lines(g.plot[-lzero.bound$upper],hpd.sens[1,][-lzero.bound$upper], lty = 5, lwd = 2, col= "darkgreen")
-
-legend("topleft", legend = c("Expected Main Effect", "95% Bounds", "Net Revenue < $0", "Net Revenue > $0"), col = c("black","black","red", "darkgreen"), lty = c(1,6,1,1), lwd = c(2,2,2,2), bg = "white")
-
-```
+An overview of a suggested workflow, from importing data to plotting Main Effects, is available as a vignette: `vignette("Two_Node_Process")`.

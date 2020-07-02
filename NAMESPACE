@@ -2,9 +2,9 @@
 
 S3method(plot,BayesMassBal)
 export(BMB)
-export(constrain.process)
+export(constrainProcess)
+export(importObservations)
 export(mainEff)
-export(massbal.data)
 export(twonodeSim)
 importFrom(HDInterval,hdi)
 importFrom(LaplacesDemon,dinvwishart)

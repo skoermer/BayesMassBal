@@ -48,12 +48,12 @@ The \eqn{f(x,y)} is equivalent to the supplied function named in \code{mainEff(f
 \examples{
 
 ## Importing Data, generating BMB object
-y <- massbal.data(file = system.file("extdata", "twonode_example.csv",
+y <- importObservations(file = system.file("extdata", "twonode_example.csv",
                                     package = "BayesMassBal"),
                    header = TRUE, csv.params = list(sep = ";"))
 
 C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
-X <- constrain.process(C = C)
+X <- constrainProcess(C = C)
 
 BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
                    BTE = c(100,3000,1), lml = FALSE, verb=0)

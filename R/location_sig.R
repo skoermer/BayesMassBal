@@ -1,4 +1,4 @@
-location.sig <- function(X,y,priors,BTE = c(3000,100000,1), verb =1){
+location_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb =1){
 
   ## Tests
   K <- ncol(y[[1]])
