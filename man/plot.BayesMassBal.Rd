@@ -4,8 +4,13 @@
 \alias{plot.BayesMassBal}
 \title{Plots BayesMassBal Object}
 \usage{
-\method{plot}{BayesMassBal}(x, sample.params = NA, layout = c("trace",
-  "dens"), hdi.params = c(1, 0.95), ...)
+\method{plot}{BayesMassBal}(
+  x,
+  sample.params = NA,
+  layout = c("trace", "dens"),
+  hdi.params = c(1, 0.95),
+  ...
+)
 }
 \arguments{
 \item{x}{A \code{BayesMassBal} object returned from the \code{\link{BMB}} function}

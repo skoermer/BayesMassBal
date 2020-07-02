@@ -1,5 +1,5 @@
 ## Test environments
-* local windows install, R Microsoft Open 3.5.3
+* local windows install, R 4.0.2
 * ubuntu 16.04 xenial (on travis-ci), R 3.6.3
 * ubuntu 16.04 xenial (on travis-ci), R 4.0.0
 * ubuntu 16.04 xenial (on travis-ci), R devel

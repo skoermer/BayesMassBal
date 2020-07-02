@@ -47,9 +47,8 @@
 #' \insertRef{chib}{BayesMassBal}
 #' \insertRef{gibbsexpl}{BayesMassBal}
 
-BMB <- function(X,y,cov.structure = c("indep","component","location"),
-                          priors = NA,BTE = c(500,20000,1), lml = FALSE, ybal = TRUE, verb = 1){
-#\code{lapply(BMB$beta,function(X,x)\{x %*% X\}, x = X)}
+BMB <- function(X,y,cov.structure = c("indep","component","location"), priors = NA, BTE = c(500,20000,1), lml = FALSE, ybal = TRUE, verb = 1){
+
   if(cov.structure == "indep" | all(cov.structure == c("indep","component","location"))){
     samps <- indep_sig(X = X,y = y,priors = priors,BTE = BTE, verb = verb)
     chib.out <- NA

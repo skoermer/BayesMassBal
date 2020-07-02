@@ -4,11 +4,15 @@
 \alias{twonodeSim}
 \title{Two Node Process Data Simulation}
 \usage{
-twonodeSim(k = 7, feed = list(rate = 100, sd = 6, CuFeS2grade = 1.2),
-  rec = list(CuFeS2 = list(mean = c(98, 95)/100, var = c(5e-05, 8e-05)),
-  gangue = list(mean = c(7, 4)/100, var = c(5e-05, 2.5e-05))),
-  assayNoise = list(CuFeS2 = c(0.15, 0.2, 0.05, 5e-05, 0.005), gangue =
-  c(5, 1, 0.03, 2, 0.5)), truncation = TRUE)
+twonodeSim(
+  k = 7,
+  feed = list(rate = 100, sd = 6, CuFeS2grade = 1.2),
+  rec = list(CuFeS2 = list(mean = c(98, 95)/100, var = c(5e-05, 8e-05)), gangue =
+    list(mean = c(7, 4)/100, var = c(5e-05, 2.5e-05))),
+  assayNoise = list(CuFeS2 = c(0.15, 0.2, 0.05, 5e-05, 0.005), gangue = c(5, 1, 0.03,
+    2, 0.5)),
+  truncation = TRUE
+)
 }
 \arguments{
 \item{k}{Numeric specifying the number of sample sets to be simulated.}

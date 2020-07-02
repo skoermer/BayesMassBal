@@ -4,9 +4,16 @@
 \alias{BMB}
 \title{Bayesian Mass Balance}
 \usage{
-BMB(X, y, cov.structure = c("indep", "component", "location"),
-  priors = NA, BTE = c(500, 20000, 1), lml = FALSE, ybal = TRUE,
-  verb = 1)
+BMB(
+  X,
+  y,
+  cov.structure = c("indep", "component", "location"),
+  priors = NA,
+  BTE = c(500, 20000, 1),
+  lml = FALSE,
+  ybal = TRUE,
+  verb = 1
+)
 }
 \arguments{
 \item{X}{A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrainProcess}}, see documentation for details.}

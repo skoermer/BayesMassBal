@@ -4,8 +4,16 @@
 \alias{mainEff}
 \title{Main Effects}
 \usage{
-mainEff(BMBobj, fn, rangex, xj, N = 50, res = 100, hdi.params = c(1,
-  0.95), ...)
+mainEff(
+  BMBobj,
+  fn,
+  rangex,
+  xj,
+  N = 50,
+  res = 100,
+  hdi.params = c(1, 0.95),
+  ...
+)
 }
 \arguments{
 \item{BMBobj}{A \code{BayesMassBal} object originally obtained from the \code{\link{BMB}} function.  If \code{is.null(BMBobj$ybal)} then values of \code{ybal} are calculated.  See \code{\link{BMB}}.}
