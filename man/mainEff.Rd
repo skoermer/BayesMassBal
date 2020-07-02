@@ -64,7 +64,7 @@ C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
 X <- constrainProcess(C = C)
 
 BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
-                   BTE = c(100,3000,1), lml = FALSE, verb=0)
+                   BTE = c(10,500,1), lml = FALSE, verb=0)
 
 fn_example <- function(X,ybal){
     cu.frac <- 63.546/183.5
@@ -80,6 +80,6 @@ fn_example <- function(X,ybal){
 
 rangex <- matrix(c(4.00 ,6.25,1125,1875,3880,9080,20,60,96,208,20.0,62.5),
                   ncol = 6, nrow = 2)
-mE_example <- mainEff(BMB_example, fn = "fn_example",rangex =  rangex,xj = 3, N = 25, res = 25)
+mE_example <- mainEff(BMB_example, fn = "fn_example",rangex =  rangex,xj = 3, N = 20, res = 5)
 
 }

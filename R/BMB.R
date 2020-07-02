@@ -33,7 +33,7 @@
 #' X <- constrainProcess(C = C)
 #'
 #' BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
-#'                    BTE = c(100,3000,1), lml = FALSE, verb=0)
+#'                    BTE = c(10,500,1), lml = FALSE, verb=0)
 #'
 #' @importFrom Rdpack reprompt
 #' @importFrom Matrix bdiag

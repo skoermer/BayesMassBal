@@ -67,7 +67,7 @@ C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
 X <- constrainProcess(C = C)
 
 BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
-                   BTE = c(100,3000,1), lml = FALSE, verb=0)
+                   BTE = c(10,500,1), lml = FALSE, verb=0)
 
 }
 \references{

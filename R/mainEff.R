@@ -26,7 +26,6 @@
 #' @return \item{\code{xj}}{Integer indicating the index of \eqn{x} corresponding to a grouped \code{fn.out} and \code{g}.}
 #'
 #' @importFrom HDInterval hdi
-#' @importFrom tgp lhs
 #'
 #' @export
 #'
@@ -41,7 +40,7 @@
 #' X <- constrainProcess(C = C)
 #'
 #' BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
-#'                    BTE = c(100,3000,1), lml = FALSE, verb=0)
+#'                    BTE = c(10,500,1), lml = FALSE, verb=0)
 #'
 #' fn_example <- function(X,ybal){
 #'     cu.frac <- 63.546/183.5
@@ -57,7 +56,7 @@
 #'
 #' rangex <- matrix(c(4.00 ,6.25,1125,1875,3880,9080,20,60,96,208,20.0,62.5),
 #'                   ncol = 6, nrow = 2)
-#' mE_example <- mainEff(BMB_example, fn = "fn_example",rangex =  rangex,xj = 3, N = 25, res = 25)
+#' mE_example <- mainEff(BMB_example, fn = "fn_example",rangex =  rangex,xj = 3, N = 20, res = 5)
 #'
 mainEff <- function(BMBobj, fn,rangex,xj,N = 50,res = 100, hdi.params = c(1,0.95),...){
 
@@ -70,6 +69,12 @@ mainEff <- function(BMBobj, fn,rangex,xj,N = 50,res = 100, hdi.params = c(1,0.95
     BMBobj$ybal <- lapply(BMBobj$beta,function(X,x){X <- x %*% X;
     row.names(X) <- paste(rep("y", times = nrow(X)), 1:nrow(X), sep ="_");
     return(X)}, x = BMBobj$X)
+  }
+
+  if (requireNamespace("tgp", quietly=TRUE)){
+    LHS <- tgp::lhs
+  }else{
+    warning("The tgp package is required")
   }
 
   Ts <- ncol(BMBobj$beta[[1]])
@@ -89,7 +94,7 @@ mainEff <- function(BMBobj, fn,rangex,xj,N = 50,res = 100, hdi.params = c(1,0.95
   exp.int <- rep(NA, times = Ts)
 
   for(k in 1:Ts){
-    U <- lhs(res,r.x)
+    U <- LHS(res,r.x)
     U <- cbind(U,g.i)[,s]
     ybal <- lapply(BMBobj$ybal,function(X,t){X[,t]},t = k)
     y <- fn(U,ybal,...)
