@@ -61,7 +61,7 @@ See \code{vignette("Two_Node_Process", package = "BayesMassBal")} for further de
 
 When the \code{priors} argument is left unspecified, a set of default conjugate priors are used, which are chosen to provide little information to the posterior distribution when adequate data is supplied.  In the current version of the \code{BayesMassBal} package, only the conjugate priors stated below can be used, but hyperparameter values can be specified by the user.
 
-The prior distribution on \code{beta} is a normal distribution truncated at 0.  The mean of this distribution, before truncation, is 0 for each element of \code{beta}.  Each \code{beta} is independent with a variance of 10,000,000.
+The prior distribution on \code{beta} is a normal distribution truncated at 0.  The mean of this distribution, before truncation, is 0 for each element of \code{beta}.  Each \code{beta} is independent with a variance of 10,000,000 before truncation.
 
 When \code{cov.structure = "indep"} all observations in a sample set are independent. A Gamma prior distribution, with \eqn{a = 1} and \eqn{b = 100,000,000}, is placed on the precision on the mass flow rate for each sample component at each sample location.  Parameterization used for the \href{https://en.wikipedia.org/wiki/Gamma_distribution}{Gamma distribution} is:
 

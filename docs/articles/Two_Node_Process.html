@@ -58,6 +58,9 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -82,7 +85,7 @@
       <h1 data-toc-skip>Two_Node_Process</h1>
                         <h4 class="author">Scott Koermer</h4>
             
-            <h4 class="date">2020-07-02</h4>
+            <h4 class="date">2020-07-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/skoermer/BayesMassBal/blob/master/vignettes/Two_Node_Process.Rmd"><code>vignettes/Two_Node_Process.Rmd</code></a></small>
       <div class="hidden name"><code>Two_Node_Process.Rmd</code></div>
@@ -137,10 +140,10 @@ y_2 &amp;= y_3 +y_5
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">location.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"location"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
 <p>Computing <span class="math inline">\(\log(\mathrm{Bayes Factor})\)</span> for <span class="math inline">\(BF = p(y|\texttt{indep})/p(y|\texttt{component})\)</span>:</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">indep.samples</span>$<span class="no">lml</span> - <span class="no">component.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] -138.6867</span></pre></body></html></div>
+<span class="co">#&gt; [1] -138.7206</span></pre></body></html></div>
 <p>Then comparing <span class="math inline">\(p(y|\texttt{component})\)</span> to <span class="math inline">\(p(y|\texttt{location})\)</span></p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">component.samples</span>$<span class="no">lml</span> - <span class="no">location.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] 0.8357371</span></pre></body></html></div>
+<span class="co">#&gt; [1] 0.8334815</span></pre></body></html></div>
 <p>The main effect of a variable independent of the process can be calculated by supplying a function, <code>fn</code> that takes the arguments of mass balanced flow rates <code>ybal</code>, and the random independent and uniformly distributed variables <code>x</code>. Information can be gained on the main effect of a particular element of <code>x</code>, <code>xj</code>, on <code>fn</code> using the <code>mainEff</code> function. Output from <code>mainEff</code> includes information on the distribution of <span class="math inline">\(E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack\)</span>.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">fn_example</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">X</span>,<span class="no">ybal</span>){
       <span class="no">cu.frac</span> <span class="kw">&lt;-</span> <span class="fl">63.546</span>/<span class="fl">183.5</span>
