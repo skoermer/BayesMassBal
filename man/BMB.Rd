@@ -18,44 +18,56 @@ BMB(
 \arguments{
 \item{X}{A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrainProcess}}, see documentation for details.}
 
-\item{y}{A list of matrices of observed mass flow rates. Each matrix is a separate sample component.  The rows of each matrix index sampling location, and the columns index sample set number.}
+\item{y}{A list of matrices of observed mass flow rates. Each matrix is a separate sample component.  The rows of each matrix index the sampling location, and the columns index the sample set number.}
 
 \item{cov.structure}{Character string. \code{"indep"} allows for independent error.  \code{"component"} indicates error for a sample component is correlated, and error between components is independent.  \code{"location"} indicates correlated error between all sample components at a given location, with independent error between location.  Not specifying \code{cov.structure} defaults to the \code{"indep"} structure.}
 
-\item{priors}{Optional list of user specified hyperparameters for conjugate priors.  To see the required list structure run \code{BMB} with \code{BTE = c(1,2,1)} and inspect the output.  When not specified, the function defaults to the priors: \eqn{p(\beta) = } Truncated Normal \eqn{(0,10000000)}, for independent error \eqn{p(\phi_{i,j}) = } Gamma \eqn{(1,50000000)}, for location and component error \eqn{p(\Sigma_i)} Inverse Wishart\eqn{(\nu_0,\nu_0 \times S_0)} where \eqn{S_0} is a diagonal matrix containing the empirical variance of the observations for each location and component, and \eqn{\nu_0} is equal to the dimension of \eqn{\Sigma_i}.}
+\item{priors}{Optional list of user specified hyperparameters for conjugate priors.  To see the required list structure run \code{BMB} with \code{BTE = c(1,2,1)} and inspect the output, which reports the default prior parameters.  When not specified, the function uses a set of default conjugate priors.  See Details for more information.}
 
-\item{BTE}{Numeric vector giving \code{c(Burn-in, Total-iterations, and Every)} for MCMC approximation of target distributions. The function \code{BMB} produces a total number of samples of \eqn{(T - B)/E}.  \eqn{E} specifies only one of Every \eqn{E} draws are saved, reduces autocorrelation between consecutive samples at the expense of computation time.}
+\item{BTE}{Numeric vector giving \code{c(Burn-in, Total-iterations, and Every)} for MCMC approximation of target distributions. The function \code{BMB} produces a total number of samples of \eqn{(T - B)/E}.  \eqn{E} specifies that only one of every \eqn{E} draws are saved. \eqn{E > 1} reduces autocorrelation between obtained samples at the expense of computation time.}
 
-\item{lml}{Logical indicating if the log marginal likelihood should be approximated.  Default is \code{FALSE}, which reduces computation time.  Log-marginal likelihood is approximated using methods in \insertCite{chib}{BayesMassBal}.}
+\item{lml}{Logical indicating if the log-marginal likelihood should be approximated.  Default is \code{FALSE}, which reduces computation time.  Log-marginal likelihood is approximated using methods in \insertCite{chib}{BayesMassBal}.}
 
-\item{ybal}{Logical indicating if the mass balanced samples for each \eqn{y} should be returned.  Default is \code{TRUE}, setting \code{ybal=FALSE} results in a savings in RAM and computation time.}
+\item{ybal}{Logical indicating if the mass balanced samples for each \eqn{y} should be returned.  Default is \code{TRUE}. Setting \code{ybal=FALSE} results in a savings in RAM and computation time.}
 
-\item{verb}{Numeric indicating verbosity of progress printed to R-console.  1 prints messages and a progress bar for all iterative methods, 0 indicates no verbosity.}
+\item{verb}{Numeric indicating verbosity of progress printed to R-console.  The default of 1 prints messages and a progress bar for all iterative methods, 0 indicates no verbosity.}
 }
 \value{
 Returns a list of outputs
 
 \item{\code{beta}}{List of matrices of samples from the distribution of reconciled data.  Each matrix in the list is a separate sample component.}
 
-\item{\code{Sig}}{List of matrices containing draws from the distribution of each covariance matrix.  If \code{cov.structure = "indep"} the elements of each matrix are the diagonal elements of the covariance between sample locations for a given component.  For \code{cov.structure = "component"} or \code{"location"}, if \code{S.t} is a draw from the distribution of covariance matrix \code{S}, the \eqn{t^{th}} column in a listed matrix is equal to \code{S.t[upper.tri(W, diag = TRUE)]}}
+\item{\code{Sig}}{List of matrices containing draws from the distribution of each covariance matrix.  If \code{S.t} is the \eqn{t^{th}} draw from the distribution of covariance matrix \code{S} and:
+\itemize{\item \code{cov.structure = "indep"}, the \eqn{t^{th}} column of a matrix in \code{Sig} is \code{diag(S.t)}.
+\item\code{cov.structure = "component"} or \code{"location"}, the \eqn{t^{th}} column of a matrix in \code{Sig} is equal to \code{S.t[upper.tri(W, diag = TRUE)]}.}}
 
-\item{\code{priors}}{List of prior hyperparameters used in generating conditional posterior distributions and approximating log marginal likelihood.  The structure of the input variable \code{priors} is required to be the same as the structure of the returned prior hyperparameters.  See Details.}
+\item{\code{priors}}{List of prior hyperparameters used in generating conditional posterior distributions and approximating log-marginal likelihood.  The structure of the input variable \code{priors} is required to be the same as the structure of the returned prior hyperparameters.  See Details.}
 
 \item{\code{cov.structure}}{Character string containing the covariance structure used.}
 
 \item{\code{y.cov}}{List of character matrices indicating details for the structure of each covariance matrix.  Only returned when \code{cov.structure = "location"}}
 
-\item{\code{lml}}{Numeric of the log marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
+\item{\code{lml}}{Numeric of the log-marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
 
 \item{\code{ybal}}{List of samples from the distribution of reconciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}.  Equivalent to \code{lapply(BMB$beta,function(X,x){x \%*\% X} , x = X)} .  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
 
 \item{\code{X}}{The function argument \code{X} is passed to the output so that it can be used with other functions.}
 }
 \description{
-One function that allows the user to specify covariance structure for a Bayesian mass balance, simulates draws from reconciled masses and relevant covariance matrix, and approximates the log(marginal likelihood).
+Allows the user to specify the covariance structure for a Bayesian mass balance, simulates draws from reconciled masses and relevant covariance matrix, and approximates the log-marginal likelihood.
 }
 \details{
 See \code{vignette("Two_Node_Process", package = "BayesMassBal")} for further details on how to use function outputs.
+
+When the \code{priors} argument is left unspecified, a set of default conjugate priors are used, which are chosen to provide little information to the posterior distribution when adequate data is supplied.  In the current version of the \code{BayesMassBal} package, only the conjugate priors stated below can be used, but hyperparameter values can be specified by the user.
+
+The prior distribution on \code{beta} is a normal distribution truncated at 0.  The mean of this distribution, before truncation, is 0 for each element of \code{beta}.  Each \code{beta} is independent with a variance of 10,000,000.
+
+When \code{cov.structure = "indep"} all observations in a sample set are independent. A Gamma prior distribution, with \eqn{a = 1} and \eqn{b = 100,000,000}, is placed on the precision on the mass flow rate for each sample component at each sample location.  Parameterization used for the \href{https://en.wikipedia.org/wiki/Gamma_distribution}{Gamma distribution} is:
+
+\deqn{f(\phi) = \frac{b^a}{\Gamma(a)}\phi^{a-1}e^{-b\phi}}
+
+When \code{cov.structure = "component"} or \code{"location"}, the prior distribution on \eqn{\Sigma_i} is \href{https://en.wikipedia.org/wiki/Inverse-Wishart_distribution}{inverse Wishart}\eqn{(\nu_0, \nu_0 \times S_0)}. The degrees of freedom parameter, \eqn{\nu_0}, is equal to the dimension of \eqn{\Sigma_i}.  The scale matrix parameter is equal to a matrix, \eqn{S_0}, with the sample variance of the observation being correlated on the diagonal, multiplied by \eqn{\nu_0}.
 }
 \examples{
 ## Importing Data
