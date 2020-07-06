@@ -18,17 +18,20 @@ data reconciliation for a linearly constrained chemical or particulate
 process at steady state.
 
 Samples taken from a chemical process are always observed with noise.
-Using data reconciliation, or mass balance methods, to filter the noise
-aided by a conservation of mass constraint is common in chemical
-engineering and mining engineering applications.
+Using data reconciliation, or mass balance methods, it is possible to
+use the principle of [conservation of
+mass](https://en.wikipedia.org/wiki/Conservation_of_mass) to filter the
+noise. This technique is common in chemical engineering and mineral
+processing engineering applications.
 
 Typically, a mass balance produces point estimates of true mass flow
-rates. However, using Bayesian methods one can get a better
-understanding of process uncertainty to aid in decision making. The
-`BayesMassBal` package provides functions allowing the user to easily
-specify conservation of mass constraints, organize collected data,
-conduct a Bayesian mass balance using various error structures, and
-select the best model for their data using Bayes Factors.
+rates. However, using Bayesian methods one can obtain a better a more
+granular view of process uncertainty. The `BayesMassBal` package
+provides functions allowing the user to easily specify conservation of
+mass constraints, organize collected data, conduct a Bayesian mass
+balance using various error structures, and select the best model for
+their data using [Bayes
+Factors](https://en.wikipedia.org/wiki/Bayes_factor).
 
 The Bayesian mass balance uses MCMC methods to obtain random samples
 from the distributions of constrained mass flow rates. A publication
@@ -70,6 +73,7 @@ Functions are available to aid in Bayesian data reconciliation.
     function `mainEff()` to inspect how the main effect of a random
     variable and uncertainty in process performance are related.
 
-An overview of a suggested workflow, from importing data to plotting
-Main Effects, is available as a vignette:
+An overview of a suggested workflow, including importing data into `R`,
+specifying model constraints, using the `BMB` function, and making a
+main effects plot, is available as a vignette:
 `vignette("Two_Node_Process")`.

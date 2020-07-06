@@ -18,10 +18,18 @@ Returns the matrix \eqn{X} which maps \eqn{\beta} to observed masses \eqn{y}.  N
 Generates matrix \eqn{X} which maps constrained masses \eqn{\beta} to observed masses \eqn{y} for an individual sample component, when given a linear system of constraining equations.
 }
 \details{
-The output of this function is meant to be used as the input parameter \code{X} in \code{\link{BMB}}.  The matrix \code{C}, or imported matrix from \code{file}, indexes sampling locations via columns, and number of constraints via rows. Only values of -1, 0, and 1 are valid, and indicate mass leaving a node, a location that is not relevant to a node, and mass entering a node respectively.  Constraints only need to be indicated around each node.  Additional constraints are redundant.  Each sample component is subject to the same constraints, and therefore the constraints given to \code{constrainProcess} do not need to be repeated for each component.  A quick example, \code{C} for a single process, where the constraint is \eqn{y_1 = y_2 + y_3}, and there are two sample components, would be \code{matrix(c(1,-1,-1), nrow=  1,ncol = 3}).
+The output of this function is meant to be used as the input parameter \code{X} in the \code{\link{BMB}} function.  The matrix \code{C}, or imported matrix from \code{file}, indexes sampling locations via columns, and number of constraints via rows. Only values of -1, 0, and 1 are valid, and indicate mass leaving a node, a location that is not relevant to a node, and mass entering a node respectively.  Constraints should only be indicated around each node. No additional, and no less constraints should be specified.  Additional constraints are redundant.  Each sample component is subject to the same constraints, and therefore the constraints given to \code{constrainProcess} do not need to be repeated for each component.
 }
 \examples{
+
+# For a single node process where
+# y_1 = y_2 + y_3
+
+C <- matrix(c(1,-1,-1), nrow=  1,ncol = 3)
+constrainProcess(C = C)
+
 # For a 2 node process with 1 input, 3 outputs
+# as shown in vignette("Two_Node_Process", package = "BayesMassBal")
 
 C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
 constrainProcess(C = C)

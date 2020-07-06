@@ -152,10 +152,20 @@
     <p>Returns the matrix \(X\) which maps \(\beta\) to observed masses \(y\).  No changes need to be made to <code>X</code> when using with <code><a href='BMB.html'>BMB</a></code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The output of this function is meant to be used as the input parameter <code>X</code> in <code><a href='BMB.html'>BMB</a></code>.  The matrix <code>C</code>, or imported matrix from <code>file</code>, indexes sampling locations via columns, and number of constraints via rows. Only values of -1, 0, and 1 are valid, and indicate mass leaving a node, a location that is not relevant to a node, and mass entering a node respectively.  Constraints only need to be indicated around each node.  Additional constraints are redundant.  Each sample component is subject to the same constraints, and therefore the constraints given to <code>constrainProcess</code> do not need to be repeated for each component.  A quick example, <code>C</code> for a single process, where the constraint is \(y_1 = y_2 + y_3\), and there are two sample components, would be <code>matrix(c(1,-1,-1), nrow=  1,ncol = 3</code>).</p>
+    <p>The output of this function is meant to be used as the input parameter <code>X</code> in the <code><a href='BMB.html'>BMB</a></code> function.  The matrix <code>C</code>, or imported matrix from <code>file</code>, indexes sampling locations via columns, and number of constraints via rows. Only values of -1, 0, and 1 are valid, and indicate mass leaving a node, a location that is not relevant to a node, and mass entering a node respectively.  Constraints should only be indicated around each node. No additional, and no less constraints should be specified.  Additional constraints are redundant.  Each sample component is subject to the same constraints, and therefore the constraints given to <code>constrainProcess</code> do not need to be repeated for each component.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># For a 2 node process with 1 input, 3 outputs</span>
+    <pre class="examples"><div class='input'>
+<span class='co'># For a single node process where</span>
+<span class='co'># y_1 = y_2 + y_3</span>
+
+<span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,-<span class='fl'>1</span>,-<span class='fl'>1</span>), <span class='kw'>nrow</span><span class='kw'>=</span>  <span class='fl'>1</span>,<span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+<span class='fu'>constrainProcess</span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)</div><div class='output co'>#&gt;      [,1] [,2]
+#&gt; [1,]    1    1
+#&gt; [2,]    1    0
+#&gt; [3,]    0    1</div><div class='input'>
+<span class='co'># For a 2 node process with 1 input, 3 outputs</span>
+<span class='co'># as shown in vignette("Two_Node_Process", package = "BayesMassBal")</span>
 
 <span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>), <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='fu'>constrainProcess</span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)</div><div class='output co'>#&gt;      [,1] [,2] [,3]

@@ -133,7 +133,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>twonodeSim</span>(
-  <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>7</span>,
+  <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>7</span>,
   <span class='kw'>feed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>CuFeS2grade</span> <span class='kw'>=</span> <span class='fl'>1.2</span>),
   <span class='kw'>rec</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>CuFeS2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>98</span>, <span class='fl'>95</span>)/<span class='fl'>100</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5e-05</span>, <span class='fl'>8e-05</span>)), <span class='kw'>gangue</span> <span class='kw'>=</span>
     <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>7</span>, <span class='fl'>4</span>)/<span class='fl'>100</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5e-05</span>, <span class='fl'>2.5e-05</span>))),
@@ -146,20 +146,20 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>k</th>
+      <th>K</th>
       <td><p>Numeric specifying the number of sample sets to be simulated.</p></td>
     </tr>
     <tr>
       <th>feed</th>
-      <td><p>List specifying qualities for the process grade.  See default for required structure.  <code>rate</code> is the mean feed rate.  <code>sd</code> is the standard deviation of the feed rate, see details.  <code>CuFeS2grade</code> is the mass percent CuFeS2 present in the feed.  Grade is not stochastic.</p></td>
+      <td><p>List specifying qualities for the process grade.  See default for required structure.  <code>rate</code> is the mean feed rate.  <code>sd</code> is the standard deviation of the feed rate.  <code>CuFeS2grade</code> is the mass percent CuFeS2 present in the feed.  Grade is not stochastic.  See Details for important information on specifying these values.</p></td>
     </tr>
     <tr>
       <th>rec</th>
-      <td><p>List specifying mean and variance in process performance.  See default for required structure. <code>rec$*component*$mean</code> is a vector giving mean fractional recovery of the given component for <code><a href='https://rdrr.io/r/base/c.html'>c(node1,node2)</a></code>.  <code>rec$*component*$var</code> gives the variance in the process in a similar manner.  See details.</p></td>
+      <td><p>List specifying mean and variance in process performance.  See default for required structure. <code>rec$component$mean</code> is a vector giving mean fractional recovery of the given component for <code><a href='https://rdrr.io/r/base/c.html'>c(node1,node2)</a></code>.  <code>rec$component$var</code> gives the variance in the process in a similar manner.  See Details.</p></td>
     </tr>
     <tr>
       <th>assayNoise</th>
-      <td><p>List specifying standard deviations of random noise added to simulated process outputs.  See default for required structure.  The index of a vector within the list is equivalent to the index of the sampling location.  See Details section.</p></td>
+      <td><p>List specifying standard deviations of random noise added to simulated process outputs.  See default for required structure.  The index of a vector within the list is equivalent to the index of the sampling location.  See Details section for important information on specifying these values.</p></td>
     </tr>
     <tr>
       <th>truncation</th>
@@ -176,11 +176,19 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Each of the <code>k</code> data sets collected from the <code>twonodeSim()</code> simulation is independent and identically distributed.</p>
+    <p>Each of the <code>K</code> data sets collected from the <code>twonodeSim()</code> simulation is independent and identically distributed.</p>
 <p>The feed rate to the process is normally distributed with a mean of <code>feed$rate</code>, and a standard deviation of <code>feed$sd</code>.  If the feed rate is sufficiently small, and the standard deviation is sufficiently large, negative feed rates can be generated.</p>
 <p>Process recovery at each node is simulated from a <a href='https://en.wikipedia.org/wiki/Beta_distribution'>beta distribution</a>, reparameterized as shown in <a href='https://stats.stackexchange.com/a/12239'>this post</a> to make parameter specification more intuitive.  This reparameterization is only valid when \(\sigma^2 \leq \mu(1-\mu)\), and the list argument <code>rec</code> must be specified as such.</p>
-<p>The simulation draws a random feed rate, draws random values for recovery, then performs process engineering calculations with these values to find mass flow rates at each sampling location for both sample components.  To these flow rates, random normally distributed noise is added, with a mean of zero and standard deviations specified in <code>assayNoise</code>.  If the standard deviations supplied are sufficiently large, the simulation can return negative mass flow rates.</p>
-<p>The argument <code>truncation = TRUE</code> discards negative mass flow rates, and reruns the simulation until all values are non-negative.  For some combinations of a large <code>k</code> and specifications in <code>feed</code> and <code>assayNoise</code>, this can happen frequently.  If if the simulation is run three or more times a warning will be printed that the returned expectations are unreliable.  If this is the case, expectations should be calculated using analytical or Monte-Carlo methods outside of the abilities of this function.  For the default parameters, can occur, but is rare.  The default parameters were chosen in a way that makes a truncation warning highly unlikely.</p>
+<p>The steps of the simulation for each sample set are:</p>
+<ol>
+<li><p>Draw a random normally distributed feed rate.</p></li>
+<li><p>Draw random values for recovery of the two components at each node.</p></li>
+<li><p>Calculate mass flow rate at each location.  These mass flow rates are the <em>true</em> mass flow rates, given the process variability.</p></li>
+<li><p>Adds normally distributed noise to each observation as specified in argument <code>assayNoise</code></p></li>
+</ol>
+
+<p><strong>If the standard deviations supplied to <code>feed</code> and <code>assayNoise</code> are sufficiently large, the simulation can return negative mass flow rates.</strong></p>
+<p>The argument <code>truncation = TRUE</code> discards negative mass flow rates, and reruns the simulation until all values are non-negative.  For some combinations of a large <code>K</code> and specifications in <code>feed</code> and <code>assayNoise</code>, this can happen frequently.  If if the simulation is run three or more times a warning will be printed that the returned expectations are unreliable.  If this is the case, expectations should be calculated using analytical or Monte-Carlo methods outside of the abilities of this function.  For the default parameters, truncation can occur, but is rare.  The default parameters were chosen in a way that makes a truncation warning highly unlikely.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>

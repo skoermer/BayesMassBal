@@ -85,7 +85,7 @@
       <h1 data-toc-skip>Two_Node_Process</h1>
                         <h4 class="author">Scott Koermer</h4>
             
-            <h4 class="date">2020-07-05</h4>
+            <h4 class="date">2020-07-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/skoermer/BayesMassBal/blob/master/vignettes/Two_Node_Process.Rmd"><code>vignettes/Two_Node_Process.Rmd</code></a></small>
       <div class="hidden name"><code>Two_Node_Process.Rmd</code></div>
@@ -96,11 +96,7 @@
     
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">BayesMassBal</span>)</pre></body></html></div>
 <p>The function <code>BMB</code> is used with a two node process and simulated data.</p>
-<div class="figure">
-<img src="Two_Node_Process_files/figure-html/multiprocess-1.png" alt="Example two node circuit" width="288"><p class="caption">
-Example two node circuit
-</p>
-</div>
+<p><img src="Two_Node_Process_files/figure-html/multiprocess-1.png" width="288"></p>
 <p>The constraints around these process nodes are:</p>
 <p><span class="math display">\[\begin{align}
 y_1 &amp;= y_2 +y_4\\
@@ -121,13 +117,13 @@ y_2 &amp;= y_3 +y_5
 <span class="co">#&gt; [3,]    1    0    0</span>
 <span class="co">#&gt; [4,]    0    1    0</span>
 <span class="co">#&gt; [5,]    0    0    1</span></pre></body></html></div>
-<p>The previously simulated data is loaded from a <code>.csv</code> file using the <code><a href="../reference/importObservations.html">importObservations()</a></code> function. The local location of the the file imported below can be found by typing <code><a href="https://rdrr.io/r/base/system.file.html">system.file("extdata", "twonode_example.csv",package = "BayesMassBal")</a></code> into the console. View the document in Excel to see how your data should be formatted for import. <strong><em>Note:</em></strong> it is not required that the entries into the <code>*.csv</code> file are separated by <code>";"</code>.</p>
+<p>The previously simulated data is loaded from a <code>.csv</code> file using the <code><a href="../reference/importObservations.html">importObservations()</a></code> function. The local location of the the file imported below can be found by typing <code><a href="https://rdrr.io/r/base/system.file.html">system.file("extdata", "twonode_example.csv",package = "BayesMassBal")</a></code>. View the document in Excel to see how your data should be formatted for import. <strong><em>Note:</em></strong> it is not required that the entries into the <code>*.csv</code> file are separated by <code>";"</code>.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">y</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/importObservations.html">importObservations</a></span>(<span class="kw">file</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"twonode_example.csv"</span>,
                                   <span class="kw">package</span> <span class="kw">=</span> <span class="st">"BayesMassBal"</span>),
                   <span class="kw">header</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">csv.params</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">sep</span> <span class="kw">=</span> <span class="st">";"</span>))</pre></body></html></div>
 <p>Then, the <code>BMB</code> function is used to generate the distribution of constrained masses from the data with <code>cov.structure = "indep"</code>.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">indep.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"indep"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
-<p>The output of <code>BMB</code> is a <code>BayesMassBal</code> object. Special instructions are designated when feeding a <code>BayesMassBal</code> object to the <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> function. Adding the argument <code>layout = "dens"</code> and indicating the mass balanced flow rate for CuFeS2 at <span class="math inline">\(y_3\)</span> should be plotted, by using a list supplied to <code>sample.params</code>, the desired distribution can be plotted with the 95% HPDI.</p>
+<p>The output of <code>BMB</code> is a <code>BayesMassBal</code> object. Special instructions are designated when feeding a <code>BayesMassBal</code> object to the <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> function. Adding the argument <code>layout = "dens"</code> and indicating the mass balanced flow rate for CuFeS2 at <span class="math inline">\(y_3\)</span> should be plotted using a list supplied to <code>sample.params</code>, the desired distribution can be plotted with its 95% HPDI.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r">
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">indep.samples</span>,<span class="kw">sample.params</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">ybal</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">CuFeS2</span> <span class="kw">=</span> <span class="fl">3</span>)),
     <span class="kw">layout</span> <span class="kw">=</span> <span class="st">"dens"</span>,<span class="kw">hdi.params</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">0.95</span>))</pre></body></html></div>
@@ -140,10 +136,11 @@ y_2 &amp;= y_3 +y_5
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">location.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"location"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
 <p>Computing <span class="math inline">\(\log(\mathrm{Bayes Factor})\)</span> for <span class="math inline">\(BF = p(y|\texttt{indep})/p(y|\texttt{component})\)</span>:</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">indep.samples</span>$<span class="no">lml</span> - <span class="no">component.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] -138.7206</span></pre></body></html></div>
+<span class="co">#&gt; [1] -138.697</span></pre></body></html></div>
 <p>Then comparing <span class="math inline">\(p(y|\texttt{component})\)</span> to <span class="math inline">\(p(y|\texttt{location})\)</span></p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">component.samples</span>$<span class="no">lml</span> - <span class="no">location.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] 0.8334815</span></pre></body></html></div>
+<span class="co">#&gt; [1] 0.7920441</span></pre></body></html></div>
+<p>Shows there is little difference between the models where <code>cov.structure  = "location"</code> and <code>cov.structure = "component"</code>, but both of these models better explain the data than <code>cov.structure = "indep"</code>.</p>
 <p>The main effect of a variable independent of the process can be calculated by supplying a function, <code>fn</code> that takes the arguments of mass balanced flow rates <code>ybal</code>, and the random independent and uniformly distributed variables <code>x</code>. Information can be gained on the main effect of a particular element of <code>x</code>, <code>xj</code>, on <code>fn</code> using the <code>mainEff</code> function. Output from <code>mainEff</code> includes information on the distribution of <span class="math inline">\(E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack\)</span>.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">fn_example</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">X</span>,<span class="no">ybal</span>){
       <span class="no">cu.frac</span> <span class="kw">&lt;-</span> <span class="fl">63.546</span>/<span class="fl">183.5</span>

@@ -6,6 +6,8 @@
 * OSX (on travis-ci), R 3.6.3
 * OSX (on travis-ci), R 4.0.2
 * Windows Server (on appveyor), R 4.0.2
+* Ran devtools::check_rhub() with defaults
+* Ran devtools::check_win_devel() with defaults
 
 ## R CMD check results
 

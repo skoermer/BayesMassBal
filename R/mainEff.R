@@ -2,18 +2,18 @@
 #'
 #' Calculates the main effect of a variable, which is independent of process performance, on a function.
 #'
-#' @param BMBobj A \code{BayesMassBal} object originally obtained from the \code{\link{BMB}} function.  If \code{is.null(BMBobj$ybal)} then values of \code{ybal} are calculated.  See \code{\link{BMB}}.
-#' @param fn A character string naming a function with arguments of \code{BMBobj$ybal} and independent random variables x.  See Details for function requirements.
+#' @param BMBobj A \code{BayesMassBal} object originally obtained from the \code{\link{BMB}} function.  See \code{\link{BMB}}.
+#' @param fn A character string naming a function with arguments of \code{BMBobj$ybal} and independent random variables \code{X}.  See Details and examples for more on function requirements.
 #' @param rangex A numeric matrix.  Each column of \code{rangex} contains the minimum and maximum value of uniformly distributed random values making up vector \eqn{x}.
-#' @param xj Integer indexing the main effect of what elements of \eqn{x} to be found.  If a vector is supplied the marginal main effect of each element is calculated sequentially.  The integers supplied in \code{xj} are equivalent to the indices of the columns in \code{rangex}.
-#' @param N Integer specifying the length of the sequence used for \code{xj}.  Larger \code{N} trades a higher resolution of the main effect of \code{xj} for longer computation time and RAM.
+#' @param xj Integer indexing which element in \eqn{x} is used for conditioning for  \eqn{E_x\lbrack f(x,y)|x_j\rbrack}. If a vector is supplied the marginal main effect of each element is calculated sequentially.  The integers supplied in \code{xj} are equivalent to the indices of the columns in \code{rangex}.
+#' @param N Integer specifying the length of the sequence used for \code{xj}.  Larger \code{N} trades a higher resolution of the main effect of \code{xj} for longer computation time and larger RAM requirements.
 #' @param res Integer indicating the number of points to be used for each Monte-Carlo integration step.  Larger \code{res} reduces Monte-Carlo variance as the expense of computation time.
-#' @param hdi.params Numeric vector of length two, used to calculate Highest Posterior Density Intervals (HPDI) of the main effect \code{xj} using \code{\link[HDInterval]{hdi}}. When \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} the mean and HPDI bounds are returned instead of the every sample from the distribution of \eqn{E\lbrack f(x,y)|x_j\rbrack}.  The second element of \code{hdi} is passed to \code{credMass} in the \code{\link[HDInterval]{hdi}}.  The default, \code{hdi.params = c(1,0.95)}, uses 95\% HPDI bounds.
+#' @param hdi.params Numeric vector of length two, used to calculate Highest Posterior Density Intervals (HPDI) of the main effect \code{xj} using \code{\link[HDInterval]{hdi}}. \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} is used, and the mean and HPDI bounds are returned instead of the every sample from the distribution of \eqn{E_x\lbrack f(x,y)|x_j\rbrack}.  The second element of \code{hdi} is passed to the \code{credMass} argument in the \code{\link[HDInterval]{hdi}} function.  The default, \code{hdi.params = c(1,0.95)}, returns 95\% HPDI bounds.
 #' @param ... Extra arguments passed to the named \code{fn}
 #'
 #' @details
 #'
-#' The \code{mainEff} function returns a distribution of \eqn{E\lbrack f(x,y)|x_j\rbrack}, marginalized over the samples of \code{BMBobj$ybal}, giving the distribution of \eqn{E\lbrack f(x,y)|x_j\rbrack} which incorporates uncertainty of a chemical or particulate process.
+#' The \code{mainEff} function returns a distribution of \eqn{E_x\lbrack f(x,y)|x_j\rbrack}, marginalized over the samples of \code{BMBobj$ybal}, giving the distribution of \eqn{E_x\lbrack f(x,y)|x_j\rbrack} which incorporates uncertainty of a chemical or particulate process.
 #'
 #' In the current implementation of \code{mainEff} in the \code{BayesMassBal} package, only uniformly distributed values of \eqn{x} are supported.
 #'
@@ -21,7 +21,7 @@
 #'
 #' @return A list of \code{length(xj)} list(s).  Each list specifies output for the main effect of a \code{xj}
 #' @return \item{\code{g}}{The grid used for a particular \code{xj}}
-#' @return \item{\code{fn.out}}{A matrix giving results on \eqn{E\lbrack f(x,y)|x_j\rbrack}.  If \code{hdi.params[1] = 1}, the mean and HPDI bounds of \eqn{E\lbrack f(x,y)|x_j\rbrack} are returned.  Otherwise, samples of \eqn{E\lbrack f(x,y)|x_j\rbrack} are returned.  The index of each column of \code{fn.out} corresponds to the index of \code{g}}
+#' @return \item{\code{fn.out}}{A matrix giving results on \eqn{E_x\lbrack f(x,y)|x_j\rbrack}.  If \code{hdi.params[1] = 1}, the mean and HPDI bounds of \eqn{E_x\lbrack f(x,y)|x_j\rbrack} are returned.  Otherwise, samples of \eqn{E_\lbrack f(x,y)|x_j\rbrack} are returned.  The index of each column of \code{fn.out} corresponds to the the value of \code{g} at the same index.}
 #' @return \item{\code{fn}}{Character string giving the name of the function used.  Same value as argument \code{fn}.}
 #' @return \item{\code{xj}}{Integer indicating the index of \eqn{x} corresponding to a grouped \code{fn.out} and \code{g}.}
 #'

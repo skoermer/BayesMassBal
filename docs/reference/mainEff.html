@@ -148,11 +148,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>BMBobj</th>
-      <td><p>A <code>BayesMassBal</code> object originally obtained from the <code><a href='BMB.html'>BMB</a></code> function.  If <code><a href='https://rdrr.io/r/base/NULL.html'>is.null(BMBobj$ybal)</a></code> then values of <code>ybal</code> are calculated.  See <code><a href='BMB.html'>BMB</a></code>.</p></td>
+      <td><p>A <code>BayesMassBal</code> object originally obtained from the <code><a href='BMB.html'>BMB</a></code> function.  See <code><a href='BMB.html'>BMB</a></code>.</p></td>
     </tr>
     <tr>
       <th>fn</th>
-      <td><p>A character string naming a function with arguments of <code>BMBobj$ybal</code> and independent random variables x.  See Details for function requirements.</p></td>
+      <td><p>A character string naming a function with arguments of <code>BMBobj$ybal</code> and independent random variables <code>X</code>.  See Details and examples for more on function requirements.</p></td>
     </tr>
     <tr>
       <th>rangex</th>
@@ -160,11 +160,11 @@
     </tr>
     <tr>
       <th>xj</th>
-      <td><p>Integer indexing the main effect of what elements of \(x\) to be found.  If a vector is supplied the marginal main effect of each element is calculated sequentially.  The integers supplied in <code>xj</code> are equivalent to the indices of the columns in <code>rangex</code>.</p></td>
+      <td><p>Integer indexing which element in \(x\) is used for conditioning for  \(E_x\lbrack f(x,y)|x_j\rbrack\). If a vector is supplied the marginal main effect of each element is calculated sequentially.  The integers supplied in <code>xj</code> are equivalent to the indices of the columns in <code>rangex</code>.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>Integer specifying the length of the sequence used for <code>xj</code>.  Larger <code>N</code> trades a higher resolution of the main effect of <code>xj</code> for longer computation time and RAM.</p></td>
+      <td><p>Integer specifying the length of the sequence used for <code>xj</code>.  Larger <code>N</code> trades a higher resolution of the main effect of <code>xj</code> for longer computation time and larger RAM requirements.</p></td>
     </tr>
     <tr>
       <th>res</th>
@@ -172,7 +172,7 @@
     </tr>
     <tr>
       <th>hdi.params</th>
-      <td><p>Numeric vector of length two, used to calculate Highest Posterior Density Intervals (HPDI) of the main effect <code>xj</code> using <code><a href='https://rdrr.io/pkg/HDInterval/man/hdi.html'>hdi</a></code>. When <code>hdi.params[1] = 1</code> indicates <code><a href='https://rdrr.io/pkg/HDInterval/man/hdi.html'>hdi</a></code> the mean and HPDI bounds are returned instead of the every sample from the distribution of \(E\lbrack f(x,y)|x_j\rbrack\).  The second element of <code>hdi</code> is passed to <code>credMass</code> in the <code><a href='https://rdrr.io/pkg/HDInterval/man/hdi.html'>hdi</a></code>.  The default, <code>hdi.params = c(1,0.95)</code>, uses 95% HPDI bounds.</p></td>
+      <td><p>Numeric vector of length two, used to calculate Highest Posterior Density Intervals (HPDI) of the main effect <code>xj</code> using <code><a href='https://rdrr.io/pkg/HDInterval/man/hdi.html'>hdi</a></code>. <code>hdi.params[1] = 1</code> indicates <code><a href='https://rdrr.io/pkg/HDInterval/man/hdi.html'>hdi</a></code> is used, and the mean and HPDI bounds are returned instead of the every sample from the distribution of \(E_x\lbrack f(x,y)|x_j\rbrack\).  The second element of <code>hdi</code> is passed to the <code>credMass</code> argument in the <code><a href='https://rdrr.io/pkg/HDInterval/man/hdi.html'>hdi</a></code> function.  The default, <code>hdi.params = c(1,0.95)</code>, returns 95% HPDI bounds.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -185,7 +185,7 @@
     <p>A list of <code><a href='https://rdrr.io/r/base/length.html'>length(xj)</a></code> list(s).  Each list specifies output for the main effect of a <code>xj</code></p>
 <dt><code>g</code></dt><dd><p>The grid used for a particular <code>xj</code></p></dd>
 
-<dt><code>fn.out</code></dt><dd><p>A matrix giving results on \(E\lbrack f(x,y)|x_j\rbrack\).  If <code>hdi.params[1] = 1</code>, the mean and HPDI bounds of \(E\lbrack f(x,y)|x_j\rbrack\) are returned.  Otherwise, samples of \(E\lbrack f(x,y)|x_j\rbrack\) are returned.  The index of each column of <code>fn.out</code> corresponds to the index of <code>g</code></p></dd>
+<dt><code>fn.out</code></dt><dd><p>A matrix giving results on \(E_x\lbrack f(x,y)|x_j\rbrack\).  If <code>hdi.params[1] = 1</code>, the mean and HPDI bounds of \(E_x\lbrack f(x,y)|x_j\rbrack\) are returned.  Otherwise, samples of \(E_\lbrack f(x,y)|x_j\rbrack\) are returned.  The index of each column of <code>fn.out</code> corresponds to the the value of <code>g</code> at the same index.</p></dd>
 
 <dt><code>fn</code></dt><dd><p>Character string giving the name of the function used.  Same value as argument <code>fn</code>.</p></dd>
 
@@ -193,7 +193,7 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>mainEff</code> function returns a distribution of \(E\lbrack f(x,y)|x_j\rbrack\), marginalized over the samples of <code>BMBobj$ybal</code>, giving the distribution of \(E\lbrack f(x,y)|x_j\rbrack\) which incorporates uncertainty of a chemical or particulate process.</p>
+    <p>The <code>mainEff</code> function returns a distribution of \(E_x\lbrack f(x,y)|x_j\rbrack\), marginalized over the samples of <code>BMBobj$ybal</code>, giving the distribution of \(E_x\lbrack f(x,y)|x_j\rbrack\) which incorporates uncertainty of a chemical or particulate process.</p>
 <p>In the current implementation of <code>mainEff</code> in the <code>BayesMassBal</code> package, only uniformly distributed values of \(x\) are supported.</p>
 <p>The \(f(x,y)\) is equivalent to the supplied function named in <code>mainEff(fn)</code>.  For the arguments of <code>fn</code>, <code>ybal</code> is structured in a similar manner as <code>BMBobj$ybal</code>.  The only difference being individual columns of each matrix are used at a time, and are vectorized.  Note the way <code>ybal</code> is subset in the example function <code>fn_example</code>.  The supplied <code>X</code> is a matrix, with columns corresponding to each element in \(x\).  The output to <code>fn</code> must be a vector of length <code><a href='https://rdrr.io/r/base/nrow.html'>nrow(x)</a></code>.  The first argument of <code>fn</code> must be <code>X</code>, the second argument must be <code>BMBobj$ybal</code>.  Order of other arguments passed to <code>fn</code> through <code>...</code> does not matter. Look at the example closely for details!</p>
 

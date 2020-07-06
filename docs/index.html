@@ -88,8 +88,8 @@
 <!-- badges: start -->
 
 <p>The goal of BayesMassBal is to allow users to easily conduct Bayesian data reconciliation for a linearly constrained chemical or particulate process at steady state.</p>
-<p>Samples taken from a chemical process are always observed with noise. Using data reconciliation, or mass balance methods, to filter the noise aided by a conservation of mass constraint is common in chemical engineering and mining engineering applications.</p>
-<p>Typically, a mass balance produces point estimates of true mass flow rates. However, using Bayesian methods one can get a better understanding of process uncertainty to aid in decision making. The <code>BayesMassBal</code> package provides functions allowing the user to easily specify conservation of mass constraints, organize collected data, conduct a Bayesian mass balance using various error structures, and select the best model for their data using Bayes Factors.</p>
+<p>Samples taken from a chemical process are always observed with noise. Using data reconciliation, or mass balance methods, it is possible to use the principle of <a href="https://en.wikipedia.org/wiki/Conservation_of_mass">conservation of mass</a> to filter the noise. This technique is common in chemical engineering and mineral processing engineering applications.</p>
+<p>Typically, a mass balance produces point estimates of true mass flow rates. However, using Bayesian methods one can obtain a better a more granular view of process uncertainty. The <code>BayesMassBal</code> package provides functions allowing the user to easily specify conservation of mass constraints, organize collected data, conduct a Bayesian mass balance using various error structures, and select the best model for their data using <a href="https://en.wikipedia.org/wiki/Bayes_factor">Bayes Factors</a>.</p>
 <p>The Bayesian mass balance uses MCMC methods to obtain random samples from the distributions of constrained mass flow rates. A publication detailing these methods is forthcoming…</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -113,7 +113,7 @@
 <li>The output from <code><a href="reference/BMB.html">BMB()</a></code> is a <code>"BayesMassBal"</code> object, which can be fed to <code><a href="reference/plot.BayesMassBal.html">plot.BayesMassBal()</a></code> to easily plot the results.</li>
 <li>A <code>"BayesMassBal"</code> object can also be used with the <code>BayesMassBal</code> function <code><a href="reference/mainEff.html">mainEff()</a></code> to inspect how the main effect of a random variable and uncertainty in process performance are related.</li>
 </ul>
-<p>An overview of a suggested workflow, from importing data to plotting Main Effects, is available as a vignette: <code><a href="articles/Two_Node_Process.html">vignette("Two_Node_Process")</a></code>.</p>
+<p>An overview of a suggested workflow, including importing data into <code>R</code>, specifying model constraints, using the <code>BMB</code> function, and making a main effects plot, is available as a vignette: <code><a href="articles/Two_Node_Process.html">vignette("Two_Node_Process")</a></code>.</p>
 </div>
 </div>
   </div>

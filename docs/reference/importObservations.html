@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Import Mass Balance Data — importObservations • BayesMassBal</title>
+<title>Import Observed Mass Flow Rates — importObservations • BayesMassBal</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Import Mass Balance Data — importObservations" />
+<meta property="og:title" content="Import Observed Mass Flow Rates — importObservations" />
 <meta property="og:description" content="Imports observed mass flow rates stored in a *.csv file and then organizes the data for use with the BMB function." />
 
 
@@ -123,7 +123,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Import Mass Balance Data</h1>
+    <h1>Import Observed Mass Flow Rates</h1>
     <small class="dont-index">Source: <a href='https://github.com/skoermer/BayesMassBal/blob/master/R/importObservations.R'><code>R/importObservations.R</code></a></small>
     <div class="hidden name"><code>importObservations.Rd</code></div>
     </div>
@@ -153,15 +153,15 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Returns a list of data frames.  Each data frame is named according to the unique sample components specified in the second column of <code>file</code>.  This list object is intended to be used with the <code><a href='BMB.html'>BMB</a></code> function.</p>
+    <p>Returns a list of data frames.  Each data frame is named according to the unique sample components specified in the second column of <code>file</code>.  This list object is intended to be used as the argument <code>y</code> for the <code><a href='BMB.html'>BMB</a></code> function.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The purpose of this function is to make it easy to import and structure loosely organized data contained in a <code>*.csv</code> into a list for use with <code><a href='BMB.html'>BMB</a></code>.
+    <p>The purpose of this function is to make it easy to import and structure loosely organized data contained in a <code>*.csv</code> into a list for use as the <code>y</code> argument passed to the <code><a href='BMB.html'>BMB</a></code> function.
 The entries in file must be organized as such:</p>
 <ul>
-<li><p>The first column of <code>file</code> must contain an integer sample location which corresponds to the column number used for linear constraints.  For example, data for a given component collected at sampling location \(y_2\) should be indicated with a <code>2</code> in the first column of <code>file</code> used with <code>importObservations</code>.  In the <code>file</code> used with <code><a href='constrainProcess.html'>constrainProcess</a></code>, the linear constraint on \(y_2\) is indicated in the second column.</p></li>
+<li><p>The first column of <code>file</code> must contain an integer sample location. The value of this integer must correspond to the column number used to specify linear constraints in <code><a href='constrainProcess.html'>constrainProcess</a></code>.  For example, data for a given component collected at sampling location \(y_2\) should be indicated with a <code>2</code> in the first column of <code>file</code> used with <code>importObservations</code>.  In the <code>file</code> used with <code><a href='constrainProcess.html'>constrainProcess</a></code>, the linear constraint(s) on \(y_2\) are indicated in the second column.</p></li>
 <li><p>The second column of <code>file</code> must contain sample component names.  <strong>This field is case sensitive</strong>.  Ensure a given sample component is named consistently, including capitalization and spacing.</p></li>
-<li><p>Columns 3 to \(K+2\) of <code>file</code> must contain observed mass flow rates for the \(K\) mass flow rate observations.  All observations located in the same column should be collected at the same time.</p></li>
+<li><p>Columns 3 to \(K+2\) of <code>file</code> must contain observed mass flow rates for the \(K\) collected sample sets.  All observations located in the same column should be collected at the same time.</p></li>
 <li><p>Sample components of interest must be specified for each location.  If a sample component is not detected at some locations, but is detected at others, this component should be included in <code>file</code> with a specified mass flow rate of 0, or a very small number.</p></li>
 </ul>
 

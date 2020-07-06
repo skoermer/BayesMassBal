@@ -19,7 +19,7 @@
 
 \item{layout}{Character string indicating the desired data to be plotted.  \code{"trace"} produces trace plots of sequential parameter draws. \code{"dens"} produces densities of posterior draws.}
 
-\item{hdi.params}{Numeric vector of length two, used to draw Highest Posterior Density Intervals (HPDI) using \code{\link[HDInterval]{hdi}}, and otherwise ignored. \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} bounds should be drawn.  The second element of \code{hdi} is passed to \code{credMass} in the \code{\link[HDInterval]{hdi}}.  The default, \code{hdi.params = c(1,0.95)}, draws the 95\% HPDI bounds.}
+\item{hdi.params}{Numeric vector of length two, used to draw Highest Posterior Density Intervals (HPDI) using \code{\link[HDInterval]{hdi}}, and otherwise ignored. \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} bounds should be drawn.  The second element of \code{hdi} is passed to \code{credMass} in the \code{\link[HDInterval]{hdi}} function.  The default, \code{hdi.params = c(1,0.95)}, plots the 95\% HPDI bounds.}
 
 \item{...}{Passes extra arguments to \code{plot()}}
 }
@@ -33,4 +33,6 @@ Visualizes data from a \code{BayesMassBal} class object in a user specified way.
 The list of \code{params} requires a specific structure dependent on the choice of \code{layout} and the desired plots.
 
 If \code{layout = "trace"} or \code{layout = "dens"}, \code{names(list)} must contain each model parameter desired for plotting.  The structure under the model parameter names must be the same as to the structure of the relevant subset of the \code{BayesMassBal} object to be used.  For example, if a \code{BayesMassBal} object is created using a process with sample components \code{c("CuFeS2","gangue")} and the users wants plots of reconciled masses \eqn{y_1} and \eqn{y_2} for both components to be created, \code{params = list(y.bal = list(CuFeS2 = c(1,2), gangue = c(1,2))} should be used.  Note, \code{str(params)} mimics \code{str(x)}, while the vectors listed simply index the desired model parameters to be plotted.
+
+See vignette("Two_Node_Process", package = "BayesMassBal") for an example of the required structure.
 }

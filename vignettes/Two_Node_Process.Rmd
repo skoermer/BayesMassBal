@@ -22,7 +22,7 @@ library(BayesMassBal)
 
 The function `BMB` is used with a two node process and simulated data.
 
-```{r multiprocess, echo = FALSE, fig.cap = "Example two node circuit", fig.height= 1.5, fig.width = 3}
+```{r multiprocess, echo = FALSE, fig.height= 1.5, fig.width = 3}
 
 yshift <- 1
 
@@ -94,7 +94,7 @@ X <- constrainProcess(C = C)
 X
 ```
 
-The previously simulated data is loaded from a `.csv` file using the `importObservations()` function.  The local location of the the file imported below can be found by typing `system.file("extdata", "twonode_example.csv",package = "BayesMassBal")` into the console.  View the document in Excel to see how your data should be formatted for import.  ***Note:*** it is not required that the entries into the `*.csv` file are separated by `";"`.
+The previously simulated data is loaded from a `.csv` file using the `importObservations()` function.  The local location of the the file imported below can be found by typing `system.file("extdata", "twonode_example.csv",package = "BayesMassBal")`.  View the document in Excel to see how your data should be formatted for import.  ***Note:*** it is not required that the entries into the `*.csv` file are separated by `";"`.
 
 ```{r datasim}
 y <- importObservations(file = system.file("extdata", "twonode_example.csv",
@@ -110,7 +110,7 @@ indep.samples <- BMB(X = X, y = y, cov.structure = "indep", BTE = c(100,3000,1),
 ```
 
 
-The output of `BMB` is a `BayesMassBal` object.  Special instructions are designated when feeding a `BayesMassBal` object to the `plot()` function.  Adding the argument `layout = "dens"` and indicating the mass balanced flow rate for CuFeS2 at $y_3$ should be plotted, by using a list supplied to `sample.params`, the desired distribution can be plotted with the 95% HPDI.
+The output of `BMB` is a `BayesMassBal` object.  Special instructions are designated when feeding a `BayesMassBal` object to the `plot()` function.  Adding the argument `layout = "dens"` and indicating the mass balanced flow rate for CuFeS2 at $y_3$ should be plotted using a list supplied to `sample.params`, the desired distribution can be plotted with its 95% HPDI.
 
 ```{r feedplot}
 
@@ -146,6 +146,7 @@ Then comparing $p(y|\texttt{component})$ to $p(y|\texttt{location})$
 component.samples$lml - location.samples$lml
 ```
 
+Shows there is little difference between the models where `cov.structure  = "location"` and `cov.structure = "component"`, but both of these models better explain the data than `cov.structure = "indep"`.
 
 The main effect of a variable independent of the process can be calculated by supplying a function, `fn` that takes the arguments of mass balanced flow rates `ybal`, and the random independent and uniformly distributed variables `x`. Information can be gained on the main effect of a particular element of `x`, `xj`, on `fn` using the `mainEff` function.  Output from `mainEff` includes information on the distribution of $E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack$.
 
