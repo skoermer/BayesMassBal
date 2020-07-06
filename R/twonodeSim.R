@@ -1,6 +1,6 @@
 #' Two Node Process Data Simulation
 #'
-#' Simulates data for a stochastic two node, two component process at steady state.  Location indices are the same as what is shown in \code{vignette("Two_Node_Process", package = "BayesMassBal")}.  Default parameters are used in an upcoming publication.
+#' Simulates data for a stochastic two node, two component process at steady state.  Location indices are the same as what is shown in \code{vignette("Two_Node_Process", package = "BayesMassBal")}.
 #'
 #' @param K Numeric specifying the number of sample sets to be simulated.
 #' @param feed List specifying qualities for the process grade.  See default for required structure.  \code{rate} is the mean feed rate.  \code{sd} is the standard deviation of the feed rate.  \code{CuFeS2grade} is the mass percent CuFeS2 present in the feed.  Grade is not stochastic.  See Details for important information on specifying these values.
@@ -41,8 +41,11 @@
 #'
 #' y <- twonodeSim()$simulation
 #'
-#' # Then the BMB function can be run as
-#' # BMB(y = y, ...)
+#' ## Then the BMB function can be run as
+#' \donttest{C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
+#' X <- constrainProcess(C = C)
+#' }
+#' \donttest{BMB(X = X, y = y, BTE = c(100,600,1))}
 
 twonodeSim <- function(K = 7, feed = list(rate = 100, sd = 6, CuFeS2grade = 1.2), rec = list(CuFeS2 = list(mean = c(98,95)/100, var = c(0.00005,0.00008)), gangue = list(mean = c(7,4)/100, var =c(0.00005,0.000025))),assayNoise = list(CuFeS2 = c(0.15,0.2,0.05,0.00005,0.005), gangue = c(5,1, 0.03, 2, 0.5)), truncation = TRUE){
   f.rate <- feed$rate

@@ -10,17 +10,18 @@
 #' @export
 #' @examples
 #'
-#' # For a single node process where
-#' # y_1 = y_2 + y_3
+#' ## For a single node process where
+#' ## y_1 = y_2 + y_3
 #'
 #' C <- matrix(c(1,-1,-1), nrow=  1,ncol = 3)
 #' constrainProcess(C = C)
 #'
-#' # For a 2 node process with 1 input, 3 outputs
-#' # as shown in vignette("Two_Node_Process", package = "BayesMassBal")
+#' ## For a 2 node process with 1 input and 3 outputs
+#' ## as shown in \dontrun{vignette("Two_Node_Process", package = "BayesMassBal")}
 #'
 #' C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
 #' constrainProcess(C = C)
+#'
 constrainProcess <- function(C = NULL, file = FALSE){
   if(is.character(file)){
     C <- as.matrix(read.csv(file))

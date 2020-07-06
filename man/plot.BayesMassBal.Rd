@@ -34,5 +34,5 @@ The list of \code{params} requires a specific structure dependent on the choice 
 
 If \code{layout = "trace"} or \code{layout = "dens"}, \code{names(list)} must contain each model parameter desired for plotting.  The structure under the model parameter names must be the same as to the structure of the relevant subset of the \code{BayesMassBal} object to be used.  For example, if a \code{BayesMassBal} object is created using a process with sample components \code{c("CuFeS2","gangue")} and the users wants plots of reconciled masses \eqn{y_1} and \eqn{y_2} for both components to be created, \code{params = list(y.bal = list(CuFeS2 = c(1,2), gangue = c(1,2))} should be used.  Note, \code{str(params)} mimics \code{str(x)}, while the vectors listed simply index the desired model parameters to be plotted.
 
-See vignette("Two_Node_Process", package = "BayesMassBal") for an example of the required structure.
+See \code{vignette("Two_Node_Process", package = "BayesMassBal")} for an example of the required structure.
 }

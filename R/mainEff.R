@@ -8,7 +8,7 @@
 #' @param xj Integer indexing which element in \eqn{x} is used for conditioning for  \eqn{E_x\lbrack f(x,y)|x_j\rbrack}. If a vector is supplied the marginal main effect of each element is calculated sequentially.  The integers supplied in \code{xj} are equivalent to the indices of the columns in \code{rangex}.
 #' @param N Integer specifying the length of the sequence used for \code{xj}.  Larger \code{N} trades a higher resolution of the main effect of \code{xj} for longer computation time and larger RAM requirements.
 #' @param res Integer indicating the number of points to be used for each Monte-Carlo integration step.  Larger \code{res} reduces Monte-Carlo variance as the expense of computation time.
-#' @param hdi.params Numeric vector of length two, used to calculate Highest Posterior Density Intervals (HPDI) of the main effect \code{xj} using \code{\link[HDInterval]{hdi}}. \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} is used, and the mean and HPDI bounds are returned instead of the every sample from the distribution of \eqn{E_x\lbrack f(x,y)|x_j\rbrack}.  The second element of \code{hdi} is passed to the \code{credMass} argument in the \code{\link[HDInterval]{hdi}} function.  The default, \code{hdi.params = c(1,0.95)}, returns 95\% HPDI bounds.
+#' @param hdi.params Numeric vector of length two, used to calculate Highest Posterior Density Interval (HPDI) of the main effect \code{xj} using \code{\link[HDInterval]{hdi}}. \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} is used, and the mean and HPDI bounds are returned instead of the every sample from the distribution of \eqn{E_x\lbrack f(x,y)|x_j\rbrack}.  The second element of \code{hdi} is passed to the \code{credMass} argument in the \code{\link[HDInterval]{hdi}} function.  The default, \code{hdi.params = c(1,0.95)}, returns 95\% HPDI bounds.
 #' @param ... Extra arguments passed to the named \code{fn}
 #'
 #' @details
@@ -21,7 +21,7 @@
 #'
 #' @return A list of \code{length(xj)} list(s).  Each list specifies output for the main effect of a \code{xj}
 #' @return \item{\code{g}}{The grid used for a particular \code{xj}}
-#' @return \item{\code{fn.out}}{A matrix giving results on \eqn{E_x\lbrack f(x,y)|x_j\rbrack}.  If \code{hdi.params[1] = 1}, the mean and HPDI bounds of \eqn{E_x\lbrack f(x,y)|x_j\rbrack} are returned.  Otherwise, samples of \eqn{E_\lbrack f(x,y)|x_j\rbrack} are returned.  The index of each column of \code{fn.out} corresponds to the the value of \code{g} at the same index.}
+#' @return \item{\code{fn.out}}{A matrix giving results on \eqn{E_x\lbrack f(x,y)|x_j\rbrack}.  If \code{hdi.params[1] = 1}, the mean and Highest Posterior Density Interval (HPDI) bounds of \eqn{E_x\lbrack f(x,y)|x_j\rbrack} are returned.  Otherwise, samples of \eqn{E_x\lbrack f(x,y)|x_j\rbrack} are returned.  The index of each column of \code{fn.out} corresponds to the the value of \code{g} at the same index.}
 #' @return \item{\code{fn}}{Character string giving the name of the function used.  Same value as argument \code{fn}.}
 #' @return \item{\code{xj}}{Integer indicating the index of \eqn{x} corresponding to a grouped \code{fn.out} and \code{g}.}
 #'
@@ -40,14 +40,14 @@
 #' X <- constrainProcess(C = C)
 #'
 #' BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
-#'                    BTE = c(10,500,1), lml = FALSE, verb=0)
+#'                    BTE = c(10,200,1), lml = FALSE, verb=0)
 #'
 #' fn_example <- function(X,ybal){
 #'     cu.frac <- 63.546/183.5
 #'     feed.mass <- ybal$CuFeS2[1] + ybal$gangue[1]
-#'     # Concentrate mass per ton feed
+#'     ## Concentrate mass per ton feed
 #'     con.mass <- (ybal$CuFeS2[3] + ybal$gangue[3])/feed.mass
-#'     # Copper mass per ton feed
+#'     ## Copper mass per ton feed
 #'     cu.mass <- (ybal$CuFeS2[3]*cu.frac)/feed.mass
 #'     gam <- c(-1,-1/feed.mass,cu.mass,-con.mass,-cu.mass,-con.mass)
 #'     f <- X %*% gam
@@ -56,7 +56,8 @@
 #'
 #' rangex <- matrix(c(4.00 ,6.25,1125,1875,3880,9080,20,60,96,208,20.0,62.5),
 #'                   ncol = 6, nrow = 2)
-#' mE_example <- mainEff(BMB_example, fn = "fn_example",rangex =  rangex,xj = 3, N = 20, res = 5)
+#'
+#' mE_example <- mainEff(BMB_example, fn = "fn_example",rangex =  rangex,xj = 3, N = 15, res = 4)
 #'
 mainEff <- function(BMBobj, fn,rangex,xj,N = 50,res = 100, hdi.params = c(1,0.95),...){
 

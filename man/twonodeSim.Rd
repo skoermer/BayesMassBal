@@ -33,7 +33,7 @@ Returns a list of simulated data and expected values.  List members are as follo
 \item{\code{expectations}}{List of matrices giving expected values of the mass flow rate for each component at every location.  See the Details section for information about instances that may create reliability issues with this output.}
 }
 \description{
-Simulates data for a stochastic two node, two component process at steady state.  Location indices are the same as what is shown in \code{vignette("Two_Node_Process", package = "BayesMassBal")}.  Default parameters are used in an upcoming publication.
+Simulates data for a stochastic two node, two component process at steady state.  Location indices are the same as what is shown in \code{vignette("Two_Node_Process", package = "BayesMassBal")}.
 }
 \details{
 Each of the \code{K} data sets collected from the \code{twonodeSim()} simulation is independent and identically distributed.
@@ -59,6 +59,9 @@ The argument \code{truncation = TRUE} discards negative mass flow rates, and rer
 
 y <- twonodeSim()$simulation
 
-# Then the BMB function can be run as
-# BMB(y = y, ...)
+## Then the BMB function can be run as
+\donttest{C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
+X <- constrainProcess(C = C)
+}
+\donttest{BMB(X = X, y = y, BTE = c(100,600,1))}
 }

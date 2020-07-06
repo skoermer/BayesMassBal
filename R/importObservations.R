@@ -31,11 +31,11 @@
 #'                                       package = "BayesMassBal"),
 #'                    header = TRUE, csv.params = list(sep = ";"))
 #'
-#' # The linear constraints for this example data set are:
-#' # C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
+#' ## The linear constraints for this example data set are:
+#' \donttest{C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)}
 #'
-#' # The X matrix for this data set can be found using:
-#' # X <- constrainProcess(C = C)
+#' ## The X matrix for this data set can be found using:
+#' \donttest{X <- constrainProcess(C = C)}
 
 importObservations <- function(file, header = FALSE, csv.params = NULL){
   dat <- do.call(read.csv, c(list(file = file, header = header, stringsAsFactors = FALSE), csv.params))

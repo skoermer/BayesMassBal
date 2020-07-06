@@ -69,10 +69,9 @@ When \code{cov.structure = "indep"} all observations in a sample set are indepen
 
 When \code{cov.structure = "component"} or \code{"location"}, the prior distribution on \eqn{\Sigma_i} is \href{https://en.wikipedia.org/wiki/Inverse-Wishart_distribution}{inverse Wishart}\eqn{(\nu_0, \nu_0 \times S_0)}. The degrees of freedom parameter, \eqn{\nu_0}, is equal to the dimension of \eqn{\Sigma_i}.  The scale matrix parameter is equal to a matrix, \eqn{S_0}, with the sample variance of the observation being correlated on the diagonal, multiplied by \eqn{\nu_0}.
 
-The user is able to specify the prior hyperparameters of the mean and variance of \code{beta}, \eqn{a} and \eqn{b} for each \eqn{phi}, and the degrees of freedom and scale matrix for each \eqn{\Sigma_i}.
+The user is able to specify the prior hyperparameters of the mean and variance of \code{beta}, \eqn{a} and \eqn{b} for each \eqn{\phi}, and the degrees of freedom and scale matrix for each \eqn{\Sigma_i}.
 }
 \examples{
-## Importing Data
 y <- importObservations(file = system.file("extdata", "twonode_example.csv",
                                     package = "BayesMassBal"),
                    header = TRUE, csv.params = list(sep = ";"))
@@ -81,7 +80,7 @@ C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
 X <- constrainProcess(C = C)
 
 BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
-                   BTE = c(10,500,1), lml = FALSE, verb=0)
+                   BTE = c(10,300,1), lml = FALSE, verb=0)
 
 }
 \references{

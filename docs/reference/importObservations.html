@@ -173,11 +173,11 @@ The entries in file must be organized as such:</p>
                                       <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"BayesMassBal"</span>),
                    <span class='kw'>header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>csv.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>))
 
-<span class='co'># The linear constraints for this example data set are:</span>
-<span class='co'># C &lt;- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)</span>
+<span class='co'>## The linear constraints for this example data set are:</span>
+<span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>), <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='co'># The X matrix for this data set can be found using:</span>
-<span class='co'># X &lt;- constrainProcess(C = C)</span></div></pre>
+<span class='co'>## The X matrix for this data set can be found using:</span>
+<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='constrainProcess.html'>constrainProcess</a></span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

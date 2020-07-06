@@ -156,16 +156,16 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='co'># For a single node process where</span>
-<span class='co'># y_1 = y_2 + y_3</span>
+<span class='co'>## For a single node process where</span>
+<span class='co'>## y_1 = y_2 + y_3</span>
 
 <span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,-<span class='fl'>1</span>,-<span class='fl'>1</span>), <span class='kw'>nrow</span><span class='kw'>=</span>  <span class='fl'>1</span>,<span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 <span class='fu'>constrainProcess</span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)</div><div class='output co'>#&gt;      [,1] [,2]
 #&gt; [1,]    1    1
 #&gt; [2,]    1    0
 #&gt; [3,]    0    1</div><div class='input'>
-<span class='co'># For a 2 node process with 1 input, 3 outputs</span>
-<span class='co'># as shown in vignette("Two_Node_Process", package = "BayesMassBal")</span>
+<span class='co'>## For a 2 node process with 1 input and 3 outputs</span>
+<span class='co'>## as shown in \dontrun{vignette("Two_Node_Process", package = "BayesMassBal")}</span>
 
 <span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>), <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 <span class='fu'>constrainProcess</span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)</div><div class='output co'>#&gt;      [,1] [,2] [,3]
@@ -173,7 +173,8 @@
 #&gt; [2,]    1    0    1
 #&gt; [3,]    1    0    0
 #&gt; [4,]    0    1    0
-#&gt; [5,]    0    0    1</div></pre>
+#&gt; [5,]    0    0    1</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

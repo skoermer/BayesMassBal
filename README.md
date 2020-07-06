@@ -25,17 +25,17 @@ noise. This technique is common in chemical engineering and mineral
 processing engineering applications.
 
 Typically, a mass balance produces point estimates of true mass flow
-rates. However, using Bayesian methods one can obtain a better a more
-granular view of process uncertainty. The `BayesMassBal` package
-provides functions allowing the user to easily specify conservation of
-mass constraints, organize collected data, conduct a Bayesian mass
-balance using various error structures, and select the best model for
-their data using [Bayes
-Factors](https://en.wikipedia.org/wiki/Bayes_factor).
+rates. However, using Bayesian methods one can obtain a more granular
+view of process uncertainty. The `BayesMassBal` package provides
+functions allowing the user to easily specify conservation of mass
+constraints, organize collected data, conduct a Bayesian mass balance
+using various error structures, and select the best model for their data
+using [Bayes Factors](https://en.wikipedia.org/wiki/Bayes_factor).
 
-The Bayesian mass balance uses MCMC methods to obtain random samples
-from the distributions of constrained mass flow rates. A publication
-detailing these methods is forthcoming…
+The Bayesian mass balance uses Markov chain Monte Carlo methods to
+obtain random samples from the distributions of constrained mass flow
+rates. These samples can be used to generate plots, or for other
+applications where sampling from such a distribution is useful.
 
 ## Installation
 

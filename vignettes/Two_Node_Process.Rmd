@@ -110,7 +110,7 @@ indep.samples <- BMB(X = X, y = y, cov.structure = "indep", BTE = c(100,3000,1),
 ```
 
 
-The output of `BMB` is a `BayesMassBal` object.  Special instructions are designated when feeding a `BayesMassBal` object to the `plot()` function.  Adding the argument `layout = "dens"` and indicating the mass balanced flow rate for CuFeS2 at $y_3$ should be plotted using a list supplied to `sample.params`, the desired distribution can be plotted with its 95% HPDI.
+The output of `BMB` is a `BayesMassBal` object.  Special instructions are designated when feeding a `BayesMassBal` object to the `plot()` function.  Adding the argument `layout = "dens"` and indicating the mass balanced flow rate for CuFeS2 at $y_3$ should be plotted using a list supplied to `sample.params`, the desired distribution can be plotted with its 95% [Highest Posterior Density Interval](https://en.wikipedia.org/wiki/Credible_interval).
 
 ```{r feedplot}
 
@@ -188,6 +188,7 @@ minor.grid <- minor.grid[-which(minor.grid %in% main.grid)]
 
 y.main <- pretty(hpd.sens)
 
+opar <- par(no.readonly =TRUE) 
 par(mar = c(4.2,4,1,1))
 plot(g.plot,m.sens, type = "n", xlim = range(g.plot), ylim = y.lim, ylab = "Net Revenue ($/ton Feed)", xlab=  "Cu Price ($/lb)")
 
@@ -207,5 +208,6 @@ lines(g.plot[-lzero.bound$upper],hpd.sens[1,][-lzero.bound$upper], lty = 5, lwd 
 
 legend("topleft", legend = c("Expected Main Effect", "95% Bounds", "Net Revenue < $0", "Net Revenue > $0"), col = c("black","black","red", "darkgreen"), lty = c(1,6,1,1), lwd = c(2,2,2,2), bg = "white")
 
+par(opar)
 ```
 
