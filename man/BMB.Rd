@@ -12,6 +12,7 @@ BMB(
   BTE = c(500, 20000, 1),
   lml = FALSE,
   ybal = TRUE,
+  diagnostics = TRUE,
   verb = 1
 )
 }
@@ -29,6 +30,8 @@ BMB(
 \item{lml}{Logical indicating if the log-marginal likelihood should be approximated.  Default is \code{FALSE}, which reduces computation time.  Log-marginal likelihood is approximated using methods in \insertCite{chib}{BayesMassBal}.}
 
 \item{ybal}{Logical indicating if the mass balanced samples for each \eqn{y} should be returned.  Default is \code{TRUE}. Setting \code{ybal=FALSE} results in a savings in RAM and computation time.}
+
+\item{diagnostics}{Logical or list indicating if diagnostic functions \code{\link[coda]{geweke.diag}} and \code{\link[coda]{effectiveSize}} \insertCite{coda}{BayesMassBal} should computed for the obtained samples.  Specifying \code{TRUE} indicates diagnostics should be run with their default parameters.  Alternatively, passing a list of the structure \code{list(frac1 = 0.1, frac2 = 0.5)} will run both diagnostics and allow \code{\link[coda]{geweke.diag}} to be run with parameters other than the default.}
 
 \item{verb}{Numeric indicating verbosity of progress printed to R-console.  The default of 1 prints messages and a progress bar to the console during all iterative methods. \code{verb = 0} indicates no messages are printed.}
 }
@@ -48,6 +51,8 @@ Returns a list of outputs
 \item{\code{y.cov}}{List of character matrices indicating details for the structure of each covariance matrix.  Only returned when \code{cov.structure = "location"}}
 
 \item{\code{lml}}{Numeric of the log-marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
+
+\item{\code{diagnostics}}{List containing results from diagnostic functions \code{\link[coda]{geweke.diag}} and \code{\link[coda]{effectiveSize}}}
 
 \item{\code{ybal}}{List of samples from the distribution of reconciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}.  Equivalent to \code{lapply(BMB(...)$beta,function(X,x){x \%*\% X} , x = X)} .  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
 
@@ -86,4 +91,5 @@ BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
 \references{
 \insertRef{chib}{BayesMassBal}
 \insertRef{gibbsexpl}{BayesMassBal}
+\insertRef{coda}{BayesMassBal}
 }

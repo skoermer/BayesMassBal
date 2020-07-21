@@ -94,7 +94,9 @@ component_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1){
   beta <- lapply(beta,function(X, b){X[,-(1:b)]}, b = burn)
   beta <- lapply(beta, function(X,t){X[,seq(from = 1, to = ncol(X), by = t)]}, t = thin)
 
-  return(list(beta = beta,
-              Sig = Sig,
-              priors= list(beta = list(mu0 = mu0, V0 = solve(V0i)), Sig = list(nu0 = nu0, S = S.prior)), cov.structure = "component"))
+  samps <- list(beta = beta,
+                Sig = Sig,
+                priors= list(beta = list(mu0 = mu0, V0 = solve(V0i)), Sig = list(nu0 = nu0, S = S.prior)), cov.structure = "component")
+
+  return(samps)
 }

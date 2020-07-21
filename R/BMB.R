@@ -8,6 +8,7 @@
 #' @param BTE Numeric vector giving \code{c(Burn-in, Total-iterations, and Every)} for MCMC approximation of target distributions. The function \code{BMB} produces a total number of samples of \eqn{(T - B)/E}.  \eqn{E} specifies that only one of every \eqn{E} draws are saved. \eqn{E > 1} reduces autocorrelation between obtained samples at the expense of computation time.
 #' @param lml Logical indicating if the log-marginal likelihood should be approximated.  Default is \code{FALSE}, which reduces computation time.  Log-marginal likelihood is approximated using methods in \insertCite{chib}{BayesMassBal}.
 #' @param ybal Logical indicating if the mass balanced samples for each \eqn{y} should be returned.  Default is \code{TRUE}. Setting \code{ybal=FALSE} results in a savings in RAM and computation time.
+#' @param diagnostics Logical or list indicating if diagnostic functions \code{\link[coda]{geweke.diag}} and \code{\link[coda]{effectiveSize}} \insertCite{coda}{BayesMassBal} should computed for the obtained samples.  Specifying \code{TRUE} indicates diagnostics should be run with their default parameters.  Alternatively, passing a list of the structure \code{list(frac1 = 0.1, frac2 = 0.5)} will run both diagnostics and allow \code{\link[coda]{geweke.diag}} to be run with parameters other than the default.
 #' @param verb Numeric indicating verbosity of progress printed to R-console.  The default of 1 prints messages and a progress bar to the console during all iterative methods. \code{verb = 0} indicates no messages are printed.
 #' @return Returns a list of outputs
 #' @return \item{\code{beta}}{List of matrices of samples from the distribution of reconciled data.  Each matrix in the list is a separate sample component. Each column of a matrix in  \code{beta} is a draw from the target distribution.}
@@ -18,6 +19,7 @@
 #' @return \item{\code{cov.structure}}{Character string containing the covariance structure used.}
 #' @return \item{\code{y.cov}}{List of character matrices indicating details for the structure of each covariance matrix.  Only returned when \code{cov.structure = "location"}}
 #' @return \item{\code{lml}}{Numeric of the log-marginal likelihood approximation. Returns \code{NA} when \code{lml = FALSE}}
+#' @return \item{\code{diagnostics}}{List containing results from diagnostic functions \code{\link[coda]{geweke.diag}} and \code{\link[coda]{effectiveSize}}}
 #' @return \item{\code{ybal}}{List of samples from the distribution of reconciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}.  Equivalent to \code{lapply(BMB(...)$beta,function(X,x){x \%*\% X} , x = X)} .  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
 #' @return \item{\code{X}}{The function argument \code{X} is passed to the output so that it can be used with other \code{BayesMassBal} functions.}
 #'
@@ -54,13 +56,15 @@
 #' @importFrom LaplacesDemon rinvwishart dinvwishart
 #' @importFrom stats dgamma rgamma sd
 #' @importFrom utils txtProgressBar setTxtProgressBar
+#' @importFrom coda geweke.diag effectiveSize
 #' @export
 #'
 #' @references
 #' \insertRef{chib}{BayesMassBal}
 #' \insertRef{gibbsexpl}{BayesMassBal}
+#' \insertRef{coda}{BayesMassBal}
 
-BMB <- function(X, y, cov.structure = c("indep","component","location"), priors = NA, BTE = c(500,20000,1), lml = FALSE, ybal = TRUE, verb = 1){
+BMB <- function(X, y, cov.structure = c("indep","component","location"), priors = NA, BTE = c(500,20000,1), lml = FALSE, ybal = TRUE, diagnostics = TRUE, verb = 1){
 
   if(all(cov.structure == c("indep","component","location"))){cov.structure <- "indep"}
   if(cov.structure == "indep"){
@@ -75,9 +79,14 @@ BMB <- function(X, y, cov.structure = c("indep","component","location"), priors 
     samps <- location_sig(X = X, y = y, priors = priors, BTE = BTE, verb = verb)
     chib.out <- NA
     if(lml == TRUE){chib.out <- chib_location(s.l = samps, X = X, y = y,verb = verb)$lml}
-  }else{warning("Please select a valid covariance structure.  See variable cov.structure in documentation.", immediate. = TRUE)}
+  }else{warning("Please select a valid covariance structure.  See Argument cov.structure in documentation.", immediate. = TRUE)}
 
   samps$lml <- chib.out
+
+  if(any(diagnostics != FALSE)){
+    diagnostics <- mcmcdiagnostics(samps,diagnostics)
+    samps$diagnostics <- diagnostics
+  }
 
   if(ybal == TRUE){
     samps$ybal <- lapply(samps$beta,function(X,x){X <- x %*% X;

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BayesMassBal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -85,7 +85,7 @@
       <h1 data-toc-skip>Two_Node_Process</h1>
                         <h4 class="author">Scott Koermer</h4>
             
-            <h4 class="date">2020-07-06</h4>
+            <h4 class="date">2020-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/skoermer/BayesMassBal/blob/master/vignettes/Two_Node_Process.Rmd"><code>vignettes/Two_Node_Process.Rmd</code></a></small>
       <div class="hidden name"><code>Two_Node_Process.Rmd</code></div>
@@ -131,18 +131,50 @@ y_2 &amp;= y_3 +y_5
 <p>It is also possible to generate trace plots to inspect convergence of the Gibbs sampler. Here are trace plots for <span class="math inline">\(\beta\)</span></p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">indep.samples</span>,<span class="kw">sample.params</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">beta</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">CuFeS2</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">3</span>, <span class="kw">gangue</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">3</span>)),<span class="kw">layout</span> <span class="kw">=</span> <span class="st">"trace"</span>,<span class="kw">hdi.params</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">0.95</span>))</pre></body></html></div>
 <p><img src="Two_Node_Process_files/figure-html/traceplot-1.png" width="700"></p>
+<p>A quantitative diagnostics for convergence and autocorrelation are available as part of the output from <code>BMB</code>:</p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">indep.samples</span>$<span class="no">diagnostics</span>
+<span class="co">#&gt; $beta</span>
+<span class="co">#&gt; $beta$CuFeS2</span>
+<span class="co">#&gt;   index         cd      ess</span>
+<span class="co">#&gt; 1     1  1.3502438 3452.893</span>
+<span class="co">#&gt; 2     2  1.6943631 2321.336</span>
+<span class="co">#&gt; 3     3 -0.7130436 3130.248</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $beta$gangue</span>
+<span class="co">#&gt;   index         cd      ess</span>
+<span class="co">#&gt; 1     1 -0.2569483 2466.151</span>
+<span class="co">#&gt; 2     2 -0.4844203 2900.000</span>
+<span class="co">#&gt; 3     3  0.2663358 1825.679</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Sig</span>
+<span class="co">#&gt; $Sig$CuFeS2</span>
+<span class="co">#&gt;   index           cd      ess</span>
+<span class="co">#&gt; 1     1  0.006233893 2900.000</span>
+<span class="co">#&gt; 2     2  0.178887818 2735.796</span>
+<span class="co">#&gt; 3     3  1.052949569 2524.730</span>
+<span class="co">#&gt; 4     4 -0.786595455 3503.665</span>
+<span class="co">#&gt; 5     5  0.687874403 2496.159</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $Sig$gangue</span>
+<span class="co">#&gt;   index          cd      ess</span>
+<span class="co">#&gt; 1     1 -0.66602216 2900.000</span>
+<span class="co">#&gt; 2     2  0.08620000 2299.099</span>
+<span class="co">#&gt; 3     3  0.42791931 2405.832</span>
+<span class="co">#&gt; 4     4  0.79564847 3122.583</span>
+<span class="co">#&gt; 5     5  0.06269366 2217.045</span></pre></body></html></div>
 <p>The model with independent variances may not be the best fitting model. Models specifying covariance between sample locations for a single component, and covariance between components at a single location are fit.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">component.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"component"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">location.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"location"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">component.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"component"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">location.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"location"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
 <p>Computing <span class="math inline">\(\log(\mathrm{Bayes Factor})\)</span> for <span class="math inline">\(BF = p(y|\texttt{indep})/p(y|\texttt{component})\)</span>:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">indep.samples</span>$<span class="no">lml</span> - <span class="no">component.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] -138.6769</span></pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">indep.samples</span>$<span class="no">lml</span> - <span class="no">component.samples</span>$<span class="no">lml</span>
+<span class="co">#&gt; [1] -138.6555</span></pre></body></html></div>
 <p>Then comparing <span class="math inline">\(p(y|\texttt{component})\)</span> to <span class="math inline">\(p(y|\texttt{location})\)</span></p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">component.samples</span>$<span class="no">lml</span> - <span class="no">location.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] 0.7836874</span></pre></body></html></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">component.samples</span>$<span class="no">lml</span> - <span class="no">location.samples</span>$<span class="no">lml</span>
+<span class="co">#&gt; [1] 0.8036097</span></pre></body></html></div>
 <p>Shows there is little difference between the models where <code>cov.structure  = "location"</code> and <code>cov.structure = "component"</code>, but both of these models better explain the data than <code>cov.structure = "indep"</code>.</p>
 <p>The main effect of a variable independent of the process can be calculated by supplying a function, <code>fn</code> that takes the arguments of mass balanced flow rates <code>ybal</code>, and the random independent and uniformly distributed variables <code>x</code>. Information can be gained on the main effect of a particular element of <code>x</code>, <code>xj</code>, on <code>fn</code> using the <code>mainEff</code> function. Output from <code>mainEff</code> includes information on the distribution of <span class="math inline">\(E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack\)</span>.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">fn_example</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">X</span>,<span class="no">ybal</span>){
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">fn_example</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">X</span>,<span class="no">ybal</span>){
       <span class="no">cu.frac</span> <span class="kw">&lt;-</span> <span class="fl">63.546</span>/<span class="fl">183.5</span>
       <span class="no">feed.mass</span> <span class="kw">&lt;-</span> <span class="no">ybal</span>$<span class="no">CuFeS2</span>[<span class="fl">1</span>] + <span class="no">ybal</span>$<span class="no">gangue</span>[<span class="fl">1</span>]
       <span class="co"># Concentrate mass per ton feed</span>
@@ -158,7 +190,7 @@ y_2 &amp;= y_3 +y_5
                    <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">6</span>, <span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">2</span>)
 <span class="no">mE_example</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/mainEff.html">mainEff</a></span>(<span class="no">indep.samples</span>, <span class="kw">fn</span> <span class="kw">=</span> <span class="st">"fn_example"</span>,<span class="kw">rangex</span> <span class="kw">=</span>  <span class="no">rangex</span>,<span class="kw">xj</span> <span class="kw">=</span> <span class="fl">3</span>, <span class="kw">N</span> <span class="kw">=</span> <span class="fl">25</span>, <span class="kw">res</span> <span class="kw">=</span> <span class="fl">25</span>)</pre></body></html></div>
 <p>A plot of the output can be made. To get lines that are better connected, change increase <code>N</code> in the <code>mainEff</code> function.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">m.sens</span><span class="kw">&lt;-</span> <span class="no">mE_example</span>$<span class="no">fn.out</span>[<span class="fl">2</span>,]
+<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">m.sens</span><span class="kw">&lt;-</span> <span class="no">mE_example</span>$<span class="no">fn.out</span>[<span class="fl">2</span>,]
 <span class="no">hpd.sens</span> <span class="kw">&lt;-</span> <span class="no">mE_example</span>$<span class="no">fn.out</span>[<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">3</span>),]
 <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span>(<span class="no">hpd.sens</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"upper"</span>, <span class="st">"lower"</span>)
 <span class="no">g.plot</span> <span class="kw">&lt;-</span> <span class="no">mE_example</span>$<span class="no">g</span>/<span class="fl">2000</span>
@@ -194,7 +226,7 @@ y_2 &amp;= y_3 +y_5
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span>(<span class="st">"topleft"</span>, <span class="kw">legend</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"Expected Main Effect"</span>, <span class="st">"95% Bounds"</span>, <span class="st">"Net Revenue &lt; $0"</span>, <span class="st">"Net Revenue &gt; $0"</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"black"</span>,<span class="st">"black"</span>,<span class="st">"red"</span>, <span class="st">"darkgreen"</span>), <span class="kw">lty</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>,<span class="fl">6</span>,<span class="fl">1</span>,<span class="fl">1</span>), <span class="kw">lwd</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span>,<span class="fl">2</span>), <span class="kw">bg</span> <span class="kw">=</span> <span class="st">"white"</span>)</pre></body></html></div>
 <p><img src="Two_Node_Process_files/figure-html/maineffplot-1.png" width="700"></p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r">
+<div class="sourceCode" id="cb15"><html><body><pre class="r">
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="no">opar</span>)</pre></body></html></div>
   </div>
 

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">BayesMassBal</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -140,6 +140,7 @@
   <span class='kw'>BTE</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>500</span>, <span class='fl'>20000</span>, <span class='fl'>1</span>),
   <span class='kw'>lml</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>ybal</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>diagnostics</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>verb</span> <span class='kw'>=</span> <span class='fl'>1</span>
 )</pre>
 
@@ -176,6 +177,11 @@
       <td><p>Logical indicating if the mass balanced samples for each \(y\) should be returned.  Default is <code>TRUE</code>. Setting <code>ybal=FALSE</code> results in a savings in RAM and computation time.</p></td>
     </tr>
     <tr>
+      <th>diagnostics</th>
+      <td><p>Logical or list indicating if diagnostic functions <code><a href='https://rdrr.io/pkg/coda/man/geweke.diag.html'>geweke.diag</a></code> and <code><a href='https://rdrr.io/pkg/coda/man/effectiveSize.html'>effectiveSize</a></code> (Plummer et al. 2006)
+ should computed for the obtained samples.  Specifying <code>TRUE</code> indicates diagnostics should be run with their default parameters.  Alternatively, passing a list of the structure <code><a href='https://rdrr.io/r/base/list.html'>list(frac1 = 0.1, frac2 = 0.5)</a></code> will run both diagnostics and allow <code><a href='https://rdrr.io/pkg/coda/man/geweke.diag.html'>geweke.diag</a></code> to be run with parameters other than the default.</p></td>
+    </tr>
+    <tr>
       <th>verb</th>
       <td><p>Numeric indicating verbosity of progress printed to R-console.  The default of 1 prints messages and a progress bar to the console during all iterative methods. <code>verb = 0</code> indicates no messages are printed.</p></td>
     </tr>
@@ -199,6 +205,8 @@
 
 <dt><code>lml</code></dt><dd><p>Numeric of the log-marginal likelihood approximation. Returns <code>NA</code> when <code>lml = FALSE</code></p></dd>
 
+<dt><code>diagnostics</code></dt><dd><p>List containing results from diagnostic functions <code><a href='https://rdrr.io/pkg/coda/man/geweke.diag.html'>geweke.diag</a></code> and <code><a href='https://rdrr.io/pkg/coda/man/effectiveSize.html'>effectiveSize</a></code></p></dd>
+
 <dt><code>ybal</code></dt><dd><p>List of samples from the distribution of reconciled mass flow rates, in the same format as the function argument <code>y</code>.  Produced with argument <code>ybal = TRUE</code>.  Equivalent to <code><a href='https://rdrr.io/r/base/lapply.html'>lapply(BMB(...)$beta,function(X,x){x %*% X} , x = X)</a></code> .  Viewing this output is more intuitive than viewing samples of <code>beta</code>, at the expense of RAM and some computation time.</p></dd>
 
 <dt><code>X</code></dt><dd><p>The function argument <code>X</code> is passed to the output so that it can be used with other <code>BayesMassBal</code> functions.</p></dd>
@@ -220,7 +228,12 @@
 
 Casella G, George EI (1992).
 &#8220;Explaining the Gibbs sampler.&#8221;
-<em>The American Statistician</em>, <b>46</b>(3), 167--174.</p>
+<em>The American Statistician</em>, <b>46</b>(3), 167--174.
+
+Plummer M, Best N, Cowles K, Vines K (2006).
+&#8220;CODA: Convergence Diagnosis and Output Analysis for MCMC.&#8221;
+<em>R News</em>, <b>6</b>(1), 7--11.
+<a href='https://journal.r-project.org/archive/'>https://journal.r-project.org/archive/</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='importObservations.html'>importObservations</a></span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"twonode_example.csv"</span>,
