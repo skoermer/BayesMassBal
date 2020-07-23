@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • BayesMassBal</title>
+<title>Point Estimate Mass Balance — pointmassbal • BayesMassBal</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Point Estimate Mass Balance — pointmassbal" />
+<meta property="og:description" content="Function conducting a two component, two node, point estimate mass balance from (Wills 2006)
+ on a two node process.  This function is provided for the purpose of comparing the performance of a Bayesian mass balance to a point estimate mass balance using any output of twonodeSim." />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -120,78 +122,44 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Point Estimate Mass Balance</h1>
+    <small class="dont-index">Source: <a href='https://github.com/skoermer/BayesMassBal/blob/master/R/pointmassbal.R'><code>R/pointmassbal.R</code></a></small>
+    <div class="hidden name"><code>pointmassbal.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Function conducting a two component, two node, point estimate mass balance from (Wills 2006)
+ on a two node process.  This function is provided for the purpose of comparing the performance of a Bayesian mass balance to a point estimate mass balance using any output of <code><a href='twonodeSim.html'>twonodeSim</a></code>.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>pointmassbal</span>(<span class='no'>y</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="BMB.html">BMB()</a></code> </p>
-        </td>
-        <td><p>Bayesian Mass Balance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="constrainProcess.html">constrainProcess()</a></code> </p>
-        </td>
-        <td><p>Matrix Constraining Process</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="importObservations.html">importObservations()</a></code> </p>
-        </td>
-        <td><p>Import Observed Mass Flow Rates</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mainEff.html">mainEff()</a></code> </p>
-        </td>
-        <td><p>Main Effects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.BayesMassBal.html">plot(<i>&lt;BayesMassBal&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Plots BayesMassBal Object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pointmassbal.html">pointmassbal()</a></code> </p>
-        </td>
-        <td><p>Point Estimate Mass Balance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="twonodeSim.html">twonodeSim()</a></code> </p>
-        </td>
-        <td><p>Two Node Process Data Simulation</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>y</th>
+      <td><p>A list of matrices of observed mass flow rates. Each matrix is a separate sample component.  The rows of each matrix index the sampling location, and the columns index the sample set number.  Necessary to format exactly the same as the output of the <code><a href='twonodeSim.html'>twonodeSim</a></code> function.  Any arguments to <code><a href='twonodeSim.html'>twonodeSim</a></code> can be used.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Returns a list of vectors with mass flow rates <code>yhat</code> and grades <code>ahat</code>.  Similar format to argument <code>y</code>.  The index of a vector in the output is equivalent to the index of a row in <code>y</code>.</p>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Wills BA (2006).
+<em>Mineral processing technology : an introduction to the practical aspects of ore treatment and mineral recovery</em>.
+Butterworth-Heinemann, Oxford Boston.
+ISBN 978-0-7506-4450-1.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='twonodeSim.html'>twonodeSim</a></span>()
+
+<span class='no'>yhat</span> <span class='kw'>&lt;-</span> <span class='fu'>pointmassbal</span>(<span class='no'>y</span>)$<span class='no'>yhat</span></div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
