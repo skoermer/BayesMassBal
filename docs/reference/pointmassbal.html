@@ -141,7 +141,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>y</th>
-      <td><p>A list of matrices of observed mass flow rates. Each matrix is a separate sample component.  The rows of each matrix index the sampling location, and the columns index the sample set number.  Necessary to format exactly the same as the output of the <code><a href='twonodeSim.html'>twonodeSim</a></code> function.  Any arguments to <code><a href='twonodeSim.html'>twonodeSim</a></code> can be used.</p></td>
+      <td><p>A list of matrices of observed mass flow rates. Each matrix is a separate sample component.  The rows of each matrix index the sampling location, and the columns index the sample set number.  Necessary to format exactly the same as the output of <code>twonodeSim()$simulation</code>.  Any arguments to <code><a href='twonodeSim.html'>twonodeSim</a></code> can be used.</p></td>
     </tr>
     </table>
 
@@ -156,7 +156,7 @@ Butterworth-Heinemann, Oxford Boston.
 ISBN 978-0-7506-4450-1.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='twonodeSim.html'>twonodeSim</a></span>()
+    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='twonodeSim.html'>twonodeSim</a></span>()$<span class='no'>simulation</span>
 
 <span class='no'>yhat</span> <span class='kw'>&lt;-</span> <span class='fu'>pointmassbal</span>(<span class='no'>y</span>)$<span class='no'>yhat</span></div></pre>
   </div>
