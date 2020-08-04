@@ -30,7 +30,7 @@ Plots \code{BayesMassBal} object based on arguments passed to \code{plot}.
 Visualizes data from a \code{BayesMassBal} class object in a user specified way.  Options include trace plots, posterior densities, and main effects plots.  Meant to be a quick diagnostic tool, and not to produce publication quality plots.
 }
 \details{
-The list of \code{params} requires a specific structure dependent on the choice of \code{layout} and the desired plots.
+The list of \code{sample.params} requires a specific structure dependent on the choice of \code{layout} and the desired plots.
 
 If \code{layout = "trace"} or \code{layout = "dens"}, \code{names(list)} must contain each model parameter desired for plotting.  The structure under the model parameter names must be the same as to the structure of the relevant subset of the \code{BayesMassBal} object to be used.  For example, if a \code{BayesMassBal} object is created using a process with sample components \code{c("CuFeS2","gangue")} and the users wants plots of reconciled masses \eqn{y_1} and \eqn{y_2} for both components to be created, \code{params = list(y.bal = list(CuFeS2 = c(1,2), gangue = c(1,2))} should be used.  Note, \code{str(params)} mimics \code{str(x)}, while the vectors listed simply index the desired model parameters to be plotted.
 

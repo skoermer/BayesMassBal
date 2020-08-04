@@ -1,5 +1,13 @@
-component_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1){
+component_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.Machine$double.eps)){
 
+  nDigits <- function(x){
+    truncX <- floor(abs(x))
+    if(truncX != 0){
+      floor(log10(truncX)) + 1
+    } else {
+      1
+    }
+  }
   ## Tests
   K <- ncol(y[[1]])
   ## Sample Locations
@@ -34,18 +42,17 @@ component_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1){
 
   beta <- replicate(M, matrix(NA, nrow = no.betas, ncol = iters), simplify = FALSE)
 
-  names(beta) <- names(y)
+  names(beta) <- names(Sig) <- names(y)
 
-  bhat <- as.matrix(solve(t(X) %*% X) %*% t(X) %*% Y)
-  bhat[which(bhat < 0)] <- 1000
+  bhat <- as.vector(solve(t(X) %*% X) %*% t(X) %*% Y)
 
-  b.use <- bhat
-
+  bhat[which(bhat < 0)] <- 0
   if(is.na(priors)){
-  S.prior <- lapply(y,function(X){diag((apply(X,1,sd))^2)})
+  S.prior <- lapply(y,function(X){diag((apply(X,1,sd))^2) + diag(nrow(X))*eps})
   nu0 <- N
-  mu0 <- rep(0, times = no.betas*M)
-  V0i <- diag(no.betas*M)/10000000
+  mu0 <- bhat
+  dgts <- sapply(bhat,nDigits)
+  V0i <- diag(1/(10^(dgts+6)))
   }else{
     nu0 <- priors$Sig$nu0
     mu0 <- priors$beta$mu0
@@ -54,6 +61,9 @@ component_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1){
     }
 
   V0imu0 <- V0i %*% mu0
+  bhat[which(bhat == 0)] <- eps
+
+  b.use <- bhat
 
   beta.temp <- rep(NA, times = no.betas*M)
   if(verb != 0){

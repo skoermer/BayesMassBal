@@ -74,7 +74,7 @@ chib_indep <- function(s.l,X,y, verb){
       setTxtProgressBar(pb,value = step)
     }
     for(i in 1:M){
-      Si <- diag(Sig[[i]][,t])
+      Si <- diag(1/Sig[[i]][,t])
       xtSix <-  t(x.unit) %*% Si %*% x.unit * K
       #xtSixi <- solve(xtSix)
 
@@ -106,8 +106,8 @@ chib_indep <- function(s.l,X,y, verb){
 
     shape <- N/2 + Sprior[[i]]$a
 
-    lpost.Sig[i] <- sum(dgamma(s,shape = shape, rate = rate, log = TRUE))
-    lprior.Sig[i] <- sum(dgamma(s,shape = Sprior[[i]]$a,rate = Sprior[[i]]$b, log = TRUE))
+    lpost.Sig[i] <- sum(dinvgamma(s,shape = shape, scale = rate, log = TRUE))
+    lprior.Sig[i] <- sum(dinvgamma(s,shape = Sprior[[i]]$a,scale = Sprior[[i]]$b, log = TRUE))
   }
 
   lpriorB <- dtmvnorm(B.bar, mean = B0, sigma = S0, lower =rep(0, times = P), log = TRUE)
@@ -116,8 +116,7 @@ chib_indep <- function(s.l,X,y, verb){
 
   lprior <- sum(lprior.Sig) + lpriorB
 
-  Omega <- do.call(c,Sig.bar)
-  Omega <- 1/Omega
+  Omega <- do.call("c",Sig.bar)
   Omega <- rep(Omega, times = K)
   Omega <- diag(Omega)
 
