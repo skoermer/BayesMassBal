@@ -1,8 +1,7 @@
 indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.Machine$double.eps)){
 
-  gamdraw <- function(x, shape = alpha){
-    #rgamma(1,shape = shape, rate = x)
-    rinvgamma(1,shape = shape, scale = x)
+  gamdraw <- function(x){
+    rinvgamma(1,shape = x[1], scale = x[2])
   }
   nDigits <- function(x){
     truncX <- floor(abs(x))
@@ -52,7 +51,22 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
   phi.priors <- list()
   bhat[which(bhat < 0)] <- 0
 
-  if(is.na(priors)){
+  if(priors == "Jeffreys"){
+    mu0 <- rep(0, length(bhat))
+    dgts <- sapply(bhat,nDigits)
+    V0i <- diag(length(dgts))*0
+    a0 <- 0
+    b0 <- 0
+    for(i in 1:M){
+      phi.priors[[i]] <- cbind.data.frame(a = rep(a0, times = N), b = rep(b0, times = N))
+    }
+    if(verb != 0){message("Jeffreys Priors Used")}
+  }else if(is.list(priors)){
+    phi.priors <- priors$phi
+    mu0 <- priors$beta$mu0
+    V0i <- solve(priors$beta$V0)
+    if(verb != 0){message("User Specified Priors Used")}
+  }else{
     b0 <- 0.000001
     a0 <- 0.000001
     mu0 <- bhat
@@ -61,11 +75,7 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
     for(i in 1:M){
       phi.priors[[i]] <- cbind.data.frame(a = rep(a0, times = N), b = rep(b0, times = N))
     }
-  }else{
-    a0 <- priors$phi$a
-    b0 <- priors$phi$b
-    mu0 <- priors$beta$mu0
-    V0i <- solve(priors$beta$V0)
+    if(verb != 0){message("Default Priors Used")}
   }
 
   bhat[which(bhat == 0)] <- eps
@@ -74,8 +84,8 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
   V0imu0 <- V0i %*% mu0
 
 
-  alpha <- (K)/2 + a0
-  rate <- matrix(NA, ncol= M, nrow =N)
+  alpha <- lapply(phi.priors, function(X){X[,1] + K/2})
+  rate <- rep(NA,N)
 
   beta.temp <- rep(NA, times = no.betas*M)
   if(verb != 0){
@@ -92,9 +102,9 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
     for(i in 1:M){
       xB <- as.vector(X.M[[i]] %*% b.use)
       for(j in 1:N){
-        rate[j,i] <- 0.5*(t(xB[j] - y[[i]][j,]) %*% (xB[j] - y[[i]][j,]) )+ b0
+        rate[j] <- 0.5*(t(xB[j] - y[[i]][j,]) %*% (xB[j] - y[[i]][j,]) )+ phi.priors[[i]][j,2]
         }
-      Sig[[i]][,t] <- s.temp <- sapply(rate[,i], gamdraw, shape = alpha)
+      Sig[[i]][,t] <- s.temp <- apply(cbind(alpha[[i]],rate),1, gamdraw)
       Wi <- diag(1/s.temp)
       xtWix <- t(x.unit) %*% Wi %*% x.unit * K
       precis <- xtWix + diag(diag(V0i)[((i - 1)*no.betas +1):(i*no.betas)])
@@ -116,7 +126,7 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
 
   samps <- list(beta = beta,
                 Sig = Sig,
-                priors= list(beta = list(mu0 = mu0, V0 = solve(V0i)), phi = phi.priors), cov.structure = "indep")
+                priors= list(beta = list(mu0 = mu0, V0 = diag((1/diag(V0i)))), phi = phi.priors), cov.structure = "indep")
 
   return(samps)
 }

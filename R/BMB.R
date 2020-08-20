@@ -4,7 +4,7 @@
 #' @param X A matrix that maps constrained masses to observed masses.  Can be built from the function \code{\link{constrainProcess}}, see documentation for details.
 #' @param y A list of matrices of observed mass flow rates. Each matrix is a separate sample component.  The rows of each matrix index the sampling location, and the columns index the sample set number.  Can be specified using the \code{\link{importObservations}} function.
 #' @param cov.structure Character string. \code{"indep"} allows for no correlation.  \code{"component"} indicates correlation within an individual sample component.  \code{"location"} indicates correlation within an individual sampling location.  Not specifying \code{cov.structure} defaults to the \code{"indep"} structure.
-#' @param priors Optional list of user specified hyperparameters for conjugate priors.  When not specified, the function uses a set of default conjugate priors.  To see the required list structure run \code{BMB} with \code{BTE = c(1,2,1)} and inspect the output.  See Details for more information.
+#' @param priors List or character string. When the default value \code{priors = "default"} is used, the \code{BMB} uses a set of default conjugate priors.  When passing a list to the argument, the list must contain user specified hyperparameter values for each conjugate prior.  To see the required list structure run \code{BMB} with \code{BTE = c(1,2,1)} and inspect the output.  When \code{priors = "Jeffreys"} the Jeffreys priors for \eqn{\Sigma} and \eqn{\sigma^2} with known mean given in \insertCite{priorlist}{BayesMassBal}.  When \code{priors = "Jeffreys"}, the prior used for \eqn{\beta} is proportional to the indicator function \eqn{I\lbrack \beta > 0 \rbrack}.  See Details for more information.
 #' @param BTE Numeric vector giving \code{c(Burn-in, Total-iterations, and Every)} for MCMC approximation of target distributions. The function \code{BMB} produces a total number of samples of \eqn{(T - B)/E}.  \eqn{E} specifies that only one of every \eqn{E} draws are saved. \eqn{E > 1} reduces autocorrelation between obtained samples at the expense of computation time.
 #' @param lml Logical indicating if the log-marginal likelihood should be approximated.  Default is \code{FALSE}, which reduces computation time.  Log-marginal likelihood is approximated using methods in \insertCite{chib}{BayesMassBal}.
 #' @param ybal Logical indicating if the mass balanced samples for each \eqn{y} should be returned.  Default is \code{TRUE}. Setting \code{ybal=FALSE} results in a savings in RAM and computation time.
@@ -35,9 +35,11 @@
 #'
 #' When \code{cov.structure = "indep"} the error of all observations in a sample set are independent. An \href{https://en.wikipedia.org/wiki/Inverse-gamma_distribution}{inverse gamma} prior distribution, with \eqn{\alpha_0 = 0.000001} and \eqn{\beta_0 = 0.000001}, is placed on the variance of the mass flow rate for each sample component at each sample location.
 #'
-#' When \code{cov.structure = "component"} or \code{"location"}, the prior distribution on \eqn{\Sigma_i} is \href{https://en.wikipedia.org/wiki/Inverse-Wishart_distribution}{inverse Wishart} \eqn{(\nu_0, \nu_0 \times S_0)}. The degrees of freedom parameter, \eqn{\nu_0}, is equal to the dimension of \eqn{\Sigma_i}.  The scale matrix parameter is equal to a matrix, \eqn{S_0}, with the sample variance of the relevant observation on the diagonal, multiplied by \eqn{\nu_0}.
+#' When \code{cov.structure = "component"} or \code{"location"}, the prior distribution on \eqn{\Sigma_i} is \href{https://en.wikipedia.org/wiki/Inverse-Wishart_distribution}{inverse Wishart} \eqn{(\nu_0, \nu_0 \times S_0)}. The degrees of freedom parameter, \eqn{\nu_0}, is equal to the dimension of \eqn{\Sigma_i}.  The scale matrix parameter is equal to a matrix, \eqn{S_0}, with the sample variance of the relevant observation on the diagonal, multiplied by \eqn{\nu_0}. Currently, there is only support for a diagonal \eqn{S_0} matrix.
 #'
-#' The user is able to specify the prior hyperparameters of the mean and variance of \code{beta}, \eqn{\alpha_0} and \eqn{\beta_0} for each \eqn{\sigma^2}, and the degrees of freedom and scale matrix for each \eqn{\Sigma_i} using the \code{priors} argment.  It is advisable for the user to specify their own prior hyperparameters for \eqn{p(\sigma^2)} if the variance of any element is well under 1, or \eqn{p(\beta)} if the there is a wide range in the magnitude of observations.
+#' The user is able to specify the prior hyperparameters of the mean and variance of \code{beta}, \eqn{\alpha_0} and \eqn{\beta_0} for each \eqn{\sigma^2}, and the degrees of freedom and scale matrix for each \eqn{\Sigma_i} using the \code{priors} argument.  It is advisable for the user to specify their own prior hyperparameters for \eqn{p(\sigma^2)} if the variance of any element is well under 1, or \eqn{p(\beta)} if the there is a wide range in the magnitude of observations.
+#'
+#' When \code{priors = "Jeffreys"} \href{https://en.wikipedia.org/wiki/Jeffreys_prior}{Jeffreys} priors are used for the prior distribution of the variance and covariance parameters.  Priors used are \eqn{p(\sigma^2) \propto \frac{1}{\sigma^2}} and \eqn{p(\Sigma) \propto |\Sigma|^{-(p+1)/2}}, as listed in \insertCite{priorlist}{BayesMassBal}.  The Jeffreys prior for a \eqn{\beta} with infinite support is \eqn{p(\beta) \propto 1}.  To preserve the prior information that \eqn{\beta > 0}, \eqn{p(\beta)\propto I\lbrack \beta > 0 \rbrack} is chosen.  It is not possible to calculate log-marginal likelihood using the methods in \insertCite{chib}{BayesMassBal} with Jeffreys priors.  Therefore, if \code{priors = "Jeffreys"} and \code{lml = TRUE}, the \code{lml} argument will be ignored and a warning will be printed.
 #'
 #' @examples
 #' y <- importObservations(file = system.file("extdata", "twonode_example.csv",
@@ -63,12 +65,17 @@
 #' \insertRef{chib}{BayesMassBal}
 #' \insertRef{gibbsexpl}{BayesMassBal}
 #' \insertRef{coda}{BayesMassBal}
+#' \insertRef{priorlist}{BayesMassBal}
 
-BMB <- function(X, y, cov.structure = c("indep","component","location"), priors = NA, BTE = c(500,20000,1), lml = FALSE, ybal = TRUE, diagnostics = TRUE, verb = 1){
+BMB <- function(X, y, cov.structure = c("indep","component","location"), priors = "default", BTE = c(500,20000,1), lml = FALSE, ybal = TRUE, diagnostics = TRUE, verb = 1){
 
   if(all(cov.structure == c("indep","component","location"))){cov.structure <- "indep"}
   if(is.null(names(y))){names(y) <- paste0("component",1:length(y))}
   if(!is.matrix(y[[1]])){y <- lapply(y,as.matrix)}
+  if(priors == "Jeffreys" & lml == TRUE){
+    lml <- FALSE
+    warning("Methods used do not allow lml approximation when argument: priors = \"Jeffreys\".  lml has been set to FALSE", immediate. = TRUE)
+  }
 
   if(cov.structure == "indep"){
     samps <- indep_sig(X = X,y = y,priors = priors,BTE = BTE, verb = verb)

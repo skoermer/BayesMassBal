@@ -85,7 +85,7 @@
       <h1 data-toc-skip>Two_Node_Process</h1>
                         <h4 class="author">Scott Koermer</h4>
             
-            <h4 class="date">2020-08-04</h4>
+            <h4 class="date">2020-08-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/skoermer/BayesMassBal/blob/master/vignettes/Two_Node_Process.Rmd"><code>vignettes/Two_Node_Process.Rmd</code></a></small>
       <div class="hidden name"><code>Two_Node_Process.Rmd</code></div>
@@ -136,42 +136,42 @@ y_2 &amp;= y_3 +y_5
 <span class="co">#&gt; $beta</span>
 <span class="co">#&gt; $beta$CuFeS2</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1  0.6044976 2818.416</span>
-<span class="co">#&gt; 2     2 -0.4357960 3078.501</span>
-<span class="co">#&gt; 3     3 -0.5585331 2900.000</span>
+<span class="co">#&gt; 1     1 -2.8608789 2643.162</span>
+<span class="co">#&gt; 2     2  3.3314959 3008.852</span>
+<span class="co">#&gt; 3     3  0.2008173 3233.442</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $beta$gangue</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1  1.2166881 2900.000</span>
-<span class="co">#&gt; 2     2 -1.7049703 2900.000</span>
-<span class="co">#&gt; 3     3  0.3693012 1818.944</span>
+<span class="co">#&gt; 1     1 -1.3214727 2591.863</span>
+<span class="co">#&gt; 2     2 -3.3949348 2614.418</span>
+<span class="co">#&gt; 3     3  0.7592438 1893.115</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig</span>
 <span class="co">#&gt; $Sig$CuFeS2</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1  0.6424523 2118.253</span>
-<span class="co">#&gt; 2     2 -0.2828320 2874.233</span>
-<span class="co">#&gt; 3     3 -0.2716225 2540.253</span>
-<span class="co">#&gt; 4     4 -0.2838467 1790.209</span>
-<span class="co">#&gt; 5     5 -0.5575191 2176.116</span>
+<span class="co">#&gt; 1     1  0.2589237 2900.000</span>
+<span class="co">#&gt; 2     2 -1.1437594 2227.324</span>
+<span class="co">#&gt; 3     3 -0.2644203 2680.814</span>
+<span class="co">#&gt; 4     4  1.3763884 2075.202</span>
+<span class="co">#&gt; 5     5  0.9068068 1980.336</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig$gangue</span>
-<span class="co">#&gt;   index          cd      ess</span>
-<span class="co">#&gt; 1     1  0.89869391 2265.889</span>
-<span class="co">#&gt; 2     2 -0.24494755 2387.950</span>
-<span class="co">#&gt; 3     3  0.04783949 1497.319</span>
-<span class="co">#&gt; 4     4 -0.78469883 2216.945</span>
-<span class="co">#&gt; 5     5 -0.63669955 2064.538</span></pre></body></html></div>
+<span class="co">#&gt;   index         cd      ess</span>
+<span class="co">#&gt; 1     1  0.2109801 2817.507</span>
+<span class="co">#&gt; 2     2 -0.6722823 2335.449</span>
+<span class="co">#&gt; 3     3 -0.8377879 1877.537</span>
+<span class="co">#&gt; 4     4  2.0853727 2461.203</span>
+<span class="co">#&gt; 5     5 -1.4143585 2147.356</span></pre></body></html></div>
 <p>The model with independent variances may not be the best fitting model. Models specifying covariance between sample locations for a single component, and covariance between components at a single location are fit.</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">component.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"component"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">location.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"location"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
 <p>Computing <span class="math inline">\(\log(\mathrm{Bayes Factor})\)</span> for <span class="math inline">\(BF = p(y|\texttt{indep})/p(y|\texttt{component})\)</span>:</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">indep.samples</span>$<span class="no">lml</span> - <span class="no">component.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] -126.9193</span></pre></body></html></div>
+<span class="co">#&gt; [1] -126.8691</span></pre></body></html></div>
 <p>Then comparing <span class="math inline">\(p(y|\texttt{component})\)</span> to <span class="math inline">\(p(y|\texttt{location})\)</span></p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">component.samples</span>$<span class="no">lml</span> - <span class="no">location.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] 0.8093992</span></pre></body></html></div>
+<span class="co">#&gt; [1] 0.8240749</span></pre></body></html></div>
 <p>Shows there is little difference between the models where <code>cov.structure  = "location"</code> and <code>cov.structure = "component"</code>, but both of these models better explain the data than <code>cov.structure = "indep"</code>.</p>
 <p>The main effect of a variable independent of the process can be calculated by supplying a function, <code>fn</code> that takes the arguments of mass balanced flow rates <code>ybal</code>, and the random independent and uniformly distributed variables <code>x</code>. Information can be gained on the main effect of a particular element of <code>x</code>, <code>xj</code>, on <code>fn</code> using the <code>mainEff</code> function. Output from <code>mainEff</code> includes information on the distribution of <span class="math inline">\(E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack\)</span>.</p>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">fn_example</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">X</span>,<span class="no">ybal</span>){

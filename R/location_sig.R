@@ -69,18 +69,26 @@ location_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb =1, eps = sqrt(
   bhat[which(bhat < 0)] <- 0
 
 
-
-  if(is.na(priors)){
-    S.prior <- lapply(y.reorg,function(X){diag((apply(X,1,sd))^2) + diag(nrow(X))*eps })
+  if(priors == "Jeffreys"){
+    mu0 <- rep(0, length(bhat))
+    dgts <- sapply(bhat,nDigits)
+    V0i <- diag(length(dgts))*0
+    nu0 <- 0
+    S.prior <- replicate(N, matrix(0, nrow = M, ncol = M), simplify = FALSE)
+    if(verb != 0){message("Jeffreys Priors Used")}
+  }else if(is.list(priors)){
+      nu0 <- priors$Sig$nu0
+      mu0 <- priors$beta$mu0
+      V0i <- solve(priors$beta$V0)
+      S.prior <- priors$Sig$S
+      if(verb != 0){message("User Specified Priors Used")}
+  }else{
+    S.prior <- lapply(y.reorg,function(X){diag((apply(X,1,sd))^2) + diag(nrow(X))*eps})
     nu0 <- M
     mu0 <- bhat
     dgts <- sapply(bhat,nDigits)
     V0i <- diag(1/(10^(dgts+6)))
-  }else{
-    nu0 <- priors$Sig$nu0
-    mu0 <- priors$beta$mu0
-    V0i <- solve(priors$beta$V0)
-    S.prior <- priors$Sig$S
+    if(verb != 0){message("Default Priors Used")}
   }
 
   for(i in 1:N){
@@ -147,5 +155,5 @@ location_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb =1, eps = sqrt(
 
   return(list(beta = beta.return,
               Sig = Sig,
-              priors= list(beta = list(mu0 = mu0, V0 = solve(V0i)), Sig = list(nu0 = nu0, S = S.prior)), cov.structure = "location", y.cov = cov.names))
+              priors= list(beta = list(mu0 = mu0, V0 = diag(1/diag(V0i))), Sig = list(nu0 = nu0, S = S.prior)), cov.structure = "location", y.cov = cov.names))
 }

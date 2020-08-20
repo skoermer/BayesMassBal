@@ -47,18 +47,27 @@ component_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqr
   bhat <- as.vector(solve(t(X) %*% X) %*% t(X) %*% Y)
 
   bhat[which(bhat < 0)] <- 0
-  if(is.na(priors)){
-  S.prior <- lapply(y,function(X){diag((apply(X,1,sd))^2) + diag(nrow(X))*eps})
-  nu0 <- N
-  mu0 <- bhat
-  dgts <- sapply(bhat,nDigits)
-  V0i <- diag(1/(10^(dgts+6)))
-  }else{
+  if(priors == "Jeffreys"){
+    mu0 <- rep(0, length(bhat))
+    dgts <- sapply(bhat,nDigits)
+    V0i <- diag(length(dgts))*0
+    nu0 <- 0
+    S.prior <- replicate(M, matrix(0, nrow = N, ncol = N), simplify = FALSE)
+    if(verb != 0){message("Jeffreys Priors Used")}
+  }else if(is.list(priors)){
     nu0 <- priors$Sig$nu0
     mu0 <- priors$beta$mu0
     V0i <- solve(priors$beta$V0)
     S.prior <- priors$Sig$S
-    }
+    if(verb != 0){message("User Specified Priors Used")}
+  }else{
+    S.prior <- lapply(y,function(X){diag((apply(X,1,sd))^2) + diag(nrow(X))*eps})
+    nu0 <- N
+    mu0 <- bhat
+    dgts <- sapply(bhat,nDigits)
+    V0i <- diag(1/(10^(dgts+6)))
+    if(verb != 0){message("Default Priors Used")}
+  }
 
   V0imu0 <- V0i %*% mu0
   bhat[which(bhat == 0)] <- eps
@@ -106,7 +115,7 @@ component_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqr
 
   samps <- list(beta = beta,
                 Sig = Sig,
-                priors= list(beta = list(mu0 = mu0, V0 = solve(V0i)), Sig = list(nu0 = nu0, S = S.prior)), cov.structure = "component")
+                priors= list(beta = list(mu0 = mu0, V0 = diag(1/diag(V0i))), Sig = list(nu0 = nu0, S = S.prior)), cov.structure = "component")
 
   return(samps)
 }

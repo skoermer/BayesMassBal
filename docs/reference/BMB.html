@@ -136,7 +136,7 @@
   <span class='no'>X</span>,
   <span class='no'>y</span>,
   <span class='kw'>cov.structure</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"indep"</span>, <span class='st'>"component"</span>, <span class='st'>"location"</span>),
-  <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>priors</span> <span class='kw'>=</span> <span class='st'>"default"</span>,
   <span class='kw'>BTE</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>500</span>, <span class='fl'>20000</span>, <span class='fl'>1</span>),
   <span class='kw'>lml</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>ybal</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -161,7 +161,8 @@
     </tr>
     <tr>
       <th>priors</th>
-      <td><p>Optional list of user specified hyperparameters for conjugate priors.  When not specified, the function uses a set of default conjugate priors.  To see the required list structure run <code>BMB</code> with <code>BTE = c(1,2,1)</code> and inspect the output.  See Details for more information.</p></td>
+      <td><p>List or character string. When the default value <code>priors = "default"</code> is used, the <code>BMB</code> uses a set of default conjugate priors.  When passing a list to the argument, the list must contain user specified hyperparameter values for each conjugate prior.  To see the required list structure run <code>BMB</code> with <code>BTE = c(1,2,1)</code> and inspect the output.  When <code>priors = "Jeffreys"</code> the Jeffreys priors for \(\Sigma\) and \(\sigma^2\) with known mean given in (Yang and Berger 1996)
+.  When <code>priors = "Jeffreys"</code>, the prior used for \(\beta\) is proportional to the indicator function \(I\lbrack \beta &gt; 0 \rbrack\).  See Details for more information.</p></td>
     </tr>
     <tr>
       <th>BTE</th>
@@ -218,8 +219,11 @@
 <p>The prior distribution on <code>beta</code> is a normal distribution truncated at 0.  The mean of this distribution before truncation is the <a href='https://en.wikipedia.org/wiki/Ordinary_least_squares'>ordinary least squares</a> (OLS) estimate of \(\beta\). OLS estimates less than 0, are changed to 0.  The prior variance, before truncation, of each element of \(\beta\) is set to:</p>
 <p>$$10^{\mathrm{number of integer digits of an element of } \beta + 6}$$</p>
 <p>When <code>cov.structure = "indep"</code> the error of all observations in a sample set are independent. An <a href='https://en.wikipedia.org/wiki/Inverse-gamma_distribution'>inverse gamma</a> prior distribution, with \(\alpha_0 = 0.000001\) and \(\beta_0 = 0.000001\), is placed on the variance of the mass flow rate for each sample component at each sample location.</p>
-<p>When <code>cov.structure = "component"</code> or <code>"location"</code>, the prior distribution on \(\Sigma_i\) is <a href='https://en.wikipedia.org/wiki/Inverse-Wishart_distribution'>inverse Wishart</a> \((\nu_0, \nu_0 \times S_0)\). The degrees of freedom parameter, \(\nu_0\), is equal to the dimension of \(\Sigma_i\).  The scale matrix parameter is equal to a matrix, \(S_0\), with the sample variance of the relevant observation on the diagonal, multiplied by \(\nu_0\).</p>
-<p>The user is able to specify the prior hyperparameters of the mean and variance of <code>beta</code>, \(\alpha_0\) and \(\beta_0\) for each \(\sigma^2\), and the degrees of freedom and scale matrix for each \(\Sigma_i\) using the <code>priors</code> argment.  It is advisable for the user to specify their own prior hyperparameters for \(p(\sigma^2)\) if the variance of any element is well under 1, or \(p(\beta)\) if the there is a wide range in the magnitude of observations.</p>
+<p>When <code>cov.structure = "component"</code> or <code>"location"</code>, the prior distribution on \(\Sigma_i\) is <a href='https://en.wikipedia.org/wiki/Inverse-Wishart_distribution'>inverse Wishart</a> \((\nu_0, \nu_0 \times S_0)\). The degrees of freedom parameter, \(\nu_0\), is equal to the dimension of \(\Sigma_i\).  The scale matrix parameter is equal to a matrix, \(S_0\), with the sample variance of the relevant observation on the diagonal, multiplied by \(\nu_0\). Currently, there is only support for a diagonal \(S_0\) matrix.</p>
+<p>The user is able to specify the prior hyperparameters of the mean and variance of <code>beta</code>, \(\alpha_0\) and \(\beta_0\) for each \(\sigma^2\), and the degrees of freedom and scale matrix for each \(\Sigma_i\) using the <code>priors</code> argument.  It is advisable for the user to specify their own prior hyperparameters for \(p(\sigma^2)\) if the variance of any element is well under 1, or \(p(\beta)\) if the there is a wide range in the magnitude of observations.</p>
+<p>When <code>priors = "Jeffreys"</code> <a href='https://en.wikipedia.org/wiki/Jeffreys_prior'>Jeffreys</a> priors are used for the prior distribution of the variance and covariance parameters.  Priors used are \(p(\sigma^2) \propto \frac{1}{\sigma^2}\) and \(p(\Sigma) \propto |\Sigma|^{-(p+1)/2}\), as listed in (Yang and Berger 1996)
+.  The Jeffreys prior for a \(\beta\) with infinite support is \(p(\beta) \propto 1\).  To preserve the prior information that \(\beta &gt; 0\), \(p(\beta)\propto I\lbrack \beta &gt; 0 \rbrack\) is chosen.  It is not possible to calculate log-marginal likelihood using the methods in (Chib 1995)
+ with Jeffreys priors.  Therefore, if <code>priors = "Jeffreys"</code> and <code>lml = TRUE</code>, the <code>lml</code> argument will be ignored and a warning will be printed.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Chib S (1995).
@@ -233,7 +237,11 @@ Casella G, George EI (1992).
 Plummer M, Best N, Cowles K, Vines K (2006).
 &#8220;CODA: Convergence Diagnosis and Output Analysis for MCMC.&#8221;
 <em>R News</em>, <b>6</b>(1), 7--11.
-<a href='https://journal.r-project.org/archive/'>https://journal.r-project.org/archive/</a>.</p>
+<a href='https://journal.r-project.org/archive/'>https://journal.r-project.org/archive/</a>.
+
+Yang R, Berger JO (1996).
+<em>A catalog of noninformative priors</em>.
+Institute of Statistics and Decision Sciences, Duke University.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='importObservations.html'>importObservations</a></span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"twonode_example.csv"</span>,
