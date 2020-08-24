@@ -25,13 +25,16 @@ betareport <- list()
 
 for(i in 1:betaDim[1]){
   name <- names(betaess)[i]
-  Sigreport[[name]] <- Sigtemp
-  Sigreport[[name]]$cd <- Sigcd[[i]]
-  Sigreport[[name]]$ess <- Sigess[[i]]
 
   betareport[[name]] <- betatemp
   betareport[[name]]$cd <- betacd[[i]]
   betareport[[name]]$ess <- betaess[[i]]
+}
+
+for(i in 1:SigDim[1]){
+Sigreport[[i]] <- Sigtemp
+Sigreport[[i]]$cd <- Sigcd[[i]]
+Sigreport[[i]]$ess <- Sigess[[i]]
 }
 
 diagnostics <- list(beta = betareport, Sig = Sigreport)

@@ -60,12 +60,12 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
     for(i in 1:M){
       phi.priors[[i]] <- cbind.data.frame(a = rep(a0, times = N), b = rep(b0, times = N))
     }
-    if(verb != 0){message("Jeffreys Priors Used")}
+    if(verb != 0){message("Jeffreys Priors Used\n")}
   }else if(is.list(priors)){
     phi.priors <- priors$phi
     mu0 <- priors$beta$mu0
     V0i <- solve(priors$beta$V0)
-    if(verb != 0){message("User Specified Priors Used")}
+    if(verb != 0){message("User Specified Priors Used\n")}
   }else{
     b0 <- 0.000001
     a0 <- 0.000001
@@ -75,7 +75,7 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
     for(i in 1:M){
       phi.priors[[i]] <- cbind.data.frame(a = rep(a0, times = N), b = rep(b0, times = N))
     }
-    if(verb != 0){message("Default Priors Used")}
+    if(verb != 0){message("Default Priors Used\n")}
   }
 
   bhat[which(bhat == 0)] <- eps
@@ -108,7 +108,7 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
       Wi <- diag(1/s.temp)
       xtWix <- t(x.unit) %*% Wi %*% x.unit * K
       precis <- xtWix + diag(diag(V0i)[((i - 1)*no.betas +1):(i*no.betas)])
-      cov.use <- solve(precis)
+      cov.use <- diag(1/diag(precis))
       bhat <- cov.use %*% (V0imu0[((i - 1)*no.betas +1):(i*no.betas)] + t(x.unit)%*%Wi %*% ybar[[i]] * K)
       beta.temp[((i - 1)*no.betas +1):(i*no.betas)] <- beta[[i]][,t] <- as.vector(
                                          rtmvnorm(n = 1, mean = bhat[,1], sigma = cov.use, lower = rep(0, length = no.betas)))

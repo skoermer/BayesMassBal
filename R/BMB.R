@@ -33,9 +33,11 @@
 #'
 #' \deqn{10^{\mathrm{number of integer digits of an element of } \beta + 6}}
 #'
+#' Currently, there is only support for diagonal prior covariance matricies for \eqn{\beta}
+#'
 #' When \code{cov.structure = "indep"} the error of all observations in a sample set are independent. An \href{https://en.wikipedia.org/wiki/Inverse-gamma_distribution}{inverse gamma} prior distribution, with \eqn{\alpha_0 = 0.000001} and \eqn{\beta_0 = 0.000001}, is placed on the variance of the mass flow rate for each sample component at each sample location.
 #'
-#' When \code{cov.structure = "component"} or \code{"location"}, the prior distribution on \eqn{\Sigma_i} is \href{https://en.wikipedia.org/wiki/Inverse-Wishart_distribution}{inverse Wishart} \eqn{(\nu_0, \nu_0 \times S_0)}. The degrees of freedom parameter, \eqn{\nu_0}, is equal to the dimension of \eqn{\Sigma_i}.  The scale matrix parameter is equal to a matrix, \eqn{S_0}, with the sample variance of the relevant observation on the diagonal, multiplied by \eqn{\nu_0}. Currently, there is only support for a diagonal \eqn{S_0} matrix.
+#' When \code{cov.structure = "component"} or \code{"location"}, the prior distribution on \eqn{\Sigma_i} is \href{https://en.wikipedia.org/wiki/Inverse-Wishart_distribution}{inverse Wishart} \eqn{(\nu_0, \nu_0 \times S_0)}. The degrees of freedom parameter, \eqn{\nu_0}, is equal to the dimension of \eqn{\Sigma_i}.  The scale matrix parameter is equal to a matrix, \eqn{S_0}, with the sample variance of the relevant observation on the diagonal, multiplied by \eqn{\nu_0}.
 #'
 #' The user is able to specify the prior hyperparameters of the mean and variance of \code{beta}, \eqn{\alpha_0} and \eqn{\beta_0} for each \eqn{\sigma^2}, and the degrees of freedom and scale matrix for each \eqn{\Sigma_i} using the \code{priors} argument.  It is advisable for the user to specify their own prior hyperparameters for \eqn{p(\sigma^2)} if the variance of any element is well under 1, or \eqn{p(\beta)} if the there is a wide range in the magnitude of observations.
 #'
@@ -74,7 +76,7 @@ BMB <- function(X, y, cov.structure = c("indep","component","location"), priors 
   if(!is.matrix(y[[1]])){y <- lapply(y,as.matrix)}
   if(priors == "Jeffreys" & lml == TRUE){
     lml <- FALSE
-    warning("Methods used do not allow lml approximation when argument: priors = \"Jeffreys\".  lml has been set to FALSE", immediate. = TRUE)
+    warning("Methods used do not allow lml approximation when argument: priors = \"Jeffreys\".  lml has been set to FALSE\n", immediate. = TRUE)
   }
 
   if(cov.structure == "indep"){
