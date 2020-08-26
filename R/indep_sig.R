@@ -108,7 +108,7 @@ indep_sig <- function(X,y,priors,BTE = c(3000,100000,1), verb = 1, eps = sqrt(.M
       Wi <- diag(1/s.temp)
       xtWix <- t(x.unit) %*% Wi %*% x.unit * K
       precis <- xtWix + diag(diag(V0i)[((i - 1)*no.betas +1):(i*no.betas)])
-      cov.use <- diag(1/diag(precis))
+      cov.use <- solve(precis)
       bhat <- cov.use %*% (V0imu0[((i - 1)*no.betas +1):(i*no.betas)] + t(x.unit)%*%Wi %*% ybar[[i]] * K)
       beta.temp[((i - 1)*no.betas +1):(i*no.betas)] <- beta[[i]][,t] <- as.vector(
                                          rtmvnorm(n = 1, mean = bhat[,1], sigma = cov.use, lower = rep(0, length = no.betas)))

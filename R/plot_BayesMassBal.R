@@ -4,7 +4,7 @@
 #'
 #' @param x A \code{BayesMassBal} object returned from the \code{\link{BMB}} function
 #' @param sample.params List to be used for indicating model parameter samples used for creation of plot(s).  See details for required structure.
-#' @param layout Character string indicating the desired data to be plotted.  \code{"trace"} produces trace plots of sequential parameter draws. \code{"dens"} produces densities of posterior draws.
+#' @param layout Character string indicating the desired data to be plotted.  \code{"trace"} produces trace plots of sequential parameter draws. \code{"dens"} produces densities of posterior draws.  Argument ignored when \code{x$type = "time-series"}.
 #' @param hdi.params Numeric vector of length two, used to draw Highest Posterior Density Intervals (HPDI) using \code{\link[HDInterval]{hdi}}, and otherwise ignored. \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} bounds should be drawn.  The second element of \code{hdi} is passed to \code{credMass} in the \code{\link[HDInterval]{hdi}} function.  The default, \code{hdi.params = c(1,0.95)}, plots the 95\% HPDI bounds.
 #' @param ... Passes extra arguments to \code{plot()}
 #'
@@ -19,7 +19,7 @@
 #' @return Plots \code{BayesMassBal} object based on arguments passed to \code{plot}.
 #'
 #' @importFrom HDInterval hdi
-#' @importFrom graphics plot par abline plot.new
+#' @importFrom graphics plot par abline plot.new legend text
 #' @importFrom stats density
 #'
 #' @export
@@ -30,6 +30,101 @@ plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hd
   opar <- par(no.readonly =TRUE)
   on.exit(par(opar))
 
+  if(x$type == "time-series"){
+    c <- c("#E87722","#75787B")
+    l.wid <- 1
+    y <- x$y
+   if(!is.null(x$samples$expectation)){
+
+     mean.exp <- mean(x$samples$expectation)
+     mean.alpha <- mean(x$samples$alpha)
+
+     r.alpha<- range(x$samples$alpha)
+     d.alpha <- density(x$samples$alpha, from = r.alpha[1], to = r.alpha[2])
+
+
+
+     leg.lab <- c("Data","Expected Steady State", NA)
+     leg.col = c("black",c[1],c[2])
+     leg.lty = c(NA,1,2)
+     leg.pch <- c(19,NA,NA)
+     leg.lab[3] <- paste(hdi.params[2]*100, "% Credible Int.", sep = "", collapse = "")
+
+     if(hdi.params[1] == 1){
+       hdi.exp <- hdi(x$samples$expectation, credMass = hdi.params[2])
+       hdi.alpha <- hdi(x$samples$alpha, credMass = hdi.params[2])
+       r.exp<- hdi.exp + 0.5*(hdi.exp-mean.exp)
+
+     }else{
+       hdi.alpha <- rep(NA, times = 2)
+       leg.lab[3] <-  leg.col[3] <- leg.lty[3] <- NULL
+       leg.pch <- leg.pch[1:2]
+       hdi.exp <- hdi(x$samples$expectation)
+       r.exp <- hdi.exp + 0.5*(hdi.exp-mean.exp)
+       hdi.exp <- rep(NA, times = 2)
+     }
+
+     d.exp <- density(x$samples$expectation, from = r.exp[1], to = r.exp[2])
+
+     layout(matrix(c(1,1,2,2,3,3,3,3,4,4,4,4), ncol = 4, nrow = 3, byrow = TRUE),heights = c(5,8,2))
+
+
+     par(mar = c(2,1,2,1))#c(2, 4, 3, 1), cex = 1)
+     plot(d.alpha, main = expression(alpha),xlab = "", ylab = "", yaxt = "n",lwd = l.wid,...)
+     abline(v = c(-1,1), col = "red", lty = 2,lwd = l.wid)
+
+     par(mar = c(2,1,2,1))#c(2, 1, 3, 2), cex = 1)
+     plot(d.exp,xlab = "", ylab = "", xlim = r.exp, main = expression(paste("E[y|",mu,",",alpha,"]")),lwd = l.wid, yaxt = "n",...)
+     abline(v = mean.exp, col = c[1],lwd = l.wid)
+     abline(v = hdi.exp, col = c[2], lty = 2,lwd = l.wid)
+
+     par(mar = c(4,4,1,1))#c(5, 4, 2, 2),cex = 1)
+     plot(0:(length(y)-1),y, type = "p", pch = 19, ylab = "Mass", xlab = "Time Steps", main = "",...)
+     abline(h = mean.exp, col = c[1], lwd = l.wid)
+     abline(h =hdi.exp, col = c[2], lty = 2, lwd = l.wid)
+
+     par(mar=c(1,1,1,1), xpd = TRUE)#c(1,2,0.5,2), xpd=TRUE)
+     plot(1, type = "n", axes=FALSE, xlab="", ylab="", cex = 1,...)
+     legend("bottom",horiz = TRUE, legend = leg.lab, col = leg.col,pch = leg.pch, lty = leg.lty, lwd = l.wid)
+
+   }else{
+     mean.alpha <- mean(x$samples$alpha)
+
+     r.alpha<- range(x$samples$alpha)
+     d.alpha <- density(x$samples$alpha, from = r.alpha[1], to = r.alpha[2])
+
+     layout(matrix(c(1,1,2,2,3,3,3,3), ncol = 4, nrow = 2, byrow = TRUE),heights = c(5,8))
+
+
+     par(mar = c(2, 4, 3, 1), cex = 1)
+     plot(d.alpha, main = expression(alpha),xlab = "", ylab = "", yaxt = "n",lwd = l.wid )
+     abline(v = c(-1,1), col = "red", lty = 2,lwd = l.wid)
+     if(sum(x$samples$alpha >= 1) > 0){
+     x1 <- min(which(d.alpha$x >= 1))
+     x2 <- max(which(d.alpha$x <=  r.alpha[2]))
+     with(d.alpha, polygon(x=c(x[c(x1,x1:x2,x2)]), y= c(0, y[x1:x2], 0), density = 50,col="red"))
+     }
+     if(sum(x$samples$alpha <= -1) > 0){
+     x1 <- max(which(d.alpha$x <= -1))
+     x2 <- min(which(d.alpha$x >=  r.alpha[1]))
+     with(d.alpha, polygon(x=c(x[c(x2,x2:x1,x1)]), y= c(0, y[x2:x1], 0), density = 50,col="red"))
+     }
+
+     par(mar = rep(0, times = 4))
+     plot(c(0,1),c(0,1), ann = FALSE, bty = "n", type = "n", xaxt = "n", yaxt = "n")
+     samps.out <- signif(mean(x$samples$alpha < 1 & x$samples$alpha > -1)*100, digits = 4)
+     samps.out <- paste(samps.out,"%", sep = "")
+     text(x = 0.5, y = c(0.6,0.3), c(bquote(.(samps.out) ~ "of the samples of" ~ alpha) , expression("are between (-1,1)")))
+
+
+     par(mar = c(5, 4, 2, 2),cex = 1)
+     plot(0:(length(y)-1),y, type = "p", pch = 19, ylab = "Mass", xlab = "Time Steps", main = "")
+
+
+   }
+  }else if(x$type == "BMB"){
+
+  ## Plots from BMB function
   sample.names <- names(sample.params)
   samples <- list()
   plot.names <- character()
@@ -88,7 +183,7 @@ plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hd
     }
 
   }
-
+}
 
 
 }

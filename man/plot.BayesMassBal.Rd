@@ -17,7 +17,7 @@
 
 \item{sample.params}{List to be used for indicating model parameter samples used for creation of plot(s).  See details for required structure.}
 
-\item{layout}{Character string indicating the desired data to be plotted.  \code{"trace"} produces trace plots of sequential parameter draws. \code{"dens"} produces densities of posterior draws.}
+\item{layout}{Character string indicating the desired data to be plotted.  \code{"trace"} produces trace plots of sequential parameter draws. \code{"dens"} produces densities of posterior draws.  Argument ignored when \code{x$type = "time-series"}.}
 
 \item{hdi.params}{Numeric vector of length two, used to draw Highest Posterior Density Intervals (HPDI) using \code{\link[HDInterval]{hdi}}, and otherwise ignored. \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} bounds should be drawn.  The second element of \code{hdi} is passed to \code{credMass} in the \code{\link[HDInterval]{hdi}} function.  The default, \code{hdi.params = c(1,0.95)}, plots the 95\% HPDI bounds.}
 

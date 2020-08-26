@@ -57,6 +57,8 @@ Returns a list of outputs
 \item{\code{ybal}}{List of samples from the distribution of reconciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}.  Equivalent to \code{lapply(BMB(...)$beta,function(X,x){x \%*\% X} , x = X)} .  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
 
 \item{\code{X}}{The function argument \code{X} is passed to the output so that it can be used with other \code{BayesMassBal} functions.}
+
+\item{\code{type}}{Character string used by \code{\link{plot.BayesMassBal}}.  \code{type = "BMB"} for an object returned from the \code{BMB} function.}
 }
 \description{
 Allows the user to specify the covariance structure for a Bayesian mass balance, simulates draws from reconciled masses and relevant covariance matrix, and approximates the log-marginal likelihood.

@@ -22,6 +22,7 @@
 #' @return \item{\code{diagnostics}}{List containing results from diagnostic functions \code{\link[coda]{geweke.diag}} and \code{\link[coda]{effectiveSize}}}
 #' @return \item{\code{ybal}}{List of samples from the distribution of reconciled mass flow rates, in the same format as the function argument \code{y}.  Produced with argument \code{ybal = TRUE}.  Equivalent to \code{lapply(BMB(...)$beta,function(X,x){x \%*\% X} , x = X)} .  Viewing this output is more intuitive than viewing samples of \code{beta}, at the expense of RAM and some computation time.}
 #' @return \item{\code{X}}{The function argument \code{X} is passed to the output so that it can be used with other \code{BayesMassBal} functions.}
+#' @return \item{\code{type}}{Character string used by \code{\link{plot.BayesMassBal}}.  \code{type = "BMB"} for an object returned from the \code{BMB} function.}
 #'
 #' @details
 #'
@@ -106,6 +107,7 @@ BMB <- function(X, y, cov.structure = c("indep","component","location"), priors 
     return(X)}, x = X)
   }
   samps$X <- X
+  samps$type <- "BMB"
   class(samps) <- "BayesMassBal"
   if(verb != 0){message("Done!")}
   return(samps)

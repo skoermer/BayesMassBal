@@ -95,6 +95,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/ssEst.html">ssEst</a>
+    </li>
+    <li>
       <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
     </li>
   </ul>
@@ -212,14 +215,17 @@
 
 <dt><code>X</code></dt><dd><p>The function argument <code>X</code> is passed to the output so that it can be used with other <code>BayesMassBal</code> functions.</p></dd>
 
+<dt><code>type</code></dt><dd><p>Character string used by <code><a href='plot.BayesMassBal.html'>plot.BayesMassBal</a></code>.  <code>type = "BMB"</code> for an object returned from the <code>BMB</code> function.</p></dd>
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>See <code><a href='../articles/Two_Node_Process.html'>vignette("Two_Node_Process", package = "BayesMassBal")</a></code> for further details on how to use function outputs.</p>
 <p>When the <code>priors</code> argument is left unspecified, a set of default conjugate priors are used, which are chosen to allow <code>BMB()</code> to work well in a general setting.  In the current version of the <code>BayesMassBal</code> package, only the conjugate priors stated below can be used, but hyperparameter values can be specified by the user using the <code>priors</code> argument.</p>
 <p>The prior distribution on <code>beta</code> is a normal distribution truncated at 0.  The mean of this distribution before truncation is the <a href='https://en.wikipedia.org/wiki/Ordinary_least_squares'>ordinary least squares</a> (OLS) estimate of \(\beta\). OLS estimates less than 0, are changed to 0.  The prior variance, before truncation, of each element of \(\beta\) is set to:</p>
 <p>$$10^{\mathrm{number of integer digits of an element of } \beta + 6}$$</p>
+<p>Currently, there is only support for diagonal prior covariance matricies for \(\beta\)</p>
 <p>When <code>cov.structure = "indep"</code> the error of all observations in a sample set are independent. An <a href='https://en.wikipedia.org/wiki/Inverse-gamma_distribution'>inverse gamma</a> prior distribution, with \(\alpha_0 = 0.000001\) and \(\beta_0 = 0.000001\), is placed on the variance of the mass flow rate for each sample component at each sample location.</p>
-<p>When <code>cov.structure = "component"</code> or <code>"location"</code>, the prior distribution on \(\Sigma_i\) is <a href='https://en.wikipedia.org/wiki/Inverse-Wishart_distribution'>inverse Wishart</a> \((\nu_0, \nu_0 \times S_0)\). The degrees of freedom parameter, \(\nu_0\), is equal to the dimension of \(\Sigma_i\).  The scale matrix parameter is equal to a matrix, \(S_0\), with the sample variance of the relevant observation on the diagonal, multiplied by \(\nu_0\). Currently, there is only support for a diagonal \(S_0\) matrix.</p>
+<p>When <code>cov.structure = "component"</code> or <code>"location"</code>, the prior distribution on \(\Sigma_i\) is <a href='https://en.wikipedia.org/wiki/Inverse-Wishart_distribution'>inverse Wishart</a> \((\nu_0, \nu_0 \times S_0)\). The degrees of freedom parameter, \(\nu_0\), is equal to the dimension of \(\Sigma_i\).  The scale matrix parameter is equal to a matrix, \(S_0\), with the sample variance of the relevant observation on the diagonal, multiplied by \(\nu_0\).</p>
 <p>The user is able to specify the prior hyperparameters of the mean and variance of <code>beta</code>, \(\alpha_0\) and \(\beta_0\) for each \(\sigma^2\), and the degrees of freedom and scale matrix for each \(\Sigma_i\) using the <code>priors</code> argument.  It is advisable for the user to specify their own prior hyperparameters for \(p(\sigma^2)\) if the variance of any element is well under 1, or \(p(\beta)\) if the there is a wide range in the magnitude of observations.</p>
 <p>When <code>priors = "Jeffreys"</code> <a href='https://en.wikipedia.org/wiki/Jeffreys_prior'>Jeffreys</a> priors are used for the prior distribution of the variance and covariance parameters.  Priors used are \(p(\sigma^2) \propto \frac{1}{\sigma^2}\) and \(p(\Sigma) \propto |\Sigma|^{-(p+1)/2}\), as listed in (Yang and Berger 1996)
 .  The Jeffreys prior for a \(\beta\) with infinite support is \(p(\beta) \propto 1\).  To preserve the prior information that \(\beta &gt; 0\), \(p(\beta)\propto I\lbrack \beta &gt; 0 \rbrack\) is chosen.  It is not possible to calculate log-marginal likelihood using the methods in (Chib 1995)
