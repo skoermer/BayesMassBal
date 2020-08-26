@@ -138,43 +138,43 @@ y_2 &amp;= y_3 +y_5
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">indep.samples</span>$<span class="no">diagnostics</span>
 <span class="co">#&gt; $beta</span>
 <span class="co">#&gt; $beta$CuFeS2</span>
-<span class="co">#&gt;   index         cd  ess</span>
-<span class="co">#&gt; 1     1  0.2563777 2900</span>
-<span class="co">#&gt; 2     2 -0.4228157 2900</span>
-<span class="co">#&gt; 3     3 -0.1328793 2900</span>
+<span class="co">#&gt;   index         cd      ess</span>
+<span class="co">#&gt; 1     1  0.3586465 2566.622</span>
+<span class="co">#&gt; 2     2 -0.3361606 2900.000</span>
+<span class="co">#&gt; 3     3 -2.8892566 2654.161</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $beta$gangue</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1 -0.1205562 2900.000</span>
-<span class="co">#&gt; 2     2  0.5210132 2900.000</span>
-<span class="co">#&gt; 3     3 -2.3700649 2060.419</span>
+<span class="co">#&gt; 1     1  0.4932078 2716.143</span>
+<span class="co">#&gt; 2     2  0.9910455 3395.799</span>
+<span class="co">#&gt; 3     3 -0.3380164 1713.607</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig</span>
 <span class="co">#&gt; $Sig[[1]]</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1 -1.3835082 2900.000</span>
-<span class="co">#&gt; 2     2  0.3940489 2750.243</span>
-<span class="co">#&gt; 3     3 -1.4296441 2562.481</span>
-<span class="co">#&gt; 4     4 -1.4596662 2103.670</span>
-<span class="co">#&gt; 5     5 -1.6887874 2097.072</span>
+<span class="co">#&gt; 1     1  0.5970954 2724.928</span>
+<span class="co">#&gt; 2     2 -1.6483378 2900.000</span>
+<span class="co">#&gt; 3     3 -0.1167317 2650.414</span>
+<span class="co">#&gt; 4     4 -0.7098301 2468.839</span>
+<span class="co">#&gt; 5     5 -1.3320001 1331.094</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig[[2]]</span>
-<span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1  0.1927986 2747.203</span>
-<span class="co">#&gt; 2     2 -1.3659076 2650.223</span>
-<span class="co">#&gt; 3     3  0.2161544 1892.576</span>
-<span class="co">#&gt; 4     4  0.2202509 2697.263</span>
-<span class="co">#&gt; 5     5 -0.0303101 2201.398</span></pre></body></html></div>
+<span class="co">#&gt;   index          cd      ess</span>
+<span class="co">#&gt; 1     1  1.00685038 2762.297</span>
+<span class="co">#&gt; 2     2 -0.44936372 2324.511</span>
+<span class="co">#&gt; 3     3  0.83991607 1761.652</span>
+<span class="co">#&gt; 4     4 -0.08907884 2527.470</span>
+<span class="co">#&gt; 5     5 -0.35076814 1937.395</span></pre></body></html></div>
 <p>The model with independent variances may not be the best fitting model. Models specifying covariance between sample locations for a single component, and covariance between components at a single location are fit.</p>
 <div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">component.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"component"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">location.samples</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span>(<span class="kw">X</span> <span class="kw">=</span> <span class="no">X</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">y</span>, <span class="kw">cov.structure</span> <span class="kw">=</span> <span class="st">"location"</span>, <span class="kw">BTE</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span>), <span class="kw">lml</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">verb</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></body></html></div>
 <p>Computing <span class="math inline">\(\log(\mathrm{Bayes Factor})\)</span> for <span class="math inline">\(BF = p(y|\texttt{indep})/p(y|\texttt{component})\)</span>:</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">indep.samples</span>$<span class="no">lml</span> - <span class="no">component.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] -126.8125</span></pre></body></html></div>
+<span class="co">#&gt; [1] -126.842</span></pre></body></html></div>
 <p>Then comparing <span class="math inline">\(p(y|\texttt{component})\)</span> to <span class="math inline">\(p(y|\texttt{location})\)</span></p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">component.samples</span>$<span class="no">lml</span> - <span class="no">location.samples</span>$<span class="no">lml</span>
-<span class="co">#&gt; [1] 0.7597828</span></pre></body></html></div>
+<span class="co">#&gt; [1] 0.8242452</span></pre></body></html></div>
 <p>Shows there is little difference between the models where <code>cov.structure  = "location"</code> and <code>cov.structure = "component"</code>, but both of these models better explain the data than <code>cov.structure = "indep"</code>.</p>
 <p>The main effect of a variable independent of the process can be calculated by supplying a function, <code>fn</code> that takes the arguments of mass balanced flow rates <code>ybal</code>, and the random independent and uniformly distributed variables <code>x</code>. Information can be gained on the main effect of a particular element of <code>x</code>, <code>xj</code>, on <code>fn</code> using the <code>mainEff</code> function. Output from <code>mainEff</code> includes information on the distribution of <span class="math inline">\(E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack\)</span>.</p>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">fn_example</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">X</span>,<span class="no">ybal</span>){

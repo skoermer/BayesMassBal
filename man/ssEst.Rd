@@ -61,6 +61,6 @@ for(i in 2:21){
 
 ## Generating draws of model parameters
 
-ssEst(y, BTE = c(100,500,1))
+fit <- ssEst(y, BTE = c(100,500,1))
 
 }
