@@ -3,19 +3,11 @@
 language: R
 cache: packages
 warnings_are_errors: true
-
-os:
-  - linux
-  - osx
-
 r:
   - oldrel
   - release
   - devel
 
-after_success:
-    - Rscript -e 'covr::codecov(type = "all")'
-matrix:
-  exclude:
-    - r: devel
-      os: osx
+os:
+ - linux
+ - osx
