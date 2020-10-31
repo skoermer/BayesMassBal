@@ -54,10 +54,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/ssEst.html">ssEst</a>
+      <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
     </li>
     <li>
-      <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
+      <a href="../articles/ssEst.html">ssEst</a>
     </li>
   </ul>
 </li>
@@ -82,7 +82,8 @@
 
       
 
-      </header><script src="ssEst_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="ssEst_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="ssEst_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="ssEst_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>ssEst</h1>
@@ -95,8 +96,9 @@
 
     
     
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">BayesMassBal</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">5</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/skoermer/BayesMassBal">BayesMassBal</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></pre></div>
 <p><img src="ssEst_files/figure-html/datagen-1.png" width="700"></p>
 <p>When looking over mass flow rate data from the individual stream of a process, such as the simulated data above, it is often unclear when the process achieved steady state as well as what the steady state mass flow rate is. Multiple engineers, each using different tools and reasoning, looking at this data will have different determinations. Inconsistencies in estimation can result in misleading conclusions when making process performance. Thus, there is a need to for a method consistently categorizing such data.</p>
 <p>The <code>ssEst</code> function fills this gap, as well as provides quantitative information on if the stream is at steady state in the first place. The below auto-regressive model, with a lag of 1, is fit to the data.</p>
@@ -108,24 +110,28 @@ y_t = \mu + \alpha y_{t-1} + \epsilon
 \mathbb{E}\lbrack y \rbrack = \frac{\mu}{1-\phi}
 \]</span></p>
 <p>Getting started, the data set above was generated with the following code:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">y</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">NA</span>, <span class="kw">times</span> <span class="kw">=</span> <span class="fl">41</span>)
-<span class="no">y</span>[<span class="fl">1</span>] <span class="kw">&lt;-</span> <span class="fl">10</span>
-<span class="no">mu</span> <span class="kw">&lt;-</span> <span class="fl">20</span>
-<span class="no">alpha</span> <span class="kw">&lt;-</span> <span class="fl">0.8</span>
-<span class="no">sig</span> <span class="kw">&lt;-</span> <span class="fl">10</span>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA</span>, times <span class="op">=</span> <span class="fl">41</span><span class="op">)</span>
+<span class="va">y</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">10</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fl">20</span>
+<span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fl">0.8</span>
+<span class="va">sig</span> <span class="op">&lt;-</span> <span class="fl">10</span>
 
-<span class="kw">for</span>(<span class="no">i</span> <span class="kw">in</span> <span class="fl">2</span>:<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">y</span>)){
-  <span class="no">y</span>[<span class="no">i</span>] <span class="kw">&lt;-</span> <span class="no">mu</span> + <span class="no">alpha</span> * <span class="no">y</span>[<span class="no">i</span>-<span class="fl">1</span>] + <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">1</span>)*<span class="no">sig</span>
-}</pre></body></html></div>
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">2</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">y</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">mu</span> <span class="op">+</span> <span class="va">alpha</span> <span class="op">*</span> <span class="va">y</span><span class="op">[</span><span class="va">i</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="va">sig</span>
+<span class="op">}</span></pre></div>
 <p>Note, <span class="math inline">\(\alpha = 0.8\)</span> implies the process is stationary. Then the <code>ssEst</code> function is used on these observed values.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">fit1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ssEst.html">ssEst</a></span>(<span class="no">y</span>)</pre></body></html></div>
-<p>Since <code>fit1</code> is a <code>"BayesMassBal"</code> object, it can easily be passed to <code><a href="https://rdrr.io/r/base/plot.html">plot()</a></code> so the output can be quickly inspected.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">fit1</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="va">fit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ssEst.html">ssEst</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></pre></div>
+<p>Since <code>fit1</code> is a <code>"BayesMassBal"</code> object, it can easily be passed to <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> so the output can be quickly inspected.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit1</span><span class="op">)</span></pre></div>
 <p><img src="ssEst_files/figure-html/plot1-1.png" width="700"></p>
 <p>One can see the density obtained from the samples of <span class="math inline">\(\alpha\)</span>. It is up to the engineer to decide if there is enough evidence to deem the trend stationary. If all of the samples of <span class="math inline">\(\alpha\)</span> obtained are in the interval (-1,1), then the distribution for the estimation of steady state will also be calculated and displayed. In this case, only a small fraction of the samples of <span class="math inline">\(\alpha\)</span> are outside of the valid range. It is likely the chain is stationary.</p>
 <p>To inspect <span class="math inline">\(\mathbb{E}\lbrack y \rbrack\)</span> <code>ssEst</code> is rerun with the argument setting <code>stationary = TRUE</code>. This setting specifies a prior distribution on <span class="math inline">\(\alpha\)</span> which forces all samples to be within (-1,1) so that the steady state mass flow rate can be calculated. Refitting and re-plotting gives:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">fit2</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ssEst.html">ssEst</a></span>(<span class="no">y</span>, <span class="kw">stationary</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">fit2</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="va">fit2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ssEst.html">ssEst</a></span><span class="op">(</span><span class="va">y</span>, stationary <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit2</span><span class="op">)</span></pre></div>
 <p><img src="ssEst_files/figure-html/ssConst-1.png" width="700"></p>
 <p>The point <span class="math inline">\(\mathbb{E}\lbrack y \rbrack\)</span> can then be used in a classical point mass balance, or some subset of the data can be used with the <code><a href="../reference/BMB.html">BMB()</a></code> function. One way to choose the time steady state of the system has been achieved is using all data points after which the line for the Expected Steady State has been crossed. Another method would be to use a subset of samples of <span class="math inline">\(\mathbb{E} \lbrack y | \mu, \alpha \rbrack\)</span> with the <code>BMB</code> function.</p>
   </div>
@@ -143,7 +149,7 @@ y_t = \mu + \alpha y_{t-1} + \epsilon
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -95,10 +95,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ssEst.html">ssEst</a>
+      <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
     </li>
     <li>
-      <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
+      <a href="../articles/ssEst.html">ssEst</a>
     </li>
   </ul>
 </li>
@@ -135,15 +135,15 @@
     <p>Simulates data for a stochastic two node, two component process at steady state.  Location indices are the same as what is shown in <code><a href='../articles/Two_Node_Process.html'>vignette("Two_Node_Process", package = "BayesMassBal")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>twonodeSim</span>(
-  <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>7</span>,
-  <span class='kw'>feed</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>CuFeS2grade</span> <span class='kw'>=</span> <span class='fl'>1.2</span>),
-  <span class='kw'>rec</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>CuFeS2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>98</span>, <span class='fl'>95</span>)/<span class='fl'>100</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5e-05</span>, <span class='fl'>8e-05</span>)), <span class='kw'>gangue</span> <span class='kw'>=</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>7</span>, <span class='fl'>4</span>)/<span class='fl'>100</span>, <span class='kw'>var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5e-05</span>, <span class='fl'>2.5e-05</span>))),
-  <span class='kw'>assayNoise</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>CuFeS2</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.15</span>, <span class='fl'>0.2</span>, <span class='fl'>0.05</span>, <span class='fl'>5e-05</span>, <span class='fl'>0.005</span>), <span class='kw'>gangue</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>1</span>, <span class='fl'>0.03</span>,
-    <span class='fl'>2</span>, <span class='fl'>0.5</span>)),
-  <span class='kw'>truncation</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>twonodeSim</span><span class='op'>(</span>
+  K <span class='op'>=</span> <span class='fl'>7</span>,
+  feed <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>rate <span class='op'>=</span> <span class='fl'>100</span>, sd <span class='op'>=</span> <span class='fl'>6</span>, CuFeS2grade <span class='op'>=</span> <span class='fl'>1.2</span><span class='op'>)</span>,
+  rec <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>CuFeS2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>98</span>, <span class='fl'>95</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>100</span>, var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5e-05</span>, <span class='fl'>8e-05</span><span class='op'>)</span><span class='op'>)</span>, gangue <span class='op'>=</span>
+    <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>mean <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>7</span>, <span class='fl'>4</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>100</span>, var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5e-05</span>, <span class='fl'>2.5e-05</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>,
+  assayNoise <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>CuFeS2 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.15</span>, <span class='fl'>0.2</span>, <span class='fl'>0.05</span>, <span class='fl'>5e-05</span>, <span class='fl'>0.005</span><span class='op'>)</span>, gangue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>1</span>, <span class='fl'>0.03</span>,
+    <span class='fl'>2</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>,
+  truncation <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,13 +195,14 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>twonodeSim</span>()$<span class='no'>simulation</span>
+<span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'>twonodeSim</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>simulation</span>
 
 <span class='co'>## Then the BMB function can be run as</span>
-<span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>), <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='constrainProcess.html'>constrainProcess</a></span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)
+<span class='va'>C</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span>, ncol <span class='op'>=</span> <span class='fl'>5</span>, nrow <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='constrainProcess.html'>constrainProcess</a></span><span class='op'>(</span>C <span class='op'>=</span> <span class='va'>C</span><span class='op'>)</span>
 
-<span class='fu'><a href='BMB.html'>BMB</a></span>(<span class='kw'>X</span> <span class='kw'>=</span> <span class='no'>X</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>y</span>, <span class='kw'>BTE</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>600</span>,<span class='fl'>1</span>))</div><div class='output co'>#&gt; <span class='message'>Default Priors Used</span></div><div class='output co'>#&gt; <span class='message'>Sampling from posterior distributions</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Done!</span></div><div class='output co'>#&gt; $beta
+<span class='fu'><a href='BMB.html'>BMB</a></span><span class='op'>(</span>X <span class='op'>=</span> <span class='va'>X</span>, y <span class='op'>=</span> <span class='va'>y</span>, BTE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>100</span>,<span class='fl'>600</span>,<span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Default Priors Used</span></div><div class='output co'>#&gt; <span class='message'>Sampling from posterior distributions</span></div><div class='output co'>#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=======================                                               |  33%  |                                                                              |===================================                                   |  50%  |                                                                              |===============================================                       |  67%  |                                                                              |==========================================================            |  83%  |                                                                              |======================================================================| 100%</div><div class='output co'>#&gt; <span class='message'>Done!</span></div><div class='output co'>#&gt; $beta
 #&gt; $beta$CuFeS2
 #&gt;            [,1]       [,2]       [,3]       [,4]       [,5]       [,6]
 #&gt; [1,] 1.04606822 1.03197621 1.05109687 1.08358755 1.09425483 1.08868216
@@ -3133,7 +3134,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
