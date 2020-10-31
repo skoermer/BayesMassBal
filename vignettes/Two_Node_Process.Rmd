@@ -94,6 +94,13 @@ X <- constrainProcess(C = C)
 X
 ```
 
+Constraints can also be imported from a `.csv` file.  The path to a file, included in the `BayesMassBal` package, for this process can be found and constraints can be imported by specifying the location for the `file` argument for `constrainProcess` as shown below:
+
+```{r Xdefcsv}
+constraint_file_location <- system.file("extdata", "twonode_constraints.csv",package = "BayesMassBal")
+X <- constrainProcess(file = constraint_file_location)
+```
+
 The previously simulated data is loaded from a `.csv` file using the `importObservations()` function.  The local location of the the file imported below can be found by typing `system.file("extdata", "twonode_example.csv",package = "BayesMassBal")`.  View the document in Excel to see how your data should be formatted for import.  ***Note:*** it is not required that the entries into the `*.csv` file are separated by `";"`.
 
 ```{r datasim}

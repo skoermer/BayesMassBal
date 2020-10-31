@@ -95,10 +95,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ssEst.html">ssEst</a>
+      <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
     </li>
     <li>
-      <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
+      <a href="../articles/ssEst.html">ssEst</a>
     </li>
   </ul>
 </li>
@@ -135,7 +135,7 @@
     <p>Imports observed mass flow rates stored in a <code>*.csv</code> file and then organizes the data for use with the <code><a href='BMB.html'>BMB</a></code> function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>importObservations</span>(<span class='no'>file</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>csv.params</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>importObservations</span><span class='op'>(</span><span class='va'>file</span>, header <span class='op'>=</span> <span class='cn'>FALSE</span>, csv.params <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,15 +172,16 @@ The entries in file must be organized as such:</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
- <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'>importObservations</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"twonode_example.csv"</span>,
-                                      <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"BayesMassBal"</span>),
-                   <span class='kw'>header</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>csv.params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>";"</span>))
+ <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'>importObservations</span><span class='op'>(</span>file <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata"</span>, <span class='st'>"twonode_example.csv"</span>,
+                                      package <span class='op'>=</span> <span class='st'>"BayesMassBal"</span><span class='op'>)</span>,
+                   header <span class='op'>=</span> <span class='cn'>TRUE</span>, csv.params <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>sep <span class='op'>=</span> <span class='st'>";"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'>## The linear constraints for this example data set are:</span>
-<span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,-<span class='fl'>1</span>,<span class='fl'>0</span>,-<span class='fl'>1</span>), <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+<span class='va'>C</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='fl'>0</span>,<span class='fl'>1</span>,<span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>0</span>,<span class='op'>-</span><span class='fl'>1</span><span class='op'>)</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span>, ncol <span class='op'>=</span> <span class='fl'>5</span>, nrow <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
 
 <span class='co'>## The X matrix for this data set can be found using:</span>
-<span class='no'>X</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='constrainProcess.html'>constrainProcess</a></span>(<span class='kw'>C</span> <span class='kw'>=</span> <span class='no'>C</span>)</div></pre>
+<span class='va'>X</span> <span class='op'>&lt;-</span> <span class='fu'><a href='constrainProcess.html'>constrainProcess</a></span><span class='op'>(</span>C <span class='op'>=</span> <span class='va'>C</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -196,7 +197,7 @@ The entries in file must be organized as such:</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

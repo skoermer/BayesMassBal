@@ -96,10 +96,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/ssEst.html">ssEst</a>
+      <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
     </li>
     <li>
-      <a href="../articles/Two_Node_Process.html">Two_Node_Process</a>
+      <a href="../articles/ssEst.html">ssEst</a>
     </li>
   </ul>
 </li>
@@ -137,7 +137,7 @@
  on a two node process.  This function is provided for the purpose of comparing the performance of a Bayesian mass balance to a point estimate mass balance using any output of <code><a href='twonodeSim.html'>twonodeSim</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>pointmassbal</span>(<span class='no'>y</span>)</pre>
+    <pre class="usage"><span class='fu'>pointmassbal</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,9 +159,11 @@ Butterworth-Heinemann, Oxford Boston.
 ISBN 978-0-7506-4450-1.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='twonodeSim.html'>twonodeSim</a></span>()$<span class='no'>simulation</span>
+    <pre class="examples"><div class='input'><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='twonodeSim.html'>twonodeSim</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>simulation</span>
 
-<span class='no'>yhat</span> <span class='kw'>&lt;-</span> <span class='fu'>pointmassbal</span>(<span class='no'>y</span>)$<span class='no'>yhat</span></div></pre>
+<span class='va'>yhat</span> <span class='op'>&lt;-</span> <span class='fu'>pointmassbal</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span><span class='op'>$</span><span class='va'>yhat</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -177,7 +179,7 @@ ISBN 978-0-7506-4450-1.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

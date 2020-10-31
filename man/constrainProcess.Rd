@@ -9,7 +9,7 @@ constrainProcess(C = NULL, file = FALSE)
 \arguments{
 \item{C}{Matrix of constraints for a process at steady state.    See Details below.}
 
-\item{file}{Character string indicating file path for a \code{*.csv} file containing linear constraints.  Only values of -1, 0, and 1 are valid.  The first row in the \code{file} is required to be a header naming the sampling locations.}
+\item{file}{Character string indicating file path for a \code{*.csv} file containing linear constraints.  Only values of -1, 0, and 1 are valid.  The first row in the \code{file} is required to be a header naming the sampling locations.  See Details for an example.}
 }
 \value{
 Returns the matrix \eqn{X} which maps \eqn{\beta} to observed masses \eqn{y}.  No changes need to be made to \code{X} when using with \code{\link{BMB}}.
@@ -19,6 +19,10 @@ Generates matrix \eqn{X} which maps constrained masses \eqn{\beta} to observed m
 }
 \details{
 The output of this function is meant to be used as the input parameter \code{X} in the \code{\link{BMB}} function.  The matrix \code{C}, or imported matrix from \code{file}, indexes sampling locations via columns, and number of constraints via rows. Only values of -1, 0, and 1 are valid, and indicate mass leaving a node, a location that is not relevant to a node, and mass entering a node respectively.  Constraints should only be indicated around each node. No additional, and no less constraints should be specified.  Additional constraints are redundant.  Each sample component is subject to the same constraints, and therefore the constraints given to \code{constrainProcess} do not need to be repeated for each component.
+
+See \code{vignette("Two_Node_Process")} for an application example.
+
+The file path of a \code{*.csv} file, which could be used to indicate the constraints for the process in \code{vignette("Two_Node_Process")}, can be found by typing \code{system.file("extdata", "twonode_constraints.csv",package = "BayesMassBal")}, and can be used as a template for other processes.
 }
 \examples{
 
@@ -33,5 +37,10 @@ constrainProcess(C = C)
 
 C <- matrix(c(1,-1,0,-1,0,0,1,-1,0,-1), byrow = TRUE, ncol = 5, nrow = 2)
 constrainProcess(C = C)
+
+## Obtaining the constraints from a .csv file
+
+C <- constrainProcess(file =
+ system.file("extdata", "twonode_constraints.csv",package = "BayesMassBal"))
 
 }
