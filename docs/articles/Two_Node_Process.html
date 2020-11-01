@@ -89,7 +89,7 @@
       <h1 data-toc-skip>Two_Node_Process</h1>
                         <h4 class="author">Scott Koermer</h4>
             
-            <h4 class="date">2020-10-31</h4>
+            <h4 class="date">2020-11-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/skoermer/BayesMassBal/blob/master/vignettes/Two_Node_Process.Rmd"><code>vignettes/Two_Node_Process.Rmd</code></a></small>
       <div class="hidden name"><code>Two_Node_Process.Rmd</code></div>
@@ -151,34 +151,34 @@ y_2 &amp;= y_3 +y_5
 <span class="va">indep.samples</span><span class="op">$</span><span class="va">diagnostics</span>
 <span class="co">#&gt; $beta</span>
 <span class="co">#&gt; $beta$CuFeS2</span>
-<span class="co">#&gt;   index         cd  ess</span>
-<span class="co">#&gt; 1     1  0.4698690 2900</span>
-<span class="co">#&gt; 2     2 -0.8089679 2900</span>
-<span class="co">#&gt; 3     3  1.1388822 2900</span>
+<span class="co">#&gt;   index          cd      ess</span>
+<span class="co">#&gt; 1     1  0.13087162 2750.116</span>
+<span class="co">#&gt; 2     2  0.21969435 3164.781</span>
+<span class="co">#&gt; 3     3 -0.06806978 2899.375</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $beta$gangue</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1  1.3307340 2900.000</span>
-<span class="co">#&gt; 2     2  1.1294312 2900.000</span>
-<span class="co">#&gt; 3     3 -0.7253307 1839.823</span>
+<span class="co">#&gt; 1     1 -1.8067558 3359.407</span>
+<span class="co">#&gt; 2     2 -0.4961405 2702.483</span>
+<span class="co">#&gt; 3     3 -0.3259970 1822.626</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig</span>
 <span class="co">#&gt; $Sig[[1]]</span>
-<span class="co">#&gt;   index          cd      ess</span>
-<span class="co">#&gt; 1     1  0.02512262 2900.000</span>
-<span class="co">#&gt; 2     2 -0.99765338 3194.444</span>
-<span class="co">#&gt; 3     3 -0.21544072 2536.665</span>
-<span class="co">#&gt; 4     4 -1.31410085 2512.968</span>
-<span class="co">#&gt; 5     5 -0.90335530 2246.037</span>
+<span class="co">#&gt;   index         cd      ess</span>
+<span class="co">#&gt; 1     1 -0.4066031 2900.000</span>
+<span class="co">#&gt; 2     2  1.6994162 2900.000</span>
+<span class="co">#&gt; 3     3  0.6480666 2049.341</span>
+<span class="co">#&gt; 4     4 -0.1945451 2168.492</span>
+<span class="co">#&gt; 5     5 -0.5301614 1833.494</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig[[2]]</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1 -0.3817052 2900.000</span>
-<span class="co">#&gt; 2     2 -0.1001386 2394.138</span>
-<span class="co">#&gt; 3     3 -0.9168995 1882.698</span>
-<span class="co">#&gt; 4     4 -1.6500332 2026.659</span>
-<span class="co">#&gt; 5     5  0.6232039 2126.653</span></pre></div>
+<span class="co">#&gt; 1     1 -0.6132881 2737.802</span>
+<span class="co">#&gt; 2     2 -3.1925243 2596.672</span>
+<span class="co">#&gt; 3     3 -0.4433417 2214.190</span>
+<span class="co">#&gt; 4     4  0.2755739 2487.155</span>
+<span class="co">#&gt; 5     5 -1.2716605 2412.166</span></pre></div>
 <p>The model with independent variances may not be the best fitting model. Models specifying covariance between sample locations for a single component, and covariance between components at a single location are fit.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
 <span class="va">component.samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/BMB.html">BMB</a></span><span class="op">(</span>X <span class="op">=</span> <span class="va">X</span>, y <span class="op">=</span> <span class="va">y</span>, cov.structure <span class="op">=</span> <span class="st">"component"</span>, BTE <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">100</span>,<span class="fl">3000</span>,<span class="fl">1</span><span class="op">)</span>, lml <span class="op">=</span> <span class="cn">TRUE</span>, verb <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></pre></div>
@@ -187,11 +187,11 @@ y_2 &amp;= y_3 +y_5
 <p>Computing <span class="math inline">\(\log(\mathrm{Bayes Factor})\)</span> for <span class="math inline">\(BF = p(y|\texttt{indep})/p(y|\texttt{component})\)</span>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="va">indep.samples</span><span class="op">$</span><span class="va">lml</span> <span class="op">-</span> <span class="va">component.samples</span><span class="op">$</span><span class="va">lml</span>
-<span class="co">#&gt; [1] -126.7639</span></pre></div>
+<span class="co">#&gt; [1] -126.8108</span></pre></div>
 <p>Then comparing <span class="math inline">\(p(y|\texttt{component})\)</span> to <span class="math inline">\(p(y|\texttt{location})\)</span></p>
 <div class="sourceCode" id="cb13"><pre class="downlit">
 <span class="va">component.samples</span><span class="op">$</span><span class="va">lml</span> <span class="op">-</span> <span class="va">location.samples</span><span class="op">$</span><span class="va">lml</span>
-<span class="co">#&gt; [1] 0.7981425</span></pre></div>
+<span class="co">#&gt; [1] 0.794075</span></pre></div>
 <p>Shows there is little difference between the models where <code>cov.structure  = "location"</code> and <code>cov.structure = "component"</code>, but both of these models better explain the data than <code>cov.structure = "indep"</code>.</p>
 <p>The main effect of a variable independent of the process can be calculated by supplying a function, <code>fn</code> that takes the arguments of mass balanced flow rates <code>ybal</code>, and the random independent and uniformly distributed variables <code>x</code>. Information can be gained on the main effect of a particular element of <code>x</code>, <code>xj</code>, on <code>fn</code> using the <code>mainEff</code> function. Output from <code>mainEff</code> includes information on the distribution of <span class="math inline">\(E_x\lbrack f(x,y_{\mathrm{bal}})|x_j \rbrack\)</span>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">

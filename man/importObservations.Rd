@@ -4,7 +4,7 @@
 \alias{importObservations}
 \title{Import Observed Mass Flow Rates}
 \usage{
-importObservations(file, header = FALSE, csv.params = NULL)
+importObservations(file, header = TRUE, csv.params = NULL)
 }
 \arguments{
 \item{file}{Character string containing the name of \code{*.csv} from file which data will be read.  See Details below for valid file structures.}

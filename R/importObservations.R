@@ -37,7 +37,7 @@
 #' ## The X matrix for this data set can be found using:
 #' \donttest{X <- constrainProcess(C = C)}
 
-importObservations <- function(file, header = FALSE, csv.params = NULL){
+importObservations <- function(file, header = TRUE, csv.params = NULL){
   dat <- do.call(read.csv, c(list(file = file, header = header, stringsAsFactors = FALSE), csv.params))
 
   dat[,2] <- as.character(dat[,2])
