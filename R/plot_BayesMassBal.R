@@ -130,6 +130,7 @@ plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hd
   plot.names <- character()
 
   for(i in 1:length(sample.names)){
+
     sample.subset.names <- names(sample.params[[sample.names[i]]])
     sample.subset <- list()
 
@@ -170,6 +171,7 @@ plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hd
    }
   }else if(layout == "dens"){
     d.use <- apply(samples,1,function(X){density(X, from = mean(X)-3.5*sd(X), to = mean(X) + 3.5*sd(X))})
+    layout(mat = matrix(1:plot.spaces,nrow = nrow.layout, ncol = ncol.layout, byrow = TRUE))
     par(mar = c(4,4,2,1))
     for(i in 1:nplots){
       plot(d.use[[i]],xlab = plot.names[i], ylab = "", main = "", ...)

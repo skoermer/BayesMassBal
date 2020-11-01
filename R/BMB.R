@@ -44,6 +44,8 @@
 #'
 #' When \code{priors = "Jeffreys"} \href{https://en.wikipedia.org/wiki/Jeffreys_prior}{Jeffreys} priors are used for the prior distribution of the variance and covariance parameters.  Priors used are \eqn{p(\sigma^2) \propto \frac{1}{\sigma^2}} and \eqn{p(\Sigma) \propto |\Sigma|^{-(p+1)/2}}, as listed in \insertCite{priorlist}{BayesMassBal}.  The Jeffreys prior for a \eqn{\beta} with infinite support is \eqn{p(\beta) \propto 1}.  To preserve the prior information that \eqn{\beta > 0}, \eqn{p(\beta)\propto I\lbrack \beta > 0 \rbrack} is chosen.  It is not possible to calculate log-marginal likelihood using the methods in \insertCite{chib}{BayesMassBal} with Jeffreys priors.  Therefore, if \code{priors = "Jeffreys"} and \code{lml = TRUE}, the \code{lml} argument will be ignored and a warning will be printed.
 #'
+#' \code{lml} is reported in base \eqn{e}.  See \href{https://en.wikipedia.org/wiki/Bayes_factor#Interpretation}{here} for some guidance on how to interpret Bayes Factors, but note log base 10 is used.
+#'
 #' @examples
 #' y <- importObservations(file = system.file("extdata", "twonode_example.csv",
 #'                                     package = "BayesMassBal"),
@@ -54,6 +56,8 @@
 #'
 #' BMB_example <- BMB(X = X, y = y, cov.structure = "indep",
 #'                    BTE = c(10,300,1), lml = FALSE, verb=0)
+#'
+#' summary(BMB_example)
 #'
 #' @importFrom Rdpack reprompt
 #' @importFrom Matrix bdiag

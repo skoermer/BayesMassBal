@@ -230,6 +230,7 @@
 <p>When <code>priors = "Jeffreys"</code> <a href='https://en.wikipedia.org/wiki/Jeffreys_prior'>Jeffreys</a> priors are used for the prior distribution of the variance and covariance parameters.  Priors used are \(p(\sigma^2) \propto \frac{1}{\sigma^2}\) and \(p(\Sigma) \propto |\Sigma|^{-(p+1)/2}\), as listed in (Yang and Berger 1996)
 .  The Jeffreys prior for a \(\beta\) with infinite support is \(p(\beta) \propto 1\).  To preserve the prior information that \(\beta &gt; 0\), \(p(\beta)\propto I\lbrack \beta &gt; 0 \rbrack\) is chosen.  It is not possible to calculate log-marginal likelihood using the methods in (Chib 1995)
  with Jeffreys priors.  Therefore, if <code>priors = "Jeffreys"</code> and <code>lml = TRUE</code>, the <code>lml</code> argument will be ignored and a warning will be printed.</p>
+<p><code>lml</code> is reported in base \(e\).  See <a href='https://en.wikipedia.org/wiki/Bayes_factor#Interpretation'>here</a> for some guidance on how to interpret Bayes Factors, but note log base 10 is used.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Chib S (1995).
@@ -259,6 +260,39 @@ Institute of Statistics and Decision Sciences, Duke University.</p>
 <span class='va'>BMB_example</span> <span class='op'>&lt;-</span> <span class='fu'>BMB</span><span class='op'>(</span>X <span class='op'>=</span> <span class='va'>X</span>, y <span class='op'>=</span> <span class='va'>y</span>, cov.structure <span class='op'>=</span> <span class='st'>"indep"</span>,
                    BTE <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>,<span class='fl'>300</span>,<span class='fl'>1</span><span class='op'>)</span>, lml <span class='op'>=</span> <span class='cn'>FALSE</span>, verb<span class='op'>=</span><span class='fl'>0</span><span class='op'>)</span>
 
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>BMB_example</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Mass Flow Rates:
+#&gt; 
+#&gt; CuFeS2:
+#&gt; --------------------
+#&gt;  Sampling Location Expected Value     95% LB     95% UB
+#&gt;                  1     1.19275813 1.15098259 1.23564492
+#&gt;                  2     1.16881559 1.12929267 1.21325100
+#&gt;                  3     1.10632473 1.06412032 1.14664949
+#&gt;                  4     0.02394254 0.01451513 0.03396427
+#&gt;                  5     0.06249086 0.05223645 0.06970534
+#&gt; 
+#&gt; gangue:
+#&gt; --------------------
+#&gt;  Sampling Location Expected Value     95% LB     95% UB
+#&gt;                  1     99.4525360 96.2285468 102.312594
+#&gt;                  2      6.6140870  5.9957523   7.403684
+#&gt;                  3      0.2647477  0.2384474   0.288930
+#&gt;                  4     92.8384490 89.5972399  95.675802
+#&gt;                  5      6.3493392  5.7166541   7.110820
+#&gt; 
+#&gt; Total:
+#&gt; --------------------
+#&gt;  Sampling Location Expected Value    95% LB     95% UB
+#&gt;                  1     100.645294 97.436650 103.493661
+#&gt;                  2       7.782903  6.958083   8.354945
+#&gt;                  3       1.371072  1.325583   1.427543
+#&gt;                  4      92.862392 89.619371  95.696009
+#&gt;                  5       6.411830  5.771398   7.177154
+#&gt; 
+#&gt; 
+#&gt; log-marginal likelihood:
+#&gt; NA </div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

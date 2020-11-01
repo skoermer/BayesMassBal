@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • BayesMassBal</title>
+<title>Summary of BayesMassBal Object — summary.BayesMassBal • BayesMassBal</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Summary of BayesMassBal Object — summary.BayesMassBal" />
+<meta property="og:description" content="Prints a summary table containing mean values and 95" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -123,90 +124,46 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Summary of BayesMassBal Object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/skoermer/BayesMassBal/blob/master/R/summary_BayesMassBal.R'><code>R/summary_BayesMassBal.R</code></a></small>
+    <div class="hidden name"><code>summary.BayesMassBal.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Prints a summary table containing mean values and 95<!-- % HPDI intervals for the mass flow rates, as well as the log-marginal likelihood for a \code{BayesMassBal} class object.  Options include trace plots, posterior densities, and main effects plots. --></p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='co'># S3 method for BayesMassBal</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>x</span>, export <span class='op'>=</span> <span class='cn'>NA</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="BMB.html">BMB()</a></code> </p>
-        </td>
-        <td><p>Bayesian Mass Balance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="constrainProcess.html">constrainProcess()</a></code> </p>
-        </td>
-        <td><p>Matrix Constraining Process</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="importObservations.html">importObservations()</a></code> </p>
-        </td>
-        <td><p>Import Observed Mass Flow Rates</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="mainEff.html">mainEff()</a></code> </p>
-        </td>
-        <td><p>Main Effects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot.BayesMassBal.html">plot(<i>&lt;BayesMassBal&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Plots BayesMassBal Object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="pointmassbal.html">pointmassbal()</a></code> </p>
-        </td>
-        <td><p>Point Estimate Mass Balance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ssEst.html">ssEst()</a></code> </p>
-        </td>
-        <td><p>Steady State Estimate</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="summary.BayesMassBal.html">summary(<i>&lt;BayesMassBal&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Summary of BayesMassBal Object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="twonodeSim.html">twonodeSim()</a></code> </p>
-        </td>
-        <td><p>Two Node Process Data Simulation</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>A <code>BayesMassBal</code> object returned from the <code><a href='BMB.html'>BMB</a></code> function</p></td>
+    </tr>
+    <tr>
+      <th>export</th>
+      <td><p>Optional character string specifying location to save a <code>*.csv</code> file containing summary data.  Only data related to mass flow rates is printed.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments affecting the summary produced.  Not used for a <code>BayesMassBal</code> object.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A summary table printed to the console, and optionally a saved <code>*.csv</code> file saved within the path as specified.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Current implementation only returns statistics for balanced mass flow rates, taken from <code>x$ybal</code>, and not statistics on \(\beta\) or variance parameters of \(\sigma^2\) and \(\Sigma\).</p>
+<p>The header entry of the table <code>95% LB</code> should be interpreted as the lower bound of the 95<!-- % HPDI.  Similarly, the header entry of the table \code{95\% UB} should be interpreted as the upper bound of the 95% HPDI. --></p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
