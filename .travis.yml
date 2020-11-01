@@ -4,10 +4,13 @@ language: R
 cache: packages
 warnings_are_errors: true
 
+<<<<<<< HEAD
 os:
   - linux
   - osx
 
+=======
+>>>>>>> 7d1860f9af6997b8c30dabb6fd3855c27e234d07
 r:
   - oldrel
   - release
