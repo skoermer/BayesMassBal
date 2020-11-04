@@ -11,6 +11,8 @@ status](https://travis-ci.org/skoermer/BayesMassBal.svg?branch=master)](https://
 status](https://ci.appveyor.com/api/projects/status/github/skoermer/BayesMassBal?branch=master&svg=true)](https://ci.appveyor.com/project/skoermer/BayesMassBal)
 [![Codecov test
 coverage](https://codecov.io/gh/skoermer/BayesMassBal/branch/master/graph/badge.svg)](https://codecov.io/gh/skoermer/BayesMassBal?branch=master)
+[![Travis build
+status](https://travis-ci.com/skoermer/BayesMassBal.svg?branch=master)](https://travis-ci.com/skoermer/BayesMassBal)
 <!-- badges: end -->
 
 The goal of BayesMassBal is to allow users to easily conduct Bayesian
@@ -66,7 +68,9 @@ Functions are available to aid in Bayesian data reconciliation.
     constraints in `R` or import them from a `*.csv` file.
   - The **B**ayesian **M**ass **B**alance function, `BMB()`, then can be
     used to generate samples from target distributions and approximate
-    the log marginal likelihood for a specified model.  
+    the log marginal likelihood for a specified model.
+  - A summary table can be viewed in the console and saved using
+    `summary.BayesMassBal()`.
   - The output from `BMB()` is a `"BayesMassBal"` object, which can be
     fed to `plot.BayesMassBal()` to easily plot the results.
   - A `"BayesMassBal"` object can also be used with the `BayesMassBal`

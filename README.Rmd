@@ -52,7 +52,8 @@ Functions are available to aid in Bayesian data reconciliation.
 * The `importObservations()` function can be used to import mass flow rate data from a `*.csv` file into `R` and organize it for use with the `BayesMassBal` package.
 * Toy data sets can be simulated using the `twonodeSim()` function for educational purposes, or for comparing the performance of Bayesian data reconciliation methods to other methods.
 * Using the `constrainProcess()` function, one can specify linear constraints in `R` or import them from a `*.csv` file.
-* The **B**ayesian **M**ass **B**alance function, `BMB()`, then can be used to generate samples from target distributions and approximate the log marginal likelihood for a specified model.  
+* The **B**ayesian **M**ass **B**alance function, `BMB()`, then can be used to generate samples from target distributions and approximate the log marginal likelihood for a specified model.
+* A summary table can be viewed in the console and saved using `summary.BayesMassBal()`.
 * The output from `BMB()` is a `"BayesMassBal"` object, which can be fed to `plot.BayesMassBal()` to easily plot the results.
 *  A `"BayesMassBal"` object can also be used with the `BayesMassBal` function `mainEff()` to inspect how the main effect of a random variable and uncertainty in process performance are related.
 
