@@ -13,6 +13,7 @@
 #' @return A summary table printed to the console, and optionally a saved \code{*.csv} file saved within the path as specified.
 #'
 #' @importFrom HDInterval hdi
+#' @importFrom utils write.csv
 #'
 #' @export
 #'
@@ -55,10 +56,10 @@ summary.BayesMassBal <- function(object, export = NA,...){
       csv.check <- strsplit(export, split ="[.]")[[1]]
     }
     if(csv.check[[2]] != "csv"){warning("Only a .csv format can be output.  Output not saved.  Check spelling of export argument", immediate. = TRUE)}
-    if(length(csv.check) == 2 & csv.check[2] == ".csv"){
+    if(length(csv.check) == 2 & csv.check[2] == "csv"){
       export.df <- do.call("rbind",ans[[1]])
       export.df <- cbind.data.frame(`Sample Component` = rep(components, each = locations), export.df)
-      write.csv(export.df, file = "test.csv", row.names = FALSE)
+      write.csv(export.df, file = export, row.names = FALSE)
     }
   }else if(!is.na(export) & !is.character(export)){
     warning("\nPlease specify a character string or NA for the export argument.")
