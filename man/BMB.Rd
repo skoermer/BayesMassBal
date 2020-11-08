@@ -72,7 +72,7 @@ The prior distribution on \code{beta} is a normal distribution truncated at 0.  
 
 \deqn{10^{\mathrm{number of integer digits of an element of } \beta + 6}}
 
-Currently, there is only support for diagonal prior covariance matricies for \eqn{\beta}
+Currently, there is only support for diagonal prior covariance matrices for \eqn{\beta}
 
 When \code{cov.structure = "indep"} the error of all observations in a sample set are independent. An \href{https://en.wikipedia.org/wiki/Inverse-gamma_distribution}{inverse gamma} prior distribution, with \eqn{\alpha_0 = 0.000001} and \eqn{\beta_0 = 0.000001}, is placed on the variance of the mass flow rate for each sample component at each sample location.
 
@@ -82,7 +82,7 @@ The user is able to specify the prior hyperparameters of the mean and variance o
 
 When \code{priors = "Jeffreys"} \href{https://en.wikipedia.org/wiki/Jeffreys_prior}{Jeffreys} priors are used for the prior distribution of the variance and covariance parameters.  Priors used are \eqn{p(\sigma^2) \propto \frac{1}{\sigma^2}} and \eqn{p(\Sigma) \propto |\Sigma|^{-(p+1)/2}}, as listed in \insertCite{priorlist}{BayesMassBal}.  The Jeffreys prior for a \eqn{\beta} with infinite support is \eqn{p(\beta) \propto 1}.  To preserve the prior information that \eqn{\beta > 0}, \eqn{p(\beta)\propto I\lbrack \beta > 0 \rbrack} is chosen.  It is not possible to calculate log-marginal likelihood using the methods in \insertCite{chib}{BayesMassBal} with Jeffreys priors.  Therefore, if \code{priors = "Jeffreys"} and \code{lml = TRUE}, the \code{lml} argument will be ignored and a warning will be printed.
 
-\code{lml} is reported in base \eqn{e}.  See \href{https://en.wikipedia.org/wiki/Bayes_factor#Interpretation}{here} for some guidance on how to interpret Bayes Factors, but note log base 10 is used.
+\code{lml} is reported in base \eqn{e}.  See \href{https://en.wikipedia.org/wiki/Bayes_factor#Interpretation}{here} for some guidance on how to interpret Bayes Factors, but note log base 10 is used on Wikipedia.
 }
 \examples{
 y <- importObservations(file = system.file("extdata", "twonode_example.csv",
