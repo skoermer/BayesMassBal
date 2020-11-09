@@ -6,12 +6,8 @@
 * ssEst function allows for fitting of a Bayesian lag-1 autoregressive model to a set of mass flow observations so that average behavior time to steady state can be inferred
 * In BMB where independent variance is specified, inference is conducted on variance instead of precision
 * Change in default prior specification for BMB function, ability to specify Jeffreys priors
-
-# BayesMassBal 0.2.1
-
-## Major Changes
-
 * Markov chain Monte Carlo diagnostics are now available directly from the BMB function
+
 
 ## Bug Fixes
 
