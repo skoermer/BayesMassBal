@@ -1,7 +1,7 @@
 Package: BayesMassBal
 Type: Package
 Title: Bayesian Data Reconciliation of Separation Processes
-Version: 1.0.0
+Version: 1.1.0
 Author: Scott Koermer <skoermer@vt.edu>
 Maintainer: Scott Koermer <skoermer@vt.edu>
 Description: Bayesian tools that can be used to reconcile, or mass balance, mass flow rate data collected from chemical or particulate separation processes aided by constraints governed by the conservation of mass.
@@ -9,7 +9,7 @@ Description: Bayesian tools that can be used to reconcile, or mass balance, mass
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.0
 Imports: 
     Rdpack,
     Matrix,

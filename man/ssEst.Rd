@@ -32,9 +32,9 @@ The model of the following form is fit to the data:
 
 \deqn{y_t = \mu + \alpha y_{t-1} + \epsilon}
 
-Where \eqn{\epsilon \mathcal{N}(0,\sigma^2)} and \eqn{t} indexes the time step.
+Where \eqn{\epsilon \sim \mathcal{N}(0,\sigma^2)} and \eqn{t} indexes the time step.
 
-A time series is stationary, and predictable, when \eqn{|\alpha|< 1}.  Enforcing stationarity, using \code{stationary = TRUE}, is achieved by specifying a truncated normal prior distribution for \eqn{\alpha} with a mean of zero and a variance of 10,000.  Because \eqn{\alpha} and \eqn{\mu} are drawn together, a normal prior distribution with a mean of \code{mean(y)} and a variance of \code{var(y)*1000}.
+A time series is stationary, and predictable, when \eqn{|\alpha|< 1}.  Stationarity can be enforced, using the argument setting \code{stationary = TRUE}.  This setting utilizes the priors \eqn{p(\alpha) \sim \mathcal{N}}(0, 1000) truncated at (-1,1), and \eqn{p(\mu) \sim \mathcal{N}}(0, \code{var(y)*100}) for inference, producing a posterior distribution for \eqn{\alpha} constrained to be within (-1,1).
 
 When fitting a model where stationarity is not enforced, the Jeffreys prior of \eqn{p(\mu,\alpha)\propto 1} is used.
 
@@ -44,7 +44,9 @@ A stationary time series will have an expected value of:
 
 \deqn{\frac{\mu}{1-\alpha}}
 
-Samples of this expectation are included in the output if \code{stationary = TRUE} or if none of the samples of \eqn{alpha} lie outside of (-1,1).
+Samples of this expectation are included in the output if \code{stationary = TRUE} or if none of the samples of \eqn{\alpha} lie outside of (-1,1).
+
+The output list is a \code{BMB} object, passing the output to \code{\link{plot.BayesMassBal}} allows for observation of the results.
 }
 \examples{
 

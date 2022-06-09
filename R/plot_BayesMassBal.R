@@ -6,6 +6,7 @@
 #' @param sample.params List to be used for indicating model parameter samples used for creation of plot(s).  See details for required structure.
 #' @param layout Character string indicating the desired data to be plotted.  \code{"trace"} produces trace plots of sequential parameter draws. \code{"dens"} produces densities of posterior draws.  Argument ignored when \code{x$type = "time-series"}.
 #' @param hdi.params Numeric vector of length two, used to draw Highest Posterior Density Intervals (HPDI) using \code{\link[HDInterval]{hdi}}, and otherwise ignored. \code{hdi.params[1] = 1} indicates \code{\link[HDInterval]{hdi}} bounds should be drawn.  The second element of \code{hdi} is passed to \code{credMass} in the \code{\link[HDInterval]{hdi}} function.  The default, \code{hdi.params = c(1,0.95)}, plots the 95\% HPDI bounds.
+#' @param ssEst.ylab  Character string providing the label for the y-axis of a time series plot when object \code{type == "time-series"}.  Argument only useful with the output from the \code{\link{ssEst}} function.
 #' @param ... Passes extra arguments to \code{plot()}
 #'
 #' @details
@@ -25,7 +26,7 @@
 #' @export
 
 
-plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hdi.params = c(1,0.95),...){
+plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hdi.params = c(1,0.95),ssEst.ylab = "Mass",...){
 
   opar <- par(no.readonly =TRUE)
   on.exit(par(opar))
@@ -79,7 +80,7 @@ plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hd
      abline(v = hdi.exp, col = c[2], lty = 2,lwd = l.wid)
 
      par(mar = c(4,4,1,1))#c(5, 4, 2, 2),cex = 1)
-     plot(0:(length(y)-1),y, type = "p", pch = 19, ylab = "Mass", xlab = "Time Steps", main = "",...)
+     plot(0:(length(y)-1),y, type = "p", pch = 19, ylab = ssEst.ylab, xlab = "Time Steps", main = "",...)
      abline(h = mean.exp, col = c[1], lwd = l.wid)
      abline(h =hdi.exp, col = c[2], lty = 2, lwd = l.wid)
 
@@ -118,7 +119,7 @@ plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hd
 
 
      par(mar = c(5, 4, 2, 2),cex = 1)
-     plot(0:(length(y)-1),y, type = "p", pch = 19, ylab = "Mass", xlab = "Time Steps", main = "")
+     plot(0:(length(y)-1),y, type = "p", pch = 19, ylab = ssEst.ylab, xlab = "Time Steps", main = "")
 
 
    }

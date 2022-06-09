@@ -18,9 +18,9 @@
 #'
 #' \deqn{y_t = \mu + \alpha y_{t-1} + \epsilon}
 #'
-#' Where \eqn{\epsilon \mathcal{N}(0,\sigma^2)} and \eqn{t} indexes the time step.
+#' Where \eqn{\epsilon \sim \mathcal{N}(0,\sigma^2)} and \eqn{t} indexes the time step.
 #'
-#' A time series is stationary, and predictable, when \eqn{|\alpha|< 1}.  Enforcing stationarity, using \code{stationary = TRUE}, is achieved by specifying a truncated normal prior distribution for \eqn{\alpha} with a mean of zero and a variance of 10,000.  Because \eqn{\alpha} and \eqn{\mu} are drawn together, a normal prior distribution with a mean of \code{mean(y)} and a variance of \code{var(y)*1000}.
+#' A time series is stationary, and predictable, when \eqn{|\alpha|< 1}.  Stationarity can be enforced, using the argument setting \code{stationary = TRUE}.  This setting utilizes the priors \eqn{p(\alpha) \sim \mathcal{N}}(0, 1000) truncated at (-1,1), and \eqn{p(\mu) \sim \mathcal{N}}(0, \code{var(y)*100}) for inference, producing a posterior distribution for \eqn{\alpha} constrained to be within (-1,1).
 #'
 #' When fitting a model where stationarity is not enforced, the Jeffreys prior of \eqn{p(\mu,\alpha)\propto 1} is used.
 #'
@@ -30,7 +30,9 @@
 #'
 #' \deqn{\frac{\mu}{1-\alpha}}
 #'
-#' Samples of this expectation are included in the output if \code{stationary = TRUE} or if none of the samples of \eqn{alpha} lie outside of (-1,1).
+#' Samples of this expectation are included in the output if \code{stationary = TRUE} or if none of the samples of \eqn{\alpha} lie outside of (-1,1).
+#'
+#' The output list is a \code{BMB} object, passing the output to \code{\link{plot.BayesMassBal}} allows for observation of the results.
 #'
 #' @examples
 #'
@@ -54,82 +56,76 @@
 #' @importFrom LaplacesDemon rinvgamma
 #' @export
 
-ssEst <- function(y,BTE = c(500,20000,1),stationary = FALSE){
-
+ssEst <- function (y, BTE = c(500, 20000, 1), stationary = FALSE)
+{
   burn <- BTE[1]
   total <- BTE[2]
   every <- BTE[3]
-
-  collected <- ceiling((total-burn)/every)
-
+  collected <- ceiling((total - burn)/every)
+  y <- drop(y)
   Y <- y[-1]
-
-  X <- matrix(1, nrow = length(y)-1, ncol = 2)
-  X[,2] <- y[-length(y)]
-
+  X <- matrix(1, nrow = length(y) - 1, ncol = 2)
+  X[, 2] <- y[-length(y)]
   sig <- rep(NA, times = collected)
-  beta <- matrix(NA, nrow = 2, ncol= collected)
-
-  sigsamp <- var(Y)
-
-  if(stationary == TRUE){
-    B0 <- c(mean(Y),0)
-    V0i <- diag(c(1/(sigsamp*10),1/(mean(Y)*10000)))
+  beta <- matrix(NA, nrow = 2, ncol = collected)
+  sigsamp <- var(y)
+  if (stationary == TRUE) {
+    B0 <- c(mean(y), 0)
+    V0i <- diag(c(1/(sigsamp * 100), 1/(1000)))
     V0iB0 <- V0i %*% B0
     XTX <- t(X) %*% X
-    Vi <- solve(XTX * (1/sigsamp) + V0i)
-    bhat <-  as.vector(Vi %*% (V0iB0 + (1/sigsamp)*t(X) %*% Y))
-
-    lb <- c(-Inf,-1)
-    ub <- c(Inf,1)
-  }else if(stationary == FALSE){
+    V <- solve((1/sigsamp)*XTX  + V0i)
+    bhat <- as.vector(V %*% (V0iB0 + (1/sigsamp) * t(X) %*%
+                               Y))
+    lb <- c(-Inf, -1)
+    ub <- c(Inf, 1)
+  }
+  else if (stationary == FALSE) {
     bhat <- as.vector(solve(t(X) %*% X) %*% t(X) %*% Y)
     XTXi <- solve(t(X) %*% X)
-    Vi <- XTXi*sigsamp
+    V <- XTXi * sigsamp
     lb <- c(-Inf, -Inf)
     ub <- c(Inf, Inf)
   }
-
   bsamp <- bhat
-
   a <- length(Y)/2
-
-  for(i in 1:total){
-
-    bsamp <- as.vector(rtmvnorm(1, mean = bhat, sigma = Vi, lower = lb, upper = ub))
-
-    ymXB <- Y-X %*% bsamp
-    b <- 0.5* t(ymXB) %*% ymXB
-
-    sigsamp <- rinvgamma(1,shape = a, scale = b)
-
-      if(i > burn & ((i-burn)/every) %% 1 == 0){
-        save.sel <- (i-burn)/every
-        beta[,save.sel] <- bsamp
-        sig[save.sel] <- sigsamp
-      }
-
-    if(stationary == TRUE){
-      Vi <- solve(XTX * (1/sigsamp) + V0i)
-      bhat <-  as.vector(Vi %*% (V0iB0 + (1/sigsamp)*t(X) %*% Y))
-    }else{
-      Vi <- XTXi*sigsamp
+  for (i in 1:total) {
+    bsamp <- as.vector(rtmvnorm(1, mean = bhat, sigma = V,
+                                lower = lb, upper = ub))
+    ymXB <- Y - X %*% bsamp
+    b <- 0.5 * t(ymXB) %*% ymXB
+    sigsamp <- rinvgamma(1, shape = a, scale = b)
+    if (i > burn & ((i - burn)/every)%%1 == 0) {
+      save.sel <- (i - burn)/every
+      beta[, save.sel] <- bsamp
+      sig[save.sel] <- sigsamp
+    }
+    if (stationary == TRUE) {
+      V <- solve(XTX * (1/sigsamp) + V0i)
+      bhat <- as.vector(V %*% (V0iB0 + (1/sigsamp) * t(X) %*%
+                                 Y))
+    }
+    else {
+      V <- XTXi * sigsamp
     }
   }
-
-  if(stationary == TRUE){
-    expectation <- beta[1,]/(1-beta[2,])
-    samples <- list(mu = beta[1,], alpha = beta[2,], expectation = expectation,s2 =  sig)
-  }else if(sum(beta[2,] <= -1) == 0 & sum(beta[2,] >= 1) == 0){
-    expectation <- beta[1,]/(1-beta[2,])
-    samples <- list(mu = beta[1,], alpha = beta[2,], expectation = expectation,s2 =  sig)
-  }else{
-    samples <- list(mu = beta[1,], alpha = beta[2,], s2 =  sig)
+  if (stationary == TRUE) {
+    expectation <- beta[1, ]/(1 - beta[2, ])
+    samples <- list(mu = beta[1, ], alpha = beta[2, ], expectation = expectation,
+                    s2 = sig)
   }
-
-  out <- list(samples = samples,stationary = stationary,y = y, type = "time-series")
+  else if (sum(beta[2, ] <= -1) == 0 & sum(beta[2, ] >= 1) ==
+           0) {
+    expectation <- beta[1, ]/(1 - beta[2, ])
+    samples <- list(mu = beta[1, ], alpha = beta[2, ], expectation = expectation,
+                    s2 = sig)
+  }
+  else {
+    samples <- list(mu = beta[1, ], alpha = beta[2, ], s2 = sig)#, expectation = "Unable to compute expected value of y")
+  }
+  out <- list(samples = samples, stationary = stationary, y = y,
+              type = "time-series")
   class(out) <- "BayesMassBal"
-
   return(out)
 }
 
