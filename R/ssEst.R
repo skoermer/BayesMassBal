@@ -56,7 +56,7 @@
 #' @importFrom LaplacesDemon rinvgamma
 #' @export
 
-ssEst <- function (y, BTE = c(500, 20000, 1), stationary = FALSE)
+ssEst <- function (y, BTE = c(100, 1000, 1), stationary = FALSE)
 {
   burn <- BTE[1]
   total <- BTE[2]

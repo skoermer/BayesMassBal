@@ -1,18 +1,25 @@
 ## Test environments
-* Local ubuntu 20.04.1 focal, R 4.0.3
-* ubuntu 16.04.6 LTS (on travis-ci), R 3.6.3
-* ubuntu 16.04.6 LTS (on travis-ci), R 4.0.2
-* ubuntu 16.04.6 LTS (on travis-ci), R devel
-* macOS High Sierra 10.13.6 (on travis-ci), R 3.6.3
-* macOS High Sierra 10.13.6, R 4.0.3
-* Windows Server (on appveyor), R 4.0.3
-* Ran devtools::check_rhub() with defaults
+
+* Local Ubuntu 20.04.4 Focal, R 4.2.0
+* Ubuntu Linux 20.04.1 LTS, R-devel, GCC
+* Ubuntu Linux 20.04.1 LTS, R-release, GCC
+* Fedora Linux, R-devel, clang, gfortran
+* macOS 10.13.6 High Sierra, R-release, CRAN's setup
+* Windows Server 2008 R2 SP1, R-oldrel, 32/64 bit
 * Ran devtools::check_win_devel() with defaults
+* Ran devtools::check_rhub() with defaults
 
-## R CMD check results
+## R CMD check results (local)
 
-0 errors ✓ | 0 warnings ✓ | 0 notes ✓
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
+### Notes
+
+Known R-hub issue #503 https://github.com/r-hub/rhub/issues/503 : 
+
+* checking for detritus in the temp directory ... NOTE
+Found the following files/directories:
+  'lastMiKTeXException'
 
 ## Downstream dependencies
 

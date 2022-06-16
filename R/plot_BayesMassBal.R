@@ -80,7 +80,7 @@ plot.BayesMassBal <- function(x,sample.params = NA,layout = c("trace","dens"),hd
      abline(v = hdi.exp, col = c[2], lty = 2,lwd = l.wid)
 
      par(mar = c(4,4,1,1))#c(5, 4, 2, 2),cex = 1)
-     plot(0:(length(y)-1),y, type = "p", pch = 19, ylab = ssEst.ylab, xlab = "Time Steps", main = "",...)
+     plot(0:(length(y)-1),y, type = "p", pch = 19, ylab = ssEst.ylab, xlab = "Time Steps", main = "", ylim = r.exp,...)
      abline(h = mean.exp, col = c[1], lwd = l.wid)
      abline(h =hdi.exp, col = c[2], lty = 2, lwd = l.wid)
 

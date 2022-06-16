@@ -10,9 +10,7 @@ status](https://travis-ci.org/skoermer/BayesMassBal.svg?branch=master)](https://
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/skoermer/BayesMassBal?branch=master&svg=true)](https://ci.appveyor.com/project/skoermer/BayesMassBal)
 [![Codecov test
-coverage](https://codecov.io/gh/skoermer/BayesMassBal/branch/master/graph/badge.svg)](https://codecov.io/gh/skoermer/BayesMassBal?branch=master)
-[![Travis build
-status](https://travis-ci.com/skoermer/BayesMassBal.svg?branch=master)](https://travis-ci.com/skoermer/BayesMassBal)
+coverage](https://codecov.io/gh/skoermer/BayesMassBal/branch/master/graph/badge.svg)](https://app.codecov.io/gh/skoermer/BayesMassBal?branch=master)
 <!-- badges: end -->
 
 The goal of BayesMassBal is to allow users to easily conduct Bayesian
