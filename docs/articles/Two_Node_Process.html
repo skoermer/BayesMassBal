@@ -76,7 +76,7 @@
                         <h4 data-toc-skip class="author">Scott
 Koermer</h4>
             
-            <h4 data-toc-skip class="date">2022-06-16</h4>
+            <h4 data-toc-skip class="date">2022-06-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/skoermer/BayesMassBal/blob/HEAD/vignettes/Two_Node_Process.Rmd" class="external-link"><code>vignettes/Two_Node_Process.Rmd</code></a></small>
       <div class="d-none name"><code>Two_Node_Process.Rmd</code></div>
@@ -163,34 +163,34 @@ available as part of the output from <code>BMB</code>:</p>
 <code class="sourceCode R"><span class="va">indep.samples</span><span class="op">$</span><span class="va">diagnostics</span>
 <span class="co">#&gt; $beta</span>
 <span class="co">#&gt; $beta$CuFeS2</span>
-<span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1 -0.3481962 2904.267</span>
-<span class="co">#&gt; 2     2 -1.5462121 3547.306</span>
-<span class="co">#&gt; 3     3 -0.1128256 2709.364</span>
+<span class="co">#&gt;   index          cd      ess</span>
+<span class="co">#&gt; 1     1 -0.16452096 2882.346</span>
+<span class="co">#&gt; 2     2  1.01873223 2900.000</span>
+<span class="co">#&gt; 3     3 -0.08009054 2900.000</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $beta$gangue</span>
-<span class="co">#&gt;   index        cd      ess</span>
-<span class="co">#&gt; 1     1 0.4046731 2900.000</span>
-<span class="co">#&gt; 2     2 0.6759846 2900.000</span>
-<span class="co">#&gt; 3     3 0.8088580 1921.394</span>
+<span class="co">#&gt;   index         cd      ess</span>
+<span class="co">#&gt; 1     1  0.5960444 2576.434</span>
+<span class="co">#&gt; 2     2 -0.8408333 2900.000</span>
+<span class="co">#&gt; 3     3  0.4709264 2014.571</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig</span>
 <span class="co">#&gt; $Sig[[1]]</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1  1.0437838 2900.000</span>
-<span class="co">#&gt; 2     2  0.2161856 2900.000</span>
-<span class="co">#&gt; 3     3  1.1154242 2371.283</span>
-<span class="co">#&gt; 4     4  1.2055592 1877.015</span>
-<span class="co">#&gt; 5     5 -0.8871600 1946.171</span>
+<span class="co">#&gt; 1     1 -0.1887653 2083.123</span>
+<span class="co">#&gt; 2     2 -0.3353109 2900.000</span>
+<span class="co">#&gt; 3     3  1.1395217 2403.400</span>
+<span class="co">#&gt; 4     4  1.5960906 2148.791</span>
+<span class="co">#&gt; 5     5  0.7913181 1964.062</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig[[2]]</span>
 <span class="co">#&gt;   index          cd      ess</span>
-<span class="co">#&gt; 1     1  0.93455684 2900.000</span>
-<span class="co">#&gt; 2     2  0.27374924 2617.746</span>
-<span class="co">#&gt; 3     3  0.05169469 2329.480</span>
-<span class="co">#&gt; 4     4  1.34512676 2500.236</span>
-<span class="co">#&gt; 5     5 -0.62910263 2096.063</span></code></pre></div>
+<span class="co">#&gt; 1     1  1.68067375 2900.000</span>
+<span class="co">#&gt; 2     2  0.28278443 2628.906</span>
+<span class="co">#&gt; 3     3  0.03010488 1845.736</span>
+<span class="co">#&gt; 4     4  0.27807854 2333.748</span>
+<span class="co">#&gt; 5     5 -1.43955897 2131.253</span></code></pre></div>
 <p>The model with independent variances may not be the best fitting
 model. Models specifying covariance between sample locations for a
 single component, and covariance between components at a single location
@@ -204,11 +204,11 @@ Factor})\)</span> for <span class="math inline">\(BF =
 p(y|\texttt{indep})/p(y|\texttt{component})\)</span>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">indep.samples</span><span class="op">$</span><span class="va">lml</span> <span class="op">-</span> <span class="va">component.samples</span><span class="op">$</span><span class="va">lml</span>
-<span class="co">#&gt; [1] -126.8257</span></code></pre></div>
+<span class="co">#&gt; [1] -126.8775</span></code></pre></div>
 <p>Then comparing <span class="math inline">\(p(y|\texttt{component})\)</span> to <span class="math inline">\(p(y|\texttt{location})\)</span></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">component.samples</span><span class="op">$</span><span class="va">lml</span> <span class="op">-</span> <span class="va">location.samples</span><span class="op">$</span><span class="va">lml</span>
-<span class="co">#&gt; [1] 0.7741722</span></code></pre></div>
+<span class="co">#&gt; [1] 0.8060619</span></code></pre></div>
 <p>Shows there is little difference between the models where
 <code>cov.structure  = "location"</code> and
 <code>cov.structure = "component"</code>, but both of these models
@@ -225,33 +225,33 @@ argument.</p>
 <span class="co">#&gt; CuFeS2:</span>
 <span class="co">#&gt; --------------------</span>
 <span class="co">#&gt;  Sampling Location Expected Value     95% LB     95% UB</span>
-<span class="co">#&gt;                  1     1.19874562 1.15064761 1.24762759</span>
-<span class="co">#&gt;                  2     1.17341275 1.12789819 1.22444013</span>
-<span class="co">#&gt;                  3     1.11059815 1.06172952 1.16412104</span>
-<span class="co">#&gt;                  4     0.02533287 0.01639162 0.03327121</span>
-<span class="co">#&gt;                  5     0.06281460 0.05157122 0.07295361</span>
+<span class="co">#&gt;                  1     1.19823407 1.14638619 1.24625462</span>
+<span class="co">#&gt;                  2     1.17310685 1.12440643 1.22292177</span>
+<span class="co">#&gt;                  3     1.11061910 1.05831870 1.16355322</span>
+<span class="co">#&gt;                  4     0.02512722 0.01696025 0.03432759</span>
+<span class="co">#&gt;                  5     0.06248775 0.05216680 0.07300803</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; gangue:</span>
 <span class="co">#&gt; --------------------</span>
 <span class="co">#&gt;  Sampling Location Expected Value     95% LB      95% UB</span>
-<span class="co">#&gt;                  1    100.3335984 95.2866899 105.1579011</span>
-<span class="co">#&gt;                  2      6.6710739  5.9163687   7.5536923</span>
-<span class="co">#&gt;                  3      0.2604721  0.2282041   0.2981257</span>
-<span class="co">#&gt;                  4     93.6625244 88.7788574  98.1532800</span>
-<span class="co">#&gt;                  5      6.4106019  5.6573294   7.2815562</span>
+<span class="co">#&gt;                  1    100.2267558 95.1266672 105.0550094</span>
+<span class="co">#&gt;                  2      6.6673972  5.8026776   7.5170467</span>
+<span class="co">#&gt;                  3      0.2600625  0.2254623   0.2944981</span>
+<span class="co">#&gt;                  4     93.5593585 88.7766557  98.0600612</span>
+<span class="co">#&gt;                  5      6.4073347  5.5262585   7.2183168</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Total:</span>
 <span class="co">#&gt; --------------------</span>
 <span class="co">#&gt;  Sampling Location Expected Value    95% LB     95% UB</span>
-<span class="co">#&gt;                  1     101.532344 96.498437 106.366104</span>
-<span class="co">#&gt;                  2       7.844487  7.092959   8.730092</span>
-<span class="co">#&gt;                  3       1.371070  1.309323   1.429205</span>
-<span class="co">#&gt;                  4      93.687857 88.803744  98.173491</span>
-<span class="co">#&gt;                  5       6.473416  5.729112   7.359355</span>
+<span class="co">#&gt;                  1     101.424990 96.318005 106.270975</span>
+<span class="co">#&gt;                  2       7.840504  7.008763   8.733757</span>
+<span class="co">#&gt;                  3       1.370682  1.311207   1.438229</span>
+<span class="co">#&gt;                  4      93.584486 88.800106  98.086028</span>
+<span class="co">#&gt;                  5       6.469822  5.584144   7.277784</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; log-marginal likelihood:</span>
-<span class="co">#&gt; -66.0640470930616</span></code></pre></div>
+<span class="co">#&gt; -66.0399322872118</span></code></pre></div>
 <p>The main effect of a variable independent of the process can be
 calculated by supplying a function, <code>fn</code> that takes the
 arguments of mass balanced flow rates <code>ybal</code>, and the random

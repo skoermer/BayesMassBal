@@ -15,9 +15,9 @@
 
 ### Notes
 
-Known R-hub issue #503 https://github.com/r-hub/rhub/issues/503 : 
+*  Known R-hub issue #503 https://github.com/r-hub/rhub/issues/503 : 
 
-* checking for detritus in the temp directory ... NOTE
+checking for detritus in the temp directory ... NOTE
 Found the following files/directories:
   'lastMiKTeXException'
 
