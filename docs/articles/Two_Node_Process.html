@@ -163,34 +163,34 @@ available as part of the output from <code>BMB</code>:</p>
 <code class="sourceCode R"><span class="va">indep.samples</span><span class="op">$</span><span class="va">diagnostics</span>
 <span class="co">#&gt; $beta</span>
 <span class="co">#&gt; $beta$CuFeS2</span>
-<span class="co">#&gt;   index          cd      ess</span>
-<span class="co">#&gt; 1     1 -0.16452096 2882.346</span>
-<span class="co">#&gt; 2     2  1.01873223 2900.000</span>
-<span class="co">#&gt; 3     3 -0.08009054 2900.000</span>
+<span class="co">#&gt;   index         cd      ess</span>
+<span class="co">#&gt; 1     1 -0.3611161 2523.569</span>
+<span class="co">#&gt; 2     2  0.7828321 2900.000</span>
+<span class="co">#&gt; 3     3 -0.7725090 2701.475</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $beta$gangue</span>
 <span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1  0.5960444 2576.434</span>
-<span class="co">#&gt; 2     2 -0.8408333 2900.000</span>
-<span class="co">#&gt; 3     3  0.4709264 2014.571</span>
+<span class="co">#&gt; 1     1  2.7234190 2664.632</span>
+<span class="co">#&gt; 2     2  0.9959390 2900.000</span>
+<span class="co">#&gt; 3     3 -0.2814149 1884.572</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig</span>
 <span class="co">#&gt; $Sig[[1]]</span>
-<span class="co">#&gt;   index         cd      ess</span>
-<span class="co">#&gt; 1     1 -0.1887653 2083.123</span>
-<span class="co">#&gt; 2     2 -0.3353109 2900.000</span>
-<span class="co">#&gt; 3     3  1.1395217 2403.400</span>
-<span class="co">#&gt; 4     4  1.5960906 2148.791</span>
-<span class="co">#&gt; 5     5  0.7913181 1964.062</span>
+<span class="co">#&gt;   index          cd      ess</span>
+<span class="co">#&gt; 1     1  0.07827022 2629.087</span>
+<span class="co">#&gt; 2     2  0.28976726 2900.000</span>
+<span class="co">#&gt; 3     3 -0.92940701 2470.207</span>
+<span class="co">#&gt; 4     4 -1.20257978 2184.124</span>
+<span class="co">#&gt; 5     5 -0.04802145 1791.077</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $Sig[[2]]</span>
-<span class="co">#&gt;   index          cd      ess</span>
-<span class="co">#&gt; 1     1  1.68067375 2900.000</span>
-<span class="co">#&gt; 2     2  0.28278443 2628.906</span>
-<span class="co">#&gt; 3     3  0.03010488 1845.736</span>
-<span class="co">#&gt; 4     4  0.27807854 2333.748</span>
-<span class="co">#&gt; 5     5 -1.43955897 2131.253</span></code></pre></div>
+<span class="co">#&gt;   index         cd      ess</span>
+<span class="co">#&gt; 1     1 -0.3968014 2900.000</span>
+<span class="co">#&gt; 2     2  0.4150925 2666.449</span>
+<span class="co">#&gt; 3     3 -1.6538871 1495.024</span>
+<span class="co">#&gt; 4     4  0.5935790 2235.558</span>
+<span class="co">#&gt; 5     5  0.5005302 2259.714</span></code></pre></div>
 <p>The model with independent variances may not be the best fitting
 model. Models specifying covariance between sample locations for a
 single component, and covariance between components at a single location
@@ -204,11 +204,11 @@ Factor})\)</span> for <span class="math inline">\(BF =
 p(y|\texttt{indep})/p(y|\texttt{component})\)</span>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">indep.samples</span><span class="op">$</span><span class="va">lml</span> <span class="op">-</span> <span class="va">component.samples</span><span class="op">$</span><span class="va">lml</span>
-<span class="co">#&gt; [1] -126.8775</span></code></pre></div>
+<span class="co">#&gt; [1] -126.8253</span></code></pre></div>
 <p>Then comparing <span class="math inline">\(p(y|\texttt{component})\)</span> to <span class="math inline">\(p(y|\texttt{location})\)</span></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">component.samples</span><span class="op">$</span><span class="va">lml</span> <span class="op">-</span> <span class="va">location.samples</span><span class="op">$</span><span class="va">lml</span>
-<span class="co">#&gt; [1] 0.8060619</span></code></pre></div>
+<span class="co">#&gt; [1] 0.8157781</span></code></pre></div>
 <p>Shows there is little difference between the models where
 <code>cov.structure  = "location"</code> and
 <code>cov.structure = "component"</code>, but both of these models
@@ -225,33 +225,33 @@ argument.</p>
 <span class="co">#&gt; CuFeS2:</span>
 <span class="co">#&gt; --------------------</span>
 <span class="co">#&gt;  Sampling Location Expected Value     95% LB     95% UB</span>
-<span class="co">#&gt;                  1     1.19823407 1.14638619 1.24625462</span>
-<span class="co">#&gt;                  2     1.17310685 1.12440643 1.22292177</span>
-<span class="co">#&gt;                  3     1.11061910 1.05831870 1.16355322</span>
-<span class="co">#&gt;                  4     0.02512722 0.01696025 0.03432759</span>
-<span class="co">#&gt;                  5     0.06248775 0.05216680 0.07300803</span>
+<span class="co">#&gt;                  1     1.19726816 1.14701389 1.24590566</span>
+<span class="co">#&gt;                  2     1.17185264 1.12298323 1.21825816</span>
+<span class="co">#&gt;                  3     1.10912627 1.05847094 1.15974298</span>
+<span class="co">#&gt;                  4     0.02541552 0.01738181 0.03464440</span>
+<span class="co">#&gt;                  5     0.06272637 0.05340892 0.07369845</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; gangue:</span>
 <span class="co">#&gt; --------------------</span>
 <span class="co">#&gt;  Sampling Location Expected Value     95% LB      95% UB</span>
-<span class="co">#&gt;                  1    100.2267558 95.1266672 105.0550094</span>
-<span class="co">#&gt;                  2      6.6673972  5.8026776   7.5170467</span>
-<span class="co">#&gt;                  3      0.2600625  0.2254623   0.2944981</span>
-<span class="co">#&gt;                  4     93.5593585 88.7766557  98.0600612</span>
-<span class="co">#&gt;                  5      6.4073347  5.5262585   7.2183168</span>
+<span class="co">#&gt;                  1    100.1924885 95.4304044 104.9670533</span>
+<span class="co">#&gt;                  2      6.6586282  5.7752361   7.3926409</span>
+<span class="co">#&gt;                  3      0.2600511  0.2251857   0.2914376</span>
+<span class="co">#&gt;                  4     93.5338603 89.0256219  98.0016813</span>
+<span class="co">#&gt;                  5      6.3985771  5.5321841   7.1303883</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Total:</span>
 <span class="co">#&gt; --------------------</span>
 <span class="co">#&gt;  Sampling Location Expected Value    95% LB     95% UB</span>
-<span class="co">#&gt;                  1     101.424990 96.318005 106.270975</span>
-<span class="co">#&gt;                  2       7.840504  7.008763   8.733757</span>
-<span class="co">#&gt;                  3       1.370682  1.311207   1.438229</span>
-<span class="co">#&gt;                  4      93.584486 88.800106  98.086028</span>
-<span class="co">#&gt;                  5       6.469822  5.584144   7.277784</span>
+<span class="co">#&gt;                  1     101.389757 96.520067 106.040748</span>
+<span class="co">#&gt;                  2       7.830481  7.071272   8.696424</span>
+<span class="co">#&gt;                  3       1.369177  1.308046   1.429046</span>
+<span class="co">#&gt;                  4      93.559276 89.047376  98.021858</span>
+<span class="co">#&gt;                  5       6.461303  5.589737   7.185424</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; log-marginal likelihood:</span>
-<span class="co">#&gt; -66.0399322872118</span></code></pre></div>
+<span class="co">#&gt; -66.0586924576421</span></code></pre></div>
 <p>The main effect of a variable independent of the process can be
 calculated by supplying a function, <code>fn</code> that takes the
 arguments of mass balanced flow rates <code>ybal</code>, and the random

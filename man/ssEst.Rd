@@ -4,7 +4,7 @@
 \alias{ssEst}
 \title{Steady State Estimate}
 \usage{
-ssEst(y, BTE = c(500, 20000, 1), stationary = FALSE)
+ssEst(y, BTE = c(100, 1000, 1), stationary = FALSE)
 }
 \arguments{
 \item{y}{Vector of mass flow rate observations.  Must be specified sequentially with \code{y[1]} as the initial observation.}

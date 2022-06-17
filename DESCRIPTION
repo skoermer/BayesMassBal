@@ -8,7 +8,6 @@ Description: Bayesian tools that can be used to reconcile, or mass balance, mass
     Functions included in the package aid the user in organizing and constraining data, using Markov chain Monte Carlo methods to obtain samples from Bayesian models, and in computation of the marginal likelihood of the data, given a particular model, for model selection.  Marginal likelihood is approximated by methods in Chib S (1995) <doi:10.2307/2291521>.
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.2.0
 Imports: 
     Rdpack,
